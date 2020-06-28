@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ImageContentTask Include="logo_small.png" />
+    <ImageContentTask Include="Terrain.png" />
+    <ImageContentTask Include="skyBoxMountains.png" />
+    <ImageContentTask Include="transparentsquare.png" />
+    <ImageContentTask Include="TerrianHD.png" />
+    <ImageContentTask Include="CircleHitAlpha_1.png" />
+    <ImageContentTask Include="grenade.png" />
+    <ImageContentTask Include="missile.png" />
+    <ImageContentTask Include="exampleButton.png" />
+    <ImageContentTask Include="button.png" />
+    <ImageContentTask Include="arrowUp.png" />
+    <ImageContentTask Include="Plus_Button.png" />
+    <ImageContentTask Include="Teleport_Button.png" />
+    <ImageContentTask Include="Timer_Button.png" />
+    <ImageContentTask Include="Round_Button.png" />
+    <ImageContentTask Include="Health_Button.png" />
+    <ImageContentTask Include="MainMenu_Background.png" />
+    <ImageContentTask Include="WALKINGWORM.png" />
+    <ImageContentTask Include="TargetSight.png" />
+    <ImageContentTask Include="bullet.png" />
+    <ImageContentTask Include="Dynamite.png" />
+    <ImageContentTask Include="drill.png" />
+    <ImageContentTask Include="WormDrilling.png" />
+    <ImageContentTask Include="AllAlpha.png" />
+    <ImageContentTask Include="BAZOOKA.png" />
+    <ImageContentTask Include="HandGun.png" />
+    <ImageContentTask Include="UZI.png" />
+    <ImageContentTask Include="ShotGun.png" />
+    <ImageContentTask Include="ShotGunShells.png" />
+    <ImageContentTask Include="Background.png" />
+    <ImageContentTask Include="CandyLand.png" />
+    <ImageContentTask Include="CaveMap.png" />
+    <ImageContentTask Include="Tetris_Forts.png" />
+
+    <ImageContentTask Include="Next_button.png" />
+
+    <ImageContentTask Include="spaceBackGround.png" />
+
+  </ItemGroup>
+</Project>
