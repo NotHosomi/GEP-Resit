@@ -22,19 +22,10 @@ void Weapon::fire(ID3D11Device* _GD, list<GameObject2D*> &GO2Dlist, Vector2 owne
 			copy->copyWeaponComp(wComp);
 
 		if (wComp->getCharge() > 0)
-			copy->physicsComponent()->setVelocity(generateVelocity(wComp->getCharge(), wComp->getAimAngle()));
+			copy->physicsComponent()->setVelocity(generateVelocity(wComp->getCharge() * CHARGE_MODI, wComp->getAimAngle()));
 		else
-			copy->physicsComponent()->setVelocity(generateVelocity(1, wComp->getAimAngle()));
-		if (wComp->getCharge() > 0)
-		{
-			copy->physicsComponent()->setXSpeed(wComp->getCharge() * 200);
-			copy->physicsComponent()->setYSpeed(wComp->getCharge() * 200);
-		}
-		else
-		{
-			copy->physicsComponent()->setXSpeed(500);
-			copy->physicsComponent()->setYSpeed(500);
-		}
+			copy->physicsComponent()->setVelocity(generateVelocity(UNCHARGED_MODI, wComp->getAimAngle()));
+		// HOS-TODO: Find bullet's disappearing vel
 
 		copy->SetPos(Vector2(owner.x, owner.y - 15));
 		if(copy->spriteComp())

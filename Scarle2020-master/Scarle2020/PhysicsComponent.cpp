@@ -9,12 +9,12 @@ PhysicsComponent::PhysicsComponent(Vector2 _startPos)
 	m_pos = _startPos;
 }
 
-void PhysicsComponent::setXVector(const float& x_)
+void PhysicsComponent::setVelX(const float& x_)
 {
 	m_velocity.x = x_;
 }
 
-void PhysicsComponent::setYVector(const float& y_)
+void PhysicsComponent::setVelY(const float& y_)
 {
 	m_velocity.y = y_;
 }
@@ -30,39 +30,19 @@ void PhysicsComponent::setVelocity(const Vector2& vel_)
 	m_velocity = vel_;
 }
 
-void PhysicsComponent::setXSpeed(const float speed_)
-{
-	m_xSpeed = speed_;
-}
-
-void PhysicsComponent::setYSpeed(const float& speed_)
-{
-	m_ySpeed = speed_;
-}
-
 Vector2 PhysicsComponent::getVelocity() const
 {
 	return m_velocity;
 }
 
-float PhysicsComponent::getXVector() const
+float PhysicsComponent::getVelX() const
 {
 	return m_velocity.x;
 }
 
-float PhysicsComponent::getYVector() const
+float PhysicsComponent::getVelY() const
 {
 	return m_velocity.y;
-}
-
-float PhysicsComponent::getXSpeed() const
-{
-	return m_xSpeed;
-}
-
-float PhysicsComponent::getYSpeed() const
-{
-	return m_ySpeed;
 }
 
 void PhysicsComponent::invertVelocity(bool x, bool y)
@@ -88,13 +68,11 @@ void PhysicsComponent::normaliseVelocity()
 
 void PhysicsComponent::move(float _deltaTime, Vector2& pos)
 {
-	normaliseVelocity();
-
 	float x = pos.x;
 	float y = pos.y;
 
-	x += m_velocity.x * m_xSpeed * _deltaTime;
-	y += m_velocity.y * m_ySpeed * _deltaTime;
+	x += m_velocity.x * _deltaTime * MOVE_MODI;
+	y += m_velocity.y * _deltaTime * MOVE_MODI;
 	
 	m_pos.x = x;
 	m_pos.y = y;
@@ -107,8 +85,8 @@ void PhysicsComponent::move(float _deltaTime, Vector2& _pos, Vector2 _velocity)
 	float x = _pos.x;
 	float y = _pos.y;
 
-	x += _velocity.x * m_xSpeed * _deltaTime;
-	y += _velocity.y * m_ySpeed * _deltaTime;
+	x += _velocity.x * _deltaTime * MOVE_MODI;
+	y += _velocity.y * _deltaTime * MOVE_MODI;
 
 	m_pos.x = x;
 	m_pos.y = y;
@@ -124,7 +102,9 @@ void PhysicsComponent::moveToTarget(float _deltaTime, Vector2& pos, Vector2& _ta
 
 void PhysicsComponent::jump(float _deltaTime, float y)
 {
-	m_jumpPos = y - m_ySpeed * _deltaTime;
+	// HOS-TODO: this seems fucking absurd
+	// m_velocity.y = JUMP_FORCE * m_weight;
+	m_jumpPos = y - m_velocity.y * _deltaTime;
 	m_pos.y = m_jumpPos;
 	m_states.push(PhysicsStates::Jumped);
 }
@@ -134,11 +114,11 @@ void PhysicsComponent::rotate(float _rotation, float _pi, float _deltaTime)
 	if (!m_isRotating)
 		return;
 
-	float y_vect = getYVector() + 1 * _deltaTime;
-	setYVector(y_vect);
-	float angle = atan(getYVector() / getXVector());
+	float y_vect = getVelY() + 1 * _deltaTime;
+	setVelY(y_vect);
+	float angle = atan(getVelY() / getVelX());
 
-	if (getXVector() < 0)
+	if (getVelX() < 0)
 	{
 		angle += (_pi);
 	}
@@ -155,7 +135,7 @@ void PhysicsComponent::bounce(float _deltaTime, Vector2& _pos, bool _reflectX, b
 	if (_reflectY)
 		m_velocity.y *= -1;
 	
-	m_xSpeed /= m_friction;
+	m_velocity.x /= m_friction;
 	if(m_velocity.y > -0.6 && m_velocity.y < 0)
 		m_velocity.y = -0.6;
 	
@@ -163,12 +143,16 @@ void PhysicsComponent::bounce(float _deltaTime, Vector2& _pos, bool _reflectX, b
 }
 
 
-void PhysicsComponent::applyGravity(float _yPos, float _force, float _deltaTime)
+void PhysicsComponent::applyGravity(float _deltaTime)
 {
-	if (!m_gravityApplies)
-		return;
-	float y = _yPos + _force * _deltaTime;
-	m_pos.y = y;
+	if (m_gravityApplies)
+	{
+		m_velocity.y += m_weight * _deltaTime;
+	}
+	else
+	{
+		m_velocity.y = 0;
+	}
 }
 
 /*

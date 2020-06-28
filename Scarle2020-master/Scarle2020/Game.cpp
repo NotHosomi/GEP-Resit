@@ -869,22 +869,22 @@ void Game::MovementInput()
 	if (m_GD->m_KBS_tracker.released.J)
 	{
 		m_pressed[0] = false;
-		m_gameManager->currentWorm()->physicsComponent()->setXVector(0);
+		m_gameManager->currentWorm()->physicsComponent()->setVelX(0);
 	}
 	else if (m_GD->m_KBS_tracker.released.K)
 	{
 		m_pressed[1] = false;
-		m_gameManager->currentWorm()->physicsComponent()->setXVector(0);
+		m_gameManager->currentWorm()->physicsComponent()->setVelX(0);
 	}
 	//action
 	if (m_pressed[0])
 	{
-		m_gameManager->currentWorm()->physicsComponent()->setXVector(-1);
+		m_gameManager->currentWorm()->physicsComponent()->setVelX(-1);
         m_gameManager->currentWorm()->spriteComp()->animationComponent()->nextFrame(m_GD->m_dt);
 	}
 	else if (m_pressed[1])
 	{
-		m_gameManager->currentWorm()->physicsComponent()->setXVector(1);
+		m_gameManager->currentWorm()->physicsComponent()->setVelX(1);
         m_gameManager->currentWorm()->spriteComp()->animationComponent()->nextFrame(m_GD->m_dt);
 	}
 	//add into physics manager

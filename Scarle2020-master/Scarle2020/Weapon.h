@@ -23,6 +23,8 @@ public:
 	int getShotsFired() { return m_shotsFired; }
 	int getFireRateSoFar() { return m_fireRateSoFar; }
 private:
+	const float CHARGE_MODI = 5;
+	const float UNCHARGE_MODI = 15;
 
 	float m_aimAngle = 0.0f;
 	float m_charge = 0.0f;

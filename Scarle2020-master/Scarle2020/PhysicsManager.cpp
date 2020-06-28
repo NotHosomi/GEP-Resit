@@ -44,8 +44,8 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 					//pComp->setUpdatePos(false);
 					break;
 				case PhysicsStates::UseGravity:
-					pComp->applyGravity(pComp->getPos().y, GRAVITY, _GD->m_dt);
-					obj->SetPos(pComp->getPos());
+					pComp->applyGravity(_GD->m_dt);
+					pComp->move(_GD->m_dt, obj->GetPos());
 					break;
 				case PhysicsStates::UpdateRotationData:
 					obj->SetRot(obj->physicsComponent()->getRotation());
@@ -54,6 +54,10 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 			} while (lastState != PhysicsStates::Idle);
 		}
 	}
+	// Anna: This seems absurd!!
+	// Why wasn't a simple velocity controlled physics system implemented instead of using an entire event stack???
+	// In fact, this current model will result in multiple move() calls happening per frame, resulting in inconsistent movement!
+	// HOS-TODO: FIX ALL THIS SHIT
 }
 /*
 keeps tabs on collision with worms and weapons
@@ -162,18 +166,18 @@ void PhysicsManager::terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceC
 			cComp->updatePixelPos(0);
 
 		bool isCollision[4];
-		cComp->terrainCollision(_renderTarget, _d3dContext, _GD, isCollision);
+		cComp->terrainCollision(_renderTarget, _d3dContext, _GD, isCollision); // 0: top, 1: right, 2: bottom, 3: left
 		if (isCollision[0] && !(*itr)->weaponComponent())
 		{
 			//only when digging
 			//pComp->move(_GD->m_dt, (*itr)->GetPos(), m_down);
 		}
-		if (isCollision[1] && pComp->getXVector() != 0 && !(*itr)->weaponComponent())
+		if (isCollision[1] && pComp->getVelX() != 0 && !(*itr)->weaponComponent())
 		{
 			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_left);
 			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_up);
 		}
-		if (isCollision[3] && pComp->getXVector() != 0 && !(*itr)->weaponComponent())
+		if (isCollision[3] && pComp->getVelX() != 0 && !(*itr)->weaponComponent())
 		{
 			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_right);
 			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_up);

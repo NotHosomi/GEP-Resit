@@ -17,22 +17,14 @@ public:
 	PhysicsComponent(Vector2 _startPos);
 	~PhysicsComponent() = default;
 
-	void setXVector(const float& x_);
-	void setYVector(const float& y_);
+	void setVelX(const float& x_);
+	void setVelY(const float& y_);
 	void setVelocity(const float& x_, const float& y_);
 	void setVelocity(const Vector2& vel_);
 
-	void setXSpeed(const float speed_);
-	void setYSpeed(const float& speed_);
-	void setSpeed(Vector2 speed);
-
-
 	Vector2 getVelocity() const;
-	float getXVector() const;
-	float getYVector() const;
-
-	float getXSpeed() const;
-	float getYSpeed() const;
+	float getVelX() const;
+	float getVelY() const;
 
 	void invertVelocity(bool x, bool y);
 
@@ -46,7 +38,7 @@ public:
 	void bounce(float _deltaTime, Vector2& _pos, bool _reflectX, bool _reflectY);
 
 
-	void applyGravity(float _yPos, float _force, float _deltaTime);
+	void applyGravity(float _deltaTime);
 	float getJumpedPos() { return m_jumpPos; }
 
 	Vector2 getPos() { return m_pos; }
@@ -61,6 +53,9 @@ public:
 	void setGravity(bool _value) { m_gravityApplies = _value; }
 	bool getGravity() { return m_gravityApplies; }
 
+	void setWeight(float _value) { m_weight = _value; }
+	float getWeight() { return m_weight; }
+
 	void setBounce(bool _value) { m_isBouncie = _value; }
 	bool getBounce() { return m_isBouncie; }
 
@@ -70,18 +65,19 @@ public:
 	void setIsGrounded(bool _value) { m_grounded = _value; }
 	bool getIsGrounded() { return m_grounded; }
 private:
+	const float MOVE_MODI = 50;
 	Vector2 m_pos = { 0, 0 };
 	Vector2 m_velocity = { 0, 0 };
-	float m_xSpeed = 0.0f;
-	float m_ySpeed = 0.0f;
 	float m_jumpPos = 0.0f;
 	float m_rotation = 0.0f;
 	bool m_isBouncie = false;
 	bool m_gravityApplies = true;
+	float m_weight;
 	bool m_isRotating = true;
 	bool m_isStatic = false;
 	float m_friction = 1.01f;
 	bool m_grounded = false;
+	float m_terminalVel = 60;
 	//have a stack of states/vector
 	std::stack<PhysicsStates> m_states;
 };

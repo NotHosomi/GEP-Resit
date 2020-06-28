@@ -95,6 +95,7 @@ void FileManager::readWeaponData(json inFile, ID3D11Device* _GD, ID3D11DeviceCon
 		obj.hasSpriteComp = jsonToBool(inFile["WEAPONS"][to_string(i + 1)]["sprite_comp"]);
 		obj.hasPhysicsComp = jsonToBool(inFile["WEAPONS"][to_string(i + 1)]["physics_comp"]);
 		obj.useGravity = jsonToBool(inFile["WEAPONS"][to_string(i + 1)]["use_gravity"]);
+		obj.weight = jsonToFloat(inFile["WEAPONS"][to_string(i + 1)]["weight"]);
 		obj.isBouncie = jsonToBool(inFile["WEAPONS"][to_string(i + 1)]["is_bouncie"]);
 		obj.speed.x = jsonToInt(inFile["WEAPONS"][to_string(i + 1)]["x_speed"]);
 		obj.speed.y = jsonToInt(inFile["WEAPONS"][to_string(i + 1)]["y_speed"]);

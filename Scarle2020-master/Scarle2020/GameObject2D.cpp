@@ -83,10 +83,9 @@ void GameObject2D::init(BasicObject _obj, ID3D11Device* _GD, ID3D11DeviceContext
 	if (_obj.hasPhysicsComp)
 	{
 		AddPhysicsComponent(m_pos);
-		physicsComponent()->setXSpeed(_obj.speed.x);
-		physicsComponent()->setYSpeed(_obj.speed.y);
 		physicsComponent()->setBounce(_obj.isBouncie);
 		physicsComponent()->setGravity(_obj.useGravity);
+		physicsComponent()->setWeight(_obj.weight);
 	}
 	if (_obj.hasButtonComp)
 	{

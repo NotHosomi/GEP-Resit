@@ -14,7 +14,7 @@ void Grenade::Tick(GameData* _GD)
 
 	elapsed_time += _GD->m_dt;
 
-	float y_vel = m_physicsComp->getYVector();
+	float y_vel = m_physicsComp->getVelY();
 
 	if (elapsed_time >= explode_time)
 	{

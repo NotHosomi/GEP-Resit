@@ -10,8 +10,6 @@ Projectile::Projectile(ID3D11Device* _GD, Vector2 _pos, Vector2 initial_vel, std
 	m_pos.y = _pos.y;
 	AddPhysicsComponent(m_pos);
 	m_physicsComp->setVelocity(initial_vel);
-	m_physicsComp->setXSpeed(_speed);
-	m_physicsComp->setYSpeed(_speed);
 	weight = _weight;
 	m_physicsComp->setPos(m_pos);
 	//velocity = initial_vel;
@@ -45,10 +43,10 @@ void Projectile::Explode()
 
 void Projectile::updateAngle()
 {
-	float angle = atan(m_physicsComp->getYVector() / m_physicsComp->getXVector());
+	float angle = atan(m_physicsComp->getVelY() / m_physicsComp->getVelX());
 
 
-	if (m_physicsComp->getXVector() < 0)
+	if (m_physicsComp->getVelX() < 0)
 	{
 		angle += (XM_PI);
 	}

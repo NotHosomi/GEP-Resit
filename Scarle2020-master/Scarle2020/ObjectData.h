@@ -35,6 +35,7 @@ struct BasicObject
 	WeaponData::AttackTypes attackType;
 	WeaponData::AimTypes aimType;
 	bool useGravity = true;
+	float weight = 4;
 	bool isBouncie = false;
 	float exlpodeCount = 0;
 	int damageAmount = 0;
