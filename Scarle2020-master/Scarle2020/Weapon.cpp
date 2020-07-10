@@ -67,8 +67,8 @@ void Weapon::MaintainProjectiles(list<GameObject2D*>& objects, GameData *_GD)
 				break;
 			case WeaponData::AttackTypes::W_DYNAMITE:
 				obj->physicsComponent()->setIsRotating(false);
-				obj->physicsComponent()->setXSpeed(0);
-				obj->physicsComponent()->setYSpeed(0);
+				obj->physicsComponent()->setVelX(0);
+				obj->physicsComponent()->setVelY(0);
 				if (obj->physicsComponent()->getBounce() && obj->weaponComponent()->timerOver())
 				{
 					obj->physicsComponent()->setBounce(false);
