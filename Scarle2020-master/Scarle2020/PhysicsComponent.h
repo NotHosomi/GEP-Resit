@@ -39,7 +39,6 @@ public:
 
 
 	void applyGravity(float _deltaTime);
-	float getJumpedPos() { return m_jumpPos; } // HOS: Check where this is used. Seems problematic
 
 	Vector2 getPos() { return m_pos; }
 	void setPos(Vector2 _pos) { m_pos = _pos; }

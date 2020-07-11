@@ -36,7 +36,8 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 				case PhysicsStates::Idle:
 					break;
 				case PhysicsStates::Jumped:
-					obj->SetPos(Vector2(obj->GetPos().x, pComp->getJumpedPos()));
+					// Hos: This was part of the problem!
+					//obj->SetPos(Vector2(obj->GetPos().x, pComp->getJumpedPos()));
 					//pComp->setJumped(false);
 					break;
 				case PhysicsStates::UpdatePositonData:
@@ -54,7 +55,7 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 			} while (lastState != PhysicsStates::Idle);
 		}
 	}
-	// Anna: This seems absurd!!
+	// Hos: This seems absurd!!
 	// Why wasn't a simple velocity controlled physics system implemented instead of using an entire event stack???
 	// In fact, this current model will result in multiple move() calls happening per frame, resulting in inconsistent movement!
 	// HOS-TODO: FIX ALL THIS SHIT
