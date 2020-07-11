@@ -33,13 +33,13 @@ public:
 	void move(float _deltaTime, Vector2& pos);
 	void move(float _deltaTime, Vector2& _pos, Vector2 _velocity);
 	void moveToTarget(float _deltaTime, Vector2& pos, Vector2& _targetPos);
-	void jump(float _deltaTime, float y);
+	void jump(float _deltaTime);
 	void rotate(float _rotation, float _pi, float _deltaTime);
 	void bounce(float _deltaTime, Vector2& _pos, bool _reflectX, bool _reflectY);
 
 
 	void applyGravity(float _deltaTime);
-	float getJumpedPos() { return m_jumpPos; }
+	float getJumpedPos() { return m_jumpPos; } // HOS: Check where this is used. Seems problematic
 
 	Vector2 getPos() { return m_pos; }
 	void setPos(Vector2 _pos) { m_pos = _pos; }
@@ -66,6 +66,7 @@ public:
 	bool getIsGrounded() { return m_grounded; }
 private:
 	const float MOVE_MODI = 50;
+	const float JUMP_FORCE = 1;
 	Vector2 m_pos = { 0, 0 };
 	Vector2 m_velocity = { 0, 0 };
 	float m_jumpPos = 0.0f;

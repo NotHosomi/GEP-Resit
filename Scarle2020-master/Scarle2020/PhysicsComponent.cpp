@@ -100,13 +100,14 @@ void PhysicsComponent::moveToTarget(float _deltaTime, Vector2& pos, Vector2& _ta
 	move(_deltaTime, pos);
 }
 
-void PhysicsComponent::jump(float _deltaTime, float y)
+void PhysicsComponent::jump(float _deltaTime)
 {
-	// HOS-TODO: this seems fucking absurd
-	// m_velocity.y = JUMP_FORCE * m_weight;
-	m_jumpPos = y - m_velocity.y * _deltaTime;
-	m_pos.y = m_jumpPos;
-	m_states.push(PhysicsStates::Jumped);
+	if (m_grounded)
+	{
+		m_velocity.y = JUMP_FORCE / m_weight;
+		m_grounded = false;
+		m_states.push(PhysicsStates::Jumped);
+	}
 }
 
 void PhysicsComponent::rotate(float _rotation, float _pi, float _deltaTime)

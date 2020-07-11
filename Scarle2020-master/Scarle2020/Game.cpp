@@ -872,10 +872,9 @@ void Game::MovementInput()
 	// m_currentWorm->SetPos(vec);
 
 	 //jump
-	if (m_GD->m_KBS_tracker.pressed.I && m_gameManager->currentWorm()->physicsComponent()->getIsGrounded())
+	if (m_GD->m_KBS_tracker.pressed.I)
 	{
-		m_gameManager->currentWorm()->physicsComponent()->jump(m_GD->m_dt, m_gameManager->currentWorm()->GetPos().y);
-        m_gameManager->currentWorm()->physicsComponent()->setIsGrounded(false);
+		m_gameManager->currentWorm()->physicsComponent()->jump(m_GD->m_dt);
 	}
 }
 
