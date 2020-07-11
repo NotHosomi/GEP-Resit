@@ -808,26 +808,6 @@ void Game::GamePlay()
 		m_gameManager->updateScene(Vector2(m_mouse->GetState().x, m_mouse->GetState().y), m_GD, m_d3dDevice.Get(), m_alphaRemove);
 	}
 
-
-
-	//upon space bar switch camera state
-    //SIMON:: This can definitely go now!
-	//see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
-	if (m_GD->m_KBS_tracker.pressed.Space)
-	{
-		if (m_GD->m_GS == GS_PLAY_MAIN_CAM)
-		{
-			m_GD->m_GS = GS_PLAY_TPS_CAM;
-		}
-		else
-		{
-			m_GD->m_GS = GS_PLAY_MAIN_CAM;
-		}
-	}
-
-
-
-
 	for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
 	{
 		(*it)->Tick(m_GD);
