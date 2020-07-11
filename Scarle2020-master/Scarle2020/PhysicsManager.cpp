@@ -186,10 +186,11 @@ void PhysicsManager::terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceC
 		{
 			pComp->addState(PhysicsStates::UseGravity);
 		}
-		else if(isCollision[2] && !(*itr)->weaponComponent() && !isCollision[0])
-				pComp->setIsGrounded(true);
-
-		else if(isCollision[2] && (*itr)->weaponComponent() && !m_DC)
+		else if ((*itr)->weaponComponent() == nullptr)
+		{
+			pComp->setIsGrounded(true);
+		}
+		else if(m_DC == nullptr)
 		{
 			if (pComp->getBounce())
 			{
