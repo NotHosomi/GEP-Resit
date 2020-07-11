@@ -146,7 +146,8 @@ void PhysicsComponent::bounce(float _deltaTime, Vector2& _pos, bool _reflectX, b
 
 void PhysicsComponent::applyGravity(float _deltaTime)
 {
-	if (m_gravityApplies && !m_grounded)
+	//if (m_gravityApplies && !m_grounded)
+	if (!m_grounded)
 	{
 		m_velocity.y += m_weight * _deltaTime;
 	}

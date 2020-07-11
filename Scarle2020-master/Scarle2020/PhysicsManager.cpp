@@ -28,6 +28,11 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 			//do physics
 			// if more than one state is added to gamoebject at once it will ignore the seocnd/thirf so neeed to loop through untill hit idl state
 			PhysicsStates lastState;
+#if 0
+			// Hos: This seems absurd!!
+			// Why wasn't a simple velocity controlled physics system implemented instead of using an entire event stack???
+			// In fact, this current model will result in multiple move() calls happening per frame, resulting in inconsistent movement!
+			// HOS-TODO: FIX ALL THIS SHIT
 			do
 			{
 				PhysicsStates currentState = pComp->getCurrentState();
@@ -53,12 +58,13 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 				}
 				lastState = currentState;
 			} while (lastState != PhysicsStates::Idle);
+#endif
+			// Resit version
+			pComp->applyGravity(_GD->m_dt);
+			pComp->move(_GD->m_dt, obj->GetPos());
+			obj->SetPos(pComp->getPos());
 		}
 	}
-	// Hos: This seems absurd!!
-	// Why wasn't a simple velocity controlled physics system implemented instead of using an entire event stack???
-	// In fact, this current model will result in multiple move() calls happening per frame, resulting in inconsistent movement!
-	// HOS-TODO: FIX ALL THIS SHIT
 }
 /*
 keeps tabs on collision with worms and weapons
