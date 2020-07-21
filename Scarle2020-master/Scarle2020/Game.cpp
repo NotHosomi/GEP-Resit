@@ -626,6 +626,7 @@ void Game::ReadInput()
     {
         ExitGame();
     }
+    m_GD->m_input.updateInputs(&m_GD->m_KBS_tracker);
 
  //  m_GD->m_MS = m_mouse->GetState();
 
@@ -834,6 +835,8 @@ void Game::MovementInput()
 	{
 		return;
 	}
+    // absolute garbage!
+#if 0
 	//pressed
 	if (m_GD->m_KBS_tracker.pressed.J)
 	{
@@ -876,6 +879,8 @@ void Game::MovementInput()
 	{
 		m_gameManager->currentWorm()->physicsComponent()->jump(m_GD->m_dt);
 	}
+#endif
+    m_gameManager->currentWorm->physicsComponent()->playerMove(&m_GD->m_input);
 }
 
 void Game::AttackMode()

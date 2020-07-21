@@ -1,4 +1,5 @@
 #pragma once
+#include "Keyboard.h"
 class InputManager
 {
 public:
@@ -10,15 +11,13 @@ public:
 		IN_DOWN = 8,
 		IN_JUMP = 16,
 		IN_FIRE = 32,
-		IN_NEXTWEP = 64,
-		IN_PREVWEP = 128,
-		IN_LEFT_ALT = 256,
-		IN_RIGHT_ALT = 512
+		IN_NEXT = 64,
+		IN_PREV = 128
 	};
-	void updateInputs();
+	void updateInputs(const DirectX::Keyboard::KeyboardStateTracker* keys);
 	void releaseKey(Inputs key);
 	void pressKey(Inputs key);
-	void checkKey(Inputs key);
+	bool checkKey(Inputs key);
 private:
 	int m_keylist = 0;
 };
