@@ -65,7 +65,7 @@ public:
 	bool getIsGrounded() { return m_grounded; }
 private:
 	const float MOVE_MODI = 50;
-	const float JUMP_FORCE = 1;
+	const float JUMP_FORCE = 10;
 	Vector2 m_pos = { 0, 0 };
 	Vector2 m_velocity = { 0, 0 };
 	float m_jumpPos = 0.0f;
