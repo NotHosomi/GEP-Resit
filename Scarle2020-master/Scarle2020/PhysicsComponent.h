@@ -7,6 +7,7 @@
 #include "SimpleMath.h"
 #include <string>
 #include "PhysicsData.h"
+#include "InputManager.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -63,7 +64,10 @@ public:
 
 	void setIsGrounded(bool _value) { m_grounded = _value; }
 	bool getIsGrounded() { return m_grounded; }
+
+	void playerMove(InputManager* inputs, float dt);
 private:
+	const float MV_ACCELERATION = 10;
 	const float MOVE_MODI = 50;
 	const float JUMP_FORCE = 10;
 	Vector2 m_pos = { 0, 0 };

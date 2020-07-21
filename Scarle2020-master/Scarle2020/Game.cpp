@@ -880,7 +880,7 @@ void Game::MovementInput()
 		m_gameManager->currentWorm()->physicsComponent()->jump(m_GD->m_dt);
 	}
 #endif
-    m_gameManager->currentWorm->physicsComponent()->playerMove(&m_GD->m_input);
+    m_gameManager->currentWorm->physicsComponent()->playerMove(&m_GD->m_input, m_GD->m_dt);
 }
 
 void Game::AttackMode()

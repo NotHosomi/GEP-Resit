@@ -183,5 +183,30 @@ void PhysicsComponent::addState(PhysicsStates _state)
 	m_states.push(_state);
 }
 
+void PhysicsComponent::playerMove(InputManager* inputs, float dt)
+{
+	if (!m_grounded)
+	{
+		return;
+	}
+	if (inputs->checkKey(InputManager::IN_JUMP))
+	{
+		m_velocity.x *= 2;
+		m_velocity.y = JUMP_FORCE;
+		m_grounded = false;
+	}
+	if (inputs->checkKey(InputManager::IN_LEFT) != inputs->checkKey(InputManager::IN_RIGHT))
+	{
+		if (inputs->checkKey(InputManager::IN_LEFT))
+		{
+			m_velocity.x -= MV_ACCELERATION / dt;
+		}
+		else
+		{
+			m_velocity.x += MV_ACCELERATION / dt;
+		}
+	}
+}
+
 
 
