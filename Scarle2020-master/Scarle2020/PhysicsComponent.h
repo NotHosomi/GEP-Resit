@@ -66,8 +66,10 @@ public:
 	bool getIsGrounded() { return m_grounded; }
 
 	void playerMove(InputManager* inputs, float dt);
+	void applyFriction(float dt);
 private:
 	const float MV_ACCELERATION = 10;
+	const float MV_FRICTION = 4;
 	const float MOVE_MODI = 50;
 	const float JUMP_FORCE = 10;
 	Vector2 m_pos = { 0, 0 };
