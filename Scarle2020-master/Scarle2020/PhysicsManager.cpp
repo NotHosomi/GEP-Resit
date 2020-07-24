@@ -60,7 +60,6 @@ void PhysicsManager::MaintainScene(list<GameObject2D*> objects, GameData* _GD)
 			} while (lastState != PhysicsStates::Idle);
 #endif
 			// Resit version
-			pComp->applyGravity(_GD->m_dt);
 			pComp->move(_GD->m_dt, obj->GetPos());
 			obj->SetPos(pComp->getPos());
 			// Hos Todo check grounded

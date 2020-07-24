@@ -68,6 +68,15 @@ void PhysicsComponent::normaliseVelocity()
 
 void PhysicsComponent::move(float _deltaTime, Vector2& pos)
 {
+	if (m_grounded)
+	{
+		applyFriction(_deltaTime);
+	}
+	else
+	{
+		applyGravity(_deltaTime);
+	}
+
 	float x = pos.x;
 	float y = pos.y;
 
@@ -77,7 +86,7 @@ void PhysicsComponent::move(float _deltaTime, Vector2& pos)
 	m_pos.x = x;
 	m_pos.y = y;
 
-	m_states.push(PhysicsStates::UpdatePositonData);
+	//m_states.push(PhysicsStates::UpdatePositonData);
 }
 
 void PhysicsComponent::move(float _deltaTime, Vector2& _pos, Vector2 _velocity)
@@ -210,6 +219,7 @@ void PhysicsComponent::playerMove(InputManager* inputs, float dt)
 
 void PhysicsComponent::applyFriction(float dt)
 {
+	if(m_grounded)
 	float speed = m_velocity.Distance;
 	float drop = speed * MV_FRICTION * dt;
 	float newspeed = speed - drop;
