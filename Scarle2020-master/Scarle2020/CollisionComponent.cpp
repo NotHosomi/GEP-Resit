@@ -115,6 +115,8 @@ void CollisionComponent::updatePixelPos(int _offset)
 	m_pixelsPosTop.clear();
 	m_pixelsPosLeft.clear();
 	m_pixelsPosRight.clear();
+	m_pixelsPosRightStep.clear();
+	m_pixelsPosLeftStep.clear();
 
 	int x1 = m_rect.left + _offset ;
 	int y1 = m_rect.top + _offset;
@@ -125,36 +127,42 @@ void CollisionComponent::updatePixelPos(int _offset)
 		m_pixelsPosTop.push_back(Vector2(i, y1));
 		m_pixelsPosBottom.push_back(Vector2(i, m_rect.bottom - _offset));
 	}
-	//right side/ right side
-	for (int i = y1; i < m_rect.bottom - _offset + 1; i++)
+	// right/left torso
+	for (int i = y1; i < m_rect.bottom - (_offset/50) + 1; i++)
 	{
 		m_pixelsPosLeft.push_back(Vector2(x1, i));
-		m_pixelsPosRight.push_back(Vector2(m_rect.right - _offset , i));
+		m_pixelsPosRight.push_back(Vector2(m_rect.right - _offset, i));
+	}
+	// right/left step space
+	for (int i = y1; i < m_rect.bottom - (_offset/2) + 1; i++)
+	{
+		m_pixelsPosLeftStep.push_back(Vector2(x1, i));
+		m_pixelsPosRightStep.push_back(Vector2(m_rect.right - _offset, i));
 	}
 }
 
 /*
 only map and unmap when terrain is exploded, not every frame
 */
-void CollisionComponent::terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD , bool(&OUT_sides)[4])
+void CollisionComponent::terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD , bool(&OUT_sides)[6])
 {
 	_renderTarget->Map(_d3dContext);
-	bool sides[4] = { false, false, false, false };
+	bool sides[6] = { false, false, false, false, false, false };
 	//collision happens here, get which side collisions happens on
-	bool isTop = hasPixelSideCollided(m_pixelsPosTop, _renderTarget, _d3dContext, _GD);
-	if (isTop)
+	if (hasPixelSideCollided(m_pixelsPosTop, _renderTarget, _d3dContext, _GD))
 		sides[0] = true;
-	bool isRight = hasPixelSideCollided(m_pixelsPosRight, _renderTarget, _d3dContext, _GD);
-	if (isRight)
+	if (hasPixelSideCollided(m_pixelsPosRight, _renderTarget, _d3dContext, _GD))
 		sides[1] = true;
-	bool isBottom = hasPixelSideCollided(m_pixelsPosBottom, _renderTarget, _d3dContext, _GD);
-	if (isBottom)
+	if (hasPixelSideCollided(m_pixelsPosBottom, _renderTarget, _d3dContext, _GD))
 		sides[2] = true;
-	bool isLeft = hasPixelSideCollided(m_pixelsPosLeft, _renderTarget, _d3dContext, _GD);
-	if (isLeft)
+	if (hasPixelSideCollided(m_pixelsPosLeft, _renderTarget, _d3dContext, _GD))
 		sides[3] = true;
+	if (hasPixelSideCollided(m_pixelsPosRightStep, _renderTarget, _d3dContext, _GD))
+		sides[4] = true;
+	if (hasPixelSideCollided(m_pixelsPosRightStep, _renderTarget, _d3dContext, _GD))
+		sides[5] = true;
 
-	for (size_t i = 0; i < 4; i++)
+	for (size_t i = 0; i < 6; i++)
 	{
 		OUT_sides[i] = sides[i];
 	}

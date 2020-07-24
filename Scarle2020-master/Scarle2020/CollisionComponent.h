@@ -27,7 +27,7 @@ public:
 	void isCircular(bool _value);
 
 	void updatePixelPos(int _offset);
-	void terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD, bool (&OUT_sides)[4]);
+	void terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD, bool (&OUT_sides)[6]);
 private:
 	bool hasPixelSideCollided(std::list<Vector2> _pixels, RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD);
 
@@ -43,5 +43,7 @@ private:
 	std::list<Vector2> m_pixelsPosLeft;
 	std::list<Vector2> m_pixelsPosTop;
 	std::list<Vector2> m_pixelsPosBottom;
+	std::list<Vector2> m_pixelsPosRightStep;
+	std::list<Vector2> m_pixelsPosLeftStep;
 };
 
