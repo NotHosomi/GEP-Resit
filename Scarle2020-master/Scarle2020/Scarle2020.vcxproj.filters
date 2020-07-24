@@ -248,6 +248,9 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="TeamManager.h" />
+    <ClInclude Include="InputManager.h">
+      <Filter>GameObjects\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -386,6 +389,9 @@
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="TeamManager.cpp" />
+    <ClCompile Include="InputManager.cpp">
+      <Filter>GameObjects\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">

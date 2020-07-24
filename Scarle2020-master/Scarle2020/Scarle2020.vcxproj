@@ -188,6 +188,7 @@
     <ClInclude Include="Helper.h" />
     <ClInclude Include="HomingMissile.h" />
     <ClInclude Include="ImageGO2D.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="Light.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="HomingMissile.cpp" />
     <ClCompile Include="ImageGO2D.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="Loop.cpp" />
     <ClCompile Include="Main.cpp" />
