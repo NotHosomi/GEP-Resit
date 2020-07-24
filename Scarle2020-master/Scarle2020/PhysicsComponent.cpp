@@ -89,13 +89,13 @@ void PhysicsComponent::move(float _deltaTime, Vector2& pos)
 	//m_states.push(PhysicsStates::UpdatePositonData);
 }
 
-void PhysicsComponent::move(float _deltaTime, Vector2& _pos, Vector2 _velocity)
+void PhysicsComponent::nudge(float _deltaTime, Vector2& _pos, Vector2 _velocity)
 {
 	float x = _pos.x;
 	float y = _pos.y;
 
-	x += _velocity.x * _deltaTime * MOVE_MODI;
-	y += _velocity.y * _deltaTime * MOVE_MODI;
+	x += _velocity.x;
+	y += _velocity.y;
 
 	m_pos.x = x;
 	m_pos.y = y;
