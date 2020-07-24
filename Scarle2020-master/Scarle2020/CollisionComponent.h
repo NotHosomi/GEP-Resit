@@ -28,7 +28,10 @@ public:
 
 	void updatePixelPos(int _offset);
 	void terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD, bool (&OUT_sides)[6]);
+
+	static constexpr int MV_STEPHEIGHT = 3;
 private:
+
 	bool hasPixelSideCollided(std::list<Vector2> _pixels, RenderTarget* _renderTarget, ID3D11DeviceContext* _d3dContext, GameData* _GD);
 
 	bool m_isDetectable = true;

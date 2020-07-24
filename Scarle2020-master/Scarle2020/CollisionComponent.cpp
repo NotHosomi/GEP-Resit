@@ -128,13 +128,14 @@ void CollisionComponent::updatePixelPos(int _offset)
 		m_pixelsPosBottom.push_back(Vector2(i, m_rect.bottom - _offset));
 	}
 	// right/left torso
-	for (int i = y1; i < m_rect.bottom - (_offset/50) + 1; i++)
+	for (int i = y1; i < m_rect.bottom - _offset + 1; i++)
 	{
 		m_pixelsPosLeft.push_back(Vector2(x1, i));
 		m_pixelsPosRight.push_back(Vector2(m_rect.right - _offset, i));
 	}
 	// right/left step space
-	for (int i = y1; i < m_rect.bottom - (_offset/2) + 1; i++)
+	int step_offset = _offset < MV_STEPHEIGHT ? 0 : _offset - MV_STEPHEIGHT;
+	for (int i = y1; i < m_rect.bottom - step_offset + 1; i++)
 	{
 		m_pixelsPosLeftStep.push_back(Vector2(x1, i));
 		m_pixelsPosRightStep.push_back(Vector2(m_rect.right - _offset, i));

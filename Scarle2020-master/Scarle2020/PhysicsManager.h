@@ -21,7 +21,6 @@ public:
 	Vector2 m_right = Vector2(0.0f, -0.01f);
 	Vector2 m_left = Vector2(0.0f, -0.01f);
 private:
-	const float GRAVITY = 0.1f;
 
 	bool test = false;
 
