@@ -219,8 +219,7 @@ void PhysicsComponent::playerMove(InputManager* inputs, float dt)
 
 void PhysicsComponent::applyFriction(float dt)
 {
-	if(m_grounded)
-	float speed = m_velocity.Distance;
+	float speed = m_velocity.Length();
 	float drop = speed * MV_FRICTION * dt;
 	float newspeed = speed - drop;
 	if (newspeed < 0)
