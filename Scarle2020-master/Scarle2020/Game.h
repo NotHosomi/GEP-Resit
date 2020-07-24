@@ -124,6 +124,7 @@ private:
 
 	//worms
 	void MovementInput();
+    void WeaponSwitching();
 	bool m_pressed[2] = { false, false }; //left , right
     int m_lastPressed = 0;
     //base line for 2D destrucable terrain

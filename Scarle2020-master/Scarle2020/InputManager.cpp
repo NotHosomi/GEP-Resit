@@ -54,3 +54,8 @@ bool InputManager::checkKey(Inputs key)
 {
 	return static_cast<bool>(m_keylist & key);
 }
+
+bool InputManager::any()
+{
+	return static_cast<bool>(m_keylist);
+}

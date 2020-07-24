@@ -18,6 +18,7 @@ public:
 	void releaseKey(Inputs key);
 	void pressKey(Inputs key);
 	bool checkKey(Inputs key);
+	bool any();
 private:
 	int m_keylist = 0;
 };

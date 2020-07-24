@@ -641,132 +641,107 @@ void Game::GamePlay()
     m_physicsManager->UpdatePhysicsEngine(m_terrain, m_d3dContext.Get(), m_GD, m_gameManager->currentLevel()->objects, m_d3dDevice.Get(),
         m_alphaRemove, m_missile, m_gameManager->currentWorm());
     OurWeapon.MaintainProjectiles(m_gameManager->currentLevel()->objects, m_GD);
-    //SIMON:: Really ought to be a switch here.
-	if (TurnState == TurnStates::PREROUND)
-	{
-		tmr_preround += m_GD->m_dt;
-		if (tmr_preround > tmr_charge_duration ||
-			m_GD->m_KBS_tracker.pressed.Q ||
-			m_GD->m_KBS_tracker.pressed.W ||
-			m_GD->m_KBS_tracker.pressed.E ||
-			m_GD->m_KBS_tracker.pressed.A ||
-			m_GD->m_KBS_tracker.pressed.S ||
-			m_GD->m_KBS_tracker.pressed.D) // Good enough for now
-		{
-			TurnState = TurnStates::ATTACKING;
+	
+    switch (TurnState)
+    {
+    case TurnStates::PREROUND:
+        tmr_preround += m_GD->m_dt;
+        if (tmr_preround > tmr_charge_duration ||
+            m_GD->m_input.any())
+        {
+            TurnState = TurnStates::ATTACKING;
+        }
+        break;
+    case TurnStates::ATTACKING:
+#pragma region ATK
+        m_arrow->spriteComp()->setVisibility(true);
+        m_arrow->SetOrigin(Vector2(m_gameManager->currentWeapon()->GetPos().x + m_gameManager->currentWeapon()->weaponComponent()->getWidth() / 2, m_gameManager->currentWeapon()->GetPos().y + m_gameManager->currentWeapon()->weaponComponent()->getHeight() / 2));
+        //m_mouseTarget->spriteComp()->setVisibility(true);
+        if (ControlState == ControlStates::FREE)
+        {
+            if (!m_gameManager->currentWorm())
+                return;
+            int x = m_gameManager->currentWorm()->GetPos().x + (m_gameManager->currentWorm()->getWidth() - m_gameManager->currentWeapon()->weaponComponent()->getWidth() * m_arrow->GetScale().x);
+            int y = m_gameManager->currentWorm()->GetPos().y + (m_gameManager->currentWorm()->getHeight() / 1.2 - m_gameManager->currentWeapon()->weaponComponent()->getHeight() * m_arrow->GetScale().y);
+            m_arrow->SetPos(Vector2(x, y));
 
-		}
-	}
-	else if (TurnState == TurnStates::ATTACKING)
-	{
-		m_arrow->spriteComp()->setVisibility(true);
-		m_arrow->SetOrigin(Vector2(m_gameManager->currentWeapon()->GetPos().x + m_gameManager->currentWeapon()->weaponComponent()->getWidth() / 2, m_gameManager->currentWeapon()->GetPos().y + m_gameManager->currentWeapon()->weaponComponent()->getHeight() / 2));
-		//m_mouseTarget->spriteComp()->setVisibility(true);
-		if (ControlState == ControlStates::FREE)
-		{
-			if (!m_gameManager->currentWorm())
-				return;
-			int x = m_gameManager->currentWorm()->GetPos().x + (m_gameManager->currentWorm()->getWidth() - m_gameManager->currentWeapon()->weaponComponent()->getWidth() * m_arrow->GetScale().x);
-			int y = m_gameManager->currentWorm()->GetPos().y + (m_gameManager->currentWorm()->getHeight() / 1.2 - m_gameManager->currentWeapon()->weaponComponent()->getHeight() * m_arrow->GetScale().y);
-			m_arrow->SetPos(Vector2(x, y));
+            // Fetch player movement
+            MovementInput();
 
-			// Fetch player movement
-			MovementInput();
+            // SwitchWeapons
+            WeaponSwitching();
 
-			// SwitchWeapons
-			if (m_GD->m_KBS_tracker.pressed.E)
-			{
-				m_gameManager->currentWeapon()->weaponComponent()->setAimAngle(90);
-				m_gameManager->nextWeapon();
-				float w = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getWidth();
-				float h = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getHeight();
-				m_arrow->copySpriteComp(m_gameManager->currentWeapon()->weaponComponent()->spriteComp());
-				m_arrow->SetScale(Vector2(w, h));
-			}
-			if (m_GD->m_KBS_tracker.pressed.Q)
-			{
-				//back a 
-				m_gameManager->currentWeapon()->weaponComponent()->setAimAngle(90);
-				m_gameManager->previousWeapon();
-				float w = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getWidth();
-				float h = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getHeight();
-				m_arrow->copySpriteComp(m_gameManager->currentWeapon()->weaponComponent()->spriteComp());
-				m_arrow->SetScale(Vector2(w, h));
-			}
+            if (m_gameManager->currentWorm()->physicsComponent())
+            {
+                // Not moving, thus aim
+                if (m_gameManager->currentWorm()->physicsComponent()->getVelocity() == Vector2(0, 0))
+                {
+                    AttackMode();
+                    if (m_gameManager->currentWeapon()->weaponComponent()->getAttackType() == WeaponData::W_HOMINGMISSILE)
+                    {
+                        if (m_mouse->GetState().leftButton)
+                        {
+                            m_gameManager->currentWeapon()->weaponComponent()->setTarget(m_mouse->GetState().x, m_mouse->GetState().y);
+                            m_gameManager->currentWeapon()->weaponComponent()->setTargetSet(true);
+                        }
+                        else if (!m_gameManager->currentWeapon()->weaponComponent()->getTargetSet())
+                        {
+                            m_mouseTarget->SetPos(Vector2(m_mouse->GetState().x, m_mouse->GetState().y));
+                            m_mouseTarget->spriteComp()->setVisibility(true);
+                        }
+                    }
+                    else
+                    {
+                        m_mouseTarget->spriteComp()->setVisibility(false);
+                    }
+                }
+            }
+        }
+        else if (ControlState == ControlStates::CHARGING)
+        {
+            tmr_charge += m_GD->m_dt;
+            if (m_GD->m_KBS_tracker.released.F)
+            {
+                if (m_gameManager->currentWeapon()->weaponComponent()->getAimType() == WeaponData::W_HOMINGMISSILE && !m_gameManager->currentWeapon()->weaponComponent()->getTargetSet())
+                {
+                    return;
+                }
+                m_gameManager->currentWeapon()->weaponComponent()->setCharge(tmr_charge / tmr_charge_duration);
+                OurWeapon.fire(m_d3dDevice.Get(), m_gameManager->currentLevel()->objects, m_arrow->GetPos(), m_gameManager->currentWeapon());
+                OurWeapon.incrementShotsFired();
+                tmr_charge = 0;
+                m_fired = true;
+                int size = 1;
 
-			if (m_gameManager->currentWorm()->physicsComponent())
-			{
-				// Not moving, thus aim
-				if (m_gameManager->currentWorm()->physicsComponent()->getVelocity() == Vector2(0, 0))
-				{
-					AttackMode();
-					if (m_gameManager->currentWeapon()->weaponComponent()->getAttackType() == WeaponData::W_HOMINGMISSILE)
-					{
-						if (m_mouse->GetState().leftButton)
-						{
-							m_gameManager->currentWeapon()->weaponComponent()->setTarget(m_mouse->GetState().x, m_mouse->GetState().y);
-							m_gameManager->currentWeapon()->weaponComponent()->setTargetSet(true);
-						}
-						else if (!m_gameManager->currentWeapon()->weaponComponent()->getTargetSet())
-						{
-							m_mouseTarget->SetPos(Vector2(m_mouse->GetState().x, m_mouse->GetState().y));
-							m_mouseTarget->spriteComp()->setVisibility(true);
-						}
-					}
-					else
-					{
-						m_mouseTarget->spriteComp()->setVisibility(false);
-					}
-				}
-			}
-		}
-		else if (ControlState == ControlStates::CHARGING)
-		{
-			tmr_charge += m_GD->m_dt;
-			if (m_GD->m_KBS_tracker.released.F)
-			{
-				if (m_gameManager->currentWeapon()->weaponComponent()->getAimType() == WeaponData::W_HOMINGMISSILE && !m_gameManager->currentWeapon()->weaponComponent()->getTargetSet())
-				{
-					return;
-				}
-				m_gameManager->currentWeapon()->weaponComponent()->setCharge(tmr_charge / tmr_charge_duration);
-				OurWeapon.fire(m_d3dDevice.Get(), m_gameManager->currentLevel()->objects, m_arrow->GetPos(), m_gameManager->currentWeapon());
-				OurWeapon.incrementShotsFired();
-				tmr_charge = 0;
-				m_fired = true;
-				int size = 1;
+                m_currentWeapon = m_gameManager->currentLevel()->objects.back();
+            }
+            else if (m_fired && !m_currentWeapon->spriteComp()->getVisibility() && OurWeapon.getShotsFired() == m_currentWeapon->weaponComponent()->ammoCount())
+            {
+                TurnState = TurnStates::FLEEING;
+                OurWeapon.resetShotsFired();
+                m_fired = false;
+            }
+        }
+#pragma endregion
+        break;
+    case TurnStates::FLEEING:
+        m_arrow->spriteComp()->setVisibility(false);
+        MovementInput();
+        tmr_flee += m_GD->m_dt;
+        if (tmr_flee >= tmr_flee_duration)
+        {
+            tmr_flee = 0;
+            TurnState = TurnStates::POSTROUND;
+        }
+        break;
+    case TurnStates::POSTROUND:
+#pragma region POST
 
-				m_currentWeapon = m_gameManager->currentLevel()->objects.back();
-			}
-			else if (m_fired && !m_currentWeapon->spriteComp()->getVisibility() && OurWeapon.getShotsFired() == m_currentWeapon->weaponComponent()->ammoCount())
-			{
-				TurnState = TurnStates::FLEEING;
-				OurWeapon.resetShotsFired();
-				m_fired = false;
-			}
-		}
-	}
-	else if (TurnState == TurnStates::FLEEING)
-	{
-		m_arrow->spriteComp()->setVisibility(false);
-		MovementInput();
-		// increment flee timer
-		// if (timer > 5s OR recieve damage)
-		// { TurnState = TurnStates::POSTROUND } 
-		tmr_flee += m_GD->m_dt;
-		if (tmr_flee >= tmr_flee_duration)
-		{
-			tmr_flee = 0;
-			TurnState = TurnStates::POSTROUND;
-		}
-	}
-	else if (TurnState == TurnStates::POSTROUND)
-	{
-		// Camera track moving objects
-		// Apply damage taken to worms, and trigger kill explosions
-		// if only 1 team has living worms
-		// { end game }
-		// if all worms damageTaken == 0
+        // Camera track moving objects
+        // Apply damage taken to worms, and trigger kill explosions
+        // if only 1 team has living worms
+        // { end game }
+        // if all worms damageTaken == 0
         list<GameObject2D*> playersAlive;
         for (auto& player : m_gameManager->currentLevel()->objects)
         {
@@ -780,7 +755,7 @@ void Game::GamePlay()
             m_gameManager->loadLevel(m_gameManager->lastLevel()->id);
             m_GD->m_GS = GS_MAIN_MENU;
             m_winColour = playersAlive.front()->playerComponent()->getTeam();
-            switch(m_winColour)
+            switch (m_winColour)
             {
             case Teams::BLUE:
                 m_winColourString = "BLUE";
@@ -803,9 +778,13 @@ void Game::GamePlay()
             NewTurn();
             playersAlive.clear();
         }
-	}
-	if (m_mouse->GetState().leftButton)
+#pragma endregion
+        break;
+    }
+    
+    if (m_mouse->GetState().leftButton)
 	{
+        // Not sure what this is for
 		m_gameManager->updateScene(Vector2(m_mouse->GetState().x, m_mouse->GetState().y), m_GD, m_d3dDevice.Get(), m_alphaRemove);
 	}
 
@@ -824,7 +803,6 @@ void Game::GamePlay()
 			//kill worm
 		}
 	}
-	//elapsedTime;
 }
 
 
@@ -881,6 +859,29 @@ void Game::MovementInput()
 	}
 #endif
     m_gameManager->currentWorm->physicsComponent()->playerMove(&m_GD->m_input, m_GD->m_dt);
+}
+
+void Game::WeaponSwitching()
+{
+    if (m_GD->m_input.checkKey(InputManager::IN_NEXT))
+    {
+        m_gameManager->currentWeapon()->weaponComponent()->setAimAngle(90);
+        m_gameManager->nextWeapon();
+        float w = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getWidth();
+        float h = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getHeight();
+        m_arrow->copySpriteComp(m_gameManager->currentWeapon()->weaponComponent()->spriteComp());
+        m_arrow->SetScale(Vector2(w, h));
+    }
+    if (m_GD->m_input.checkKey(InputManager::IN_PREV))
+    {
+        //back a 
+        m_gameManager->currentWeapon()->weaponComponent()->setAimAngle(90);
+        m_gameManager->previousWeapon();
+        float w = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getWidth();
+        float h = 30.0f / m_gameManager->currentWeapon()->weaponComponent()->getHeight();
+        m_arrow->copySpriteComp(m_gameManager->currentWeapon()->weaponComponent()->spriteComp());
+        m_arrow->SetScale(Vector2(w, h));
+    }
 }
 
 void Game::AttackMode()
