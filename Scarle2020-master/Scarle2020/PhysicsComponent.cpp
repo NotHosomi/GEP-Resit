@@ -70,12 +70,18 @@ void PhysicsComponent::move(float _deltaTime, Vector2& pos)
 {
 	if (m_grounded)
 	{
+		setVelY(-0.1); // setting to 0 makes the worms disappear, because ?????
 		applyFriction(_deltaTime);
 	}
-	else
+	applyGravity(_deltaTime);
+
+	// Truncate velocity if travelling to fast
+	if (m_velocity.Length() > MV_MAXSPEED)
 	{
-		applyGravity(_deltaTime);
+		float drop = MV_MAXSPEED / m_velocity.Length();
+		m_velocity *= drop;
 	}
+
 
 	float x = pos.x;
 	float y = pos.y;
@@ -89,14 +95,14 @@ void PhysicsComponent::move(float _deltaTime, Vector2& pos)
 	//m_states.push(PhysicsStates::UpdatePositonData);
 }
 
-void PhysicsComponent::move(float _deltaTime, Vector2& _pos, Vector2 _velocity)
+void PhysicsComponent::nudge(float _deltaTime, Vector2& _pos, Vector2 _velocity)
 {
 	float x = _pos.x;
 	float y = _pos.y;
-
+	
 	x += _velocity.x * _deltaTime * MOVE_MODI;
 	y += _velocity.y * _deltaTime * MOVE_MODI;
-
+	
 	m_pos.x = x;
 	m_pos.y = y;
 	m_states.push(PhysicsStates::UpdatePositonData);
@@ -162,7 +168,7 @@ void PhysicsComponent::applyGravity(float _deltaTime)
 	}
 	else
 	{
-		m_velocity.y = 0;
+		// m_velocity.y = 0;
 	}
 }
 
@@ -220,6 +226,10 @@ void PhysicsComponent::playerMove(InputManager* inputs, float dt)
 void PhysicsComponent::applyFriction(float dt)
 {
 	float speed = m_velocity.Length();
+	//if (speed = 0)
+	//{
+	//	return;
+	//}
 	float drop = speed * MV_FRICTION * dt;
 	float newspeed = speed - drop;
 	if (newspeed < 0)

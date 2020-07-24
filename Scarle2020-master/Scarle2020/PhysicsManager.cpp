@@ -172,47 +172,61 @@ void PhysicsManager::terrainCollision(RenderTarget* _renderTarget, ID3D11DeviceC
 		else
 			cComp->updatePixelPos(0);
 
+		// calculate collisions
 		bool isCollision[4];
 		cComp->terrainCollision(_renderTarget, _d3dContext, _GD, isCollision); // 0: top, 1: right, 2: bottom, 3: left
-		if (isCollision[0] && !(*itr)->weaponComponent())
+
+		// if a weapon projectile
+		if ((*itr)->weaponComponent())
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				if (isCollision[0])
+				{
+					if (m_DC == nullptr)
+					{
+						if (pComp->getBounce())
+						{
+							pComp->bounce(_GD->m_dt, (*itr)->GetPos(), true, true);
+							continue;
+						}
+						//std::cout << "destroy missile";
+						Vector2 spawnPos = Vector2((*itr)->GetPos().x + (*itr)->getWidth() / 2, (*itr)->GetPos().y + (*itr)->getHeight());
+						m_DC = new DestructionCircle("CircleHitAlpha_1", _device, (*itr)->weaponComponent()->explosionScale(), spawnPos, objects, (*itr));
+						_alphaCircle.push_back(m_DC);
+						if ((*itr)->spriteComp())
+							(*itr)->spriteComp()->setVisibility(false);
+						m_DC = nullptr;
+						//delete(obj);
+						//objects.erase(itr);
+					}
+					return;
+				}
+			}
+		}
+
+		if (isCollision[0])
 		{
 			//only when digging
 			//pComp->move(_GD->m_dt, (*itr)->GetPos(), m_down);
 		}
-		if (isCollision[1] && pComp->getVelX() != 0 && !(*itr)->weaponComponent())
+		if (isCollision[1] && pComp->getVelX() != 0)
 		{
-			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_left);
-			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_up);
+			pComp->nudge(_GD->m_dt, (*itr)->GetPos(), m_left);
+			pComp->nudge(_GD->m_dt, (*itr)->GetPos(), m_up);
 		}
-		if (isCollision[3] && pComp->getVelX() != 0 && !(*itr)->weaponComponent())
+		if (isCollision[3] && pComp->getVelX() != 0)
 		{
-			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_right);
-			pComp->move(_GD->m_dt, (*itr)->GetPos(), m_up);
+			pComp->nudge(_GD->m_dt, (*itr)->GetPos(), m_right);
+			pComp->nudge(_GD->m_dt, (*itr)->GetPos(), m_up);
 		}
-		if (!isCollision[2])
-		{
-			pComp->addState(PhysicsStates::UseGravity);
-		}
-		else if ((*itr)->weaponComponent() == nullptr)
+		if (isCollision[2])
 		{
 			pComp->setIsGrounded(true);
 		}
-		else if(m_DC == nullptr)
+		else
 		{
-			if (pComp->getBounce())
-			{
-				pComp->bounce(_GD->m_dt, (*itr)->GetPos(), true, true);
-				continue;
-			}
-			//std::cout << "destroy missile";
-			Vector2 spawnPos = Vector2((*itr)->GetPos().x + (*itr)->getWidth() /2, (*itr)->GetPos().y + (*itr)->getHeight());
-			m_DC = new DestructionCircle("CircleHitAlpha_1", _device, (*itr)->weaponComponent()->explosionScale(), spawnPos,  objects, (*itr));
-			_alphaCircle.push_back(m_DC);
-			if((*itr)->spriteComp())
-				(*itr)->spriteComp()->setVisibility(false);
-			m_DC = nullptr;
-			//delete(obj);
-			//objects.erase(itr);
+			pComp->setIsGrounded(false);
 		}
 	}
 }

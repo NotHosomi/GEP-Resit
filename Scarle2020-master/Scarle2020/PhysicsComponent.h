@@ -32,7 +32,7 @@ public:
 	void normaliseVelocity();
 
 	void move(float _deltaTime, Vector2& pos);
-	void move(float _deltaTime, Vector2& _pos, Vector2 _velocity);
+	void nudge(float _deltaTime, Vector2& _pos, Vector2 _velocity);
 	void moveToTarget(float _deltaTime, Vector2& pos, Vector2& _targetPos);
 	void jump(float _deltaTime);
 	void rotate(float _rotation, float _pi, float _deltaTime);
@@ -68,7 +68,8 @@ public:
 	void playerMove(InputManager* inputs, float dt);
 	void applyFriction(float dt);
 private:
-	const float MV_ACCELERATION = 10;
+	const float MV_ACCELERATION = 1;
+	const float MV_MAXSPEED = 1;
 	const float MV_FRICTION = 4;
 	const float MOVE_MODI = 50;
 	const float JUMP_FORCE = 10;
