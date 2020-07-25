@@ -30,7 +30,7 @@ void Tile::kill()
 	alive = false;
 }
 
-Vector2 Tile::getCentre()
+Vector2 Tile::getCentre() const
 {
 	// TODO: Convert Tile to child of ImageGO2D
 	Vector2 pos = m_pos;
@@ -39,7 +39,7 @@ Vector2 Tile::getCentre()
 	return pos;
 }
 
-bool Tile::isAlive()
+bool Tile::isAlive() const
 {
 	return alive;
 }
