@@ -210,8 +210,8 @@ void Game::Render()
     VBGO::UpdateConstantBuffer(m_DD);
 
     // Draw sprite batch stuff 
-    m_World->draw(m_DD2D);
     m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+    m_World->draw(m_DD2D);
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Draw(m_DD2D);
@@ -223,6 +223,8 @@ void Game::Render()
 
     Present();
 }
+
+#pragma region WindowHandlingStuff
 
 // Helper method to clear the back buffers.
 void Game::Clear()
@@ -294,8 +296,8 @@ void Game::OnWindowSizeChanged(int _width, int _height)
 void Game::GetDefaultSize(int& _width, int& _height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    _width = 800;
-    _height = 600;
+    _width = 1280;
+    _height = 720;
 }
 
 // These are the resources that depend on the device.
@@ -475,6 +477,8 @@ void Game::OnDeviceLost()
 
     CreateResources();
 }
+
+#pragma endregion
 
 void Game::ReadInput()
 {

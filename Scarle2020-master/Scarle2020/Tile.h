@@ -14,7 +14,7 @@ public:
 	[[nodiscard]] Vector2 getCentre();
 	[[nodiscard]] bool isAlive();
 
-	static constexpr float TILE_DIMS = 30;
+	static constexpr float TILE_DIMS = 16;
 private:
 	bool alive = true;
 };

@@ -17,7 +17,7 @@ Grid::Grid(ID3D11Device* _GD)
 			tiles.back().emplace_back(_GD, Vector2(x, y));
 			tiles.back().back().kill();
 		}
-		for (int y = 0; y < altitude; ++y)
+		for (int y = altitude; y < GRID_HEIGHT; ++y)
 		{
 			tiles.back().emplace_back(_GD, Vector2(x, y));
 		}
@@ -26,14 +26,17 @@ Grid::Grid(ID3D11Device* _GD)
 
 int Grid::generateAltitude(int x)
 {
+#if 0
 	// generate altitude using sine wave
-	// int altitude = 2 * sin(0.4 * i);
-	// altitude -= 15;
-
+	float y = 2 * sin(0.4 * x) + 15;
+	return floor(y);
+#else
 	// generate altitude using a quartic polynomial
 	// i.e. two peaks with a valley
-	float f = 0.5 * x - 10;
-	return -0.01 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 10;
+	float f = 0.31 * x - 13;
+	float y = 0.01 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 20;
+	return floor(y);
+#endif
 }
 
 void Grid::draw(DrawData2D* _DD)
