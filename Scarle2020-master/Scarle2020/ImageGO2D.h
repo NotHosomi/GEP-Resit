@@ -13,6 +13,8 @@ class ImageGO2D :public GameObject2D
 {
 public:
 	ImageGO2D(string _fileName, ID3D11Device* _GD);
+	ImageGO2D(ImageGO2D& other) = delete;
+	ImageGO2D(ImageGO2D&& other) noexcept; // add user-defined move constructor to prevent emplace_back() deleting the original pointer
 	virtual ~ImageGO2D();
 
 	virtual void Tick(GameData* _GD);
