@@ -33,8 +33,8 @@ int Grid::generateAltitude(int x)
 #else
 	// generate altitude using a quartic polynomial
 	// i.e. two peaks with a valley
-	float f = 0.33 * x - 13;
-	float y = 0.006 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 20;
+	float f = 0.31 * x - 13;
+	float y = 0.01 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 20;
 	return floor(y);
 #endif
 }
