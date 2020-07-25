@@ -11,9 +11,10 @@ public:
 
 	Tile* getTile(float x, float y);
 	Tile* getTile(const Vector2& grid_coords);
-	Vector2 findGridCoords(Vector2 screen_coords);
-	static Vector2 findWorldCoords(const Vector2& tile_coords);
-	Vector2 findGridCoords(const Vector2& world_coords);
+	Tile* findTile(const Vector2& world_coords);
+	Vector2 findGridCoords(Vector2 world_coords);
+	static Vector2 findWorldCoords(const Vector2& grid_coords);
+	Vector2 convertToGridCoords(const Vector2& world_coords);
 
 	void draw(DrawData2D* _DD);
 

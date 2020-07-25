@@ -64,25 +64,31 @@ Tile* Grid::getTile(const Vector2& grid_coords)
 	return &tiles[x_coord][x_coord];
 }
 
-Vector2 Grid::findGridCoords(Vector2 screen_coords)
+Tile* Grid::findTile(const Vector2& world_coords)
+{
+	Vector2 grid_coords = findGridCoords(world_coords);
+	return getTile(grid_coords);
+}
+
+Vector2 Grid::findGridCoords(Vector2 world_coords)
 {
 	Vector2 grid_coords;
-	grid_coords.x = screen_coords.x / Tile::TILE_DIMS;
-	grid_coords.y = screen_coords.y / Tile::TILE_DIMS;
+	grid_coords.x = world_coords.x / Tile::TILE_DIMS;
+	grid_coords.y = world_coords.y / Tile::TILE_DIMS;
 	grid_coords.x = floor(grid_coords.x);
 	grid_coords.y = floor(grid_coords.y);
 	return grid_coords;
 }
 
-Vector2 Grid::findWorldCoords(const Vector2& tile_coords)
+Vector2 Grid::findWorldCoords(const Vector2& grid_coords)
 {
 	Vector2 world_coords;
-	world_coords.x = tile_coords.x * Tile::TILE_DIMS;
-	world_coords.y = tile_coords.y * Tile::TILE_DIMS;
+	world_coords.x = grid_coords.x * Tile::TILE_DIMS;
+	world_coords.y = grid_coords.y * Tile::TILE_DIMS;
 	return world_coords;
 }
 
-Vector2 Grid::findGridCoords(const Vector2& world_coords)
+Vector2 Grid::convertToGridCoords(const Vector2& world_coords)
 {
 	Vector2 out = world_coords;
 	out *= (1 / Tile::TILE_DIMS);
