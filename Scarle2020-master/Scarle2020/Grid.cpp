@@ -10,8 +10,8 @@ Grid::Grid(ID3D11Device* _GD)
 		// int altitude = 2 * sin(0.4 * i);
 		// altitude -= 15;
 		
-		// generate altitude using a polynomial
-		// This one generates two peaks with a valley
+		// generate altitude using a quartic polynomial
+		// i.e. two peaks with a valley
 		float f = 0.5 * i - 10;
 		int altitude = -0.01*(f+3.2)*(f+8.5)*(f-7.2)*(f-2.1) + 10;
 		// spawn tiles

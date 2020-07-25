@@ -110,26 +110,17 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD->m_GS = GS_PLAY_MAIN_CAM;
 
     //example basic 2D stuff
-    ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
-    logo->SetPos(200.0f * Vector2::One);
-    m_GameObjects2D.push_back(logo);
+    // ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
+    // logo->SetPos(200.0f * Vector2::One);
+    // m_GameObjects2D.push_back(logo);
+    // 
+    // TextGO2D* text = new TextGO2D("Test Text");
+    // text->SetPos(Vector2(100, 10));
+    // text->SetColour(Color((float*)&Colors::Yellow));
+    // m_GameObjects2D.push_back(text);
 
-    TextGO2D* text = new TextGO2D("Test Text");
-    text->SetPos(Vector2(100, 10));
-    text->SetColour(Color((float*)&Colors::Yellow));
-    m_GameObjects2D.push_back(text);
-
-
-    // TODO: Change the timer settings if you want something other than the default variable timestep mode.
-    // e.g. for 60 FPS fixed timestep update logic, call:
-    /*
-    m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 60);
-    */
-
-    //create RenderTarget for Terrain
-    //TODO: What size do you REALLY need for this?
-    m_terrain = new RenderTarget(m_d3dDevice.Get(), 200, 200);
+    // Generate terrain
+    m_World = new Grid(m_d3dDevice.Get());
 }
 
 // Executes the basic game loop.
@@ -218,36 +209,8 @@ void Game::Render()
     //update the constant buffer for the rendering of VBGOs
     VBGO::UpdateConstantBuffer(m_DD);
 
-    //Draw 3D Game Obejects
-    for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
-    {
-        (*it)->Draw(m_DD);
-    }
-/*
-    //Code potentially for drawing into the Terrain RenderTarget
-    //Draw stuff to the render texture
-    m_terrain->Begin(m_d3dContext.Get());
-    m_terrain->ClearRenderTarget(m_d3dContext.Get(), 0.f, 0.f, 0.f, 0.f);
-    m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-        //draw background stuff to begin with (probably only need to do this at the start of a level
-    m_DD2D->m_Sprites->End();
-    m_terrain->End(m_d3dContext.Get());
-
-    //Code potentially for digging from the Terrain
-    //Destruction of the terrain
-    m_terrain->Begin(m_d3dContext.Get());
-    m_d3dContext->OMSetBlendState(m_terrain->GetDigBlend(), 0, 0xffffff);
-    m_DD2D->m_Sprites->Begin(DirectX::SpriteSortMode_Deferred, m_terrain->GetDigBlend());
-        //Draw Destruction here
-    m_DD2D->m_Sprites->End();
-    m_terrain->End(m_d3dContext.Get());
-
-    //draw the terrain at the back
-    m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-    m_DD2D->m_Sprites->Draw(m_terrain->GetShaderResourceView(), XMFLOAT2(0.0f, 0.0f));
-    m_DD2D->m_Sprites->End();
-*/
     // Draw sprite batch stuff 
+    m_World->draw(m_DD2D);
     m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {

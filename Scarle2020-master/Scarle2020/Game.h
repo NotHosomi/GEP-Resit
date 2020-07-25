@@ -11,6 +11,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Audio.h"
+#include "Grid.h"
 
 using std::list;
 
@@ -113,6 +114,6 @@ private:
     std::unique_ptr<DirectX::AudioEngine> m_audioEngine;
     list<Sound*>m_Sounds;
 
-    //base line for 2D destrucable terrain
-    RenderTarget* m_terrain = NULL;
+    // Additional members
+    Grid* m_World = nullptr;
 };
