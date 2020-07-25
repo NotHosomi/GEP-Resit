@@ -9,6 +9,7 @@ public:
 	void draw(DrawData2D* _DD);
 
 	void kill();
+	Vector2 getCentre();
 
 	static constexpr float TILE_DIMS = 30;
 private:

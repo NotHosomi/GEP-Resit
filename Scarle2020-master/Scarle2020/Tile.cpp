@@ -19,3 +19,12 @@ void Tile::kill()
 {
 	alive = false;
 }
+
+Vector2 Tile::getCentre()
+{
+	// TODO: Convert Tile to child of ImageGO2D
+	Vector2 pos = m_pos;
+	pos.x += TILE_DIMS / 2;
+	pos.y += TILE_DIMS / 2;
+	return pos;
+}

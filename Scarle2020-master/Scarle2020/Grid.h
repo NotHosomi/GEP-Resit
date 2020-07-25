@@ -8,8 +8,11 @@ public:
 	Grid(ID3D11Device* _GD);
 	~Grid() = default;
 
-	Tile* getTile(int x, int y);
-	Tile* getTile(Vector2 pos);
+	Tile* getTile(float x, float y);
+	Tile* getTile(const Vector2& grid_coords);
+	Vector2 findGridCoords(Vector2 screen_coords);
+	static Vector2 findWorldCoords(const Vector2& tile_coords);
+	Vector2 findGridCoords(const Vector2& world_coords);
 
 	void draw(DrawData2D* _DD);
 
