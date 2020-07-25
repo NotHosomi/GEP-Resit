@@ -98,59 +98,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_TPScam = new TPSCamera(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 10.0f, 50.0f));
     m_GameObjects.push_back(m_TPScam);
 
-    //example basic 3D stuff
-    //Terrain* terrain = new Terrain("table", m_d3dDevice.Get(), m_fxFactory, Vector3(100.0f, 0.0f, 100.0f), 0.0f, 0.0f, 0.0f, 0.25f * Vector3::One);
-    //m_GameObjects.push_back(terrain);
-
-    //FileVBGO* terrainBox = new FileVBGO("terrainTex", m_d3dDevice.Get());
-    //m_GameObjects.push_back(terrainBox);
-
-    /*FileVBGO* Box = new FileVBGO("cube", m_d3dDevice.Get());
-    m_GameObjects.push_back(Box);
-    Box->SetPos(Vector3(0.0f, 0.0f, -100.0f));
-    Box->SetPitch(XM_PIDIV4);
-    Box->SetScale(20.0f);
-
-    //L-system like tree
-    m_GameObjects.push_back(new Tree(4, 4, .6f, 10.0f * Vector3::Up, XM_PI / 6.0f, "JEMINA vase -up", m_d3dDevice.Get(), m_fxFactory));
-
-    VBCube* cube = new VBCube();
-    cube->init(11, m_d3dDevice.Get());
-    cube->SetPos(Vector3(100.0f, 0.0f, 0.0f));
-    cube->SetScale(4.0f);
-    m_GameObjects.push_back(cube);
-
-    VBSpike* spikes = new VBSpike();
-    spikes->init(11, m_d3dDevice.Get());
-    spikes->SetPos(Vector3(0.0f, 0.0f, 100.0f));
-    spikes->SetScale(4.0f);
-    m_GameObjects.push_back(spikes);
-
-    VBSpiral* spiral = new VBSpiral();
-    spiral->init(11, m_d3dDevice.Get());
-    spiral->SetPos(Vector3(-100.0f, 0.0f, 0.0f));
-    spiral->SetScale(4.0f);
-    m_GameObjects.push_back(spiral);
-
-    VBPillow* pillow = new VBPillow();
-    pillow->init(11, m_d3dDevice.Get());
-    pillow->SetPos(Vector3(-100.0f, 0.0f, -100.0f));
-    pillow->SetScale(4.0f);
-    m_GameObjects.push_back(pillow);
-
-    VBSnail* snail = new VBSnail(m_d3dDevice.Get(), "shell", 150, 0.98f, 0.09f * XM_PI, 0.4f, Color(1.0f, 0.0f, 0.0f, 1.0f), Color(0.0f, 0.0f, 1.0f, 1.0f));
-    snail->SetPos(Vector3(-100.0f, 0.0f, 100.0f));
-    snail->SetScale(2.0f);
-    m_GameObjects.push_back(snail);
-
-    //Marching Cubes
-    VBMarchCubes* VBMC = new VBMarchCubes();
-    VBMC->init(Vector3(-8.0f, -8.0f, -17.0f), Vector3(8.0f, 8.0f, 23.0f), 60.0f * Vector3::One, 0.01, m_d3dDevice.Get());
-    VBMC->SetPos(Vector3(100, 0, -100));
-    VBMC->SetPitch(-XM_PIDIV2);
-    VBMC->SetScale(Vector3(3, 3, 1.5));
-    m_GameObjects.push_back(VBMC);
-    */
     //create DrawData struct and populate its pointers
     m_DD = new DrawData;
     m_DD->m_pd3dImmediateContext = nullptr;
@@ -163,34 +110,17 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD->m_GS = GS_PLAY_MAIN_CAM;
 
     //example basic 2D stuff
-    ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
-    logo->SetPos(200.0f * Vector2::One);
-    m_GameObjects2D.push_back(logo);
+    // ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
+    // logo->SetPos(200.0f * Vector2::One);
+    // m_GameObjects2D.push_back(logo);
+    // 
+    // TextGO2D* text = new TextGO2D("Test Text");
+    // text->SetPos(Vector2(100, 10));
+    // text->SetColour(Color((float*)&Colors::Yellow));
+    // m_GameObjects2D.push_back(text);
 
-    TextGO2D* text = new TextGO2D("Test Text");
-    text->SetPos(Vector2(100, 10));
-    text->SetColour(Color((float*)&Colors::Yellow));
-    m_GameObjects2D.push_back(text);
-
-    //Test Sounds
-    Loop* loop = new Loop(m_audioEngine.get(), "NightAmbienceSimple_02");
-    loop->SetVolume(0.1f);
-    loop->Play();
-    m_Sounds.push_back(loop);
-
-    TestSound* TS = new TestSound(m_audioEngine.get(), "Explo1");
-    m_Sounds.push_back(TS);
-
-    // TODO: Change the timer settings if you want something other than the default variable timestep mode.
-    // e.g. for 60 FPS fixed timestep update logic, call:
-    /*
-    m_timer.SetFixedTimeStep(true);
-    m_timer.SetTargetElapsedSeconds(1.0 / 60);
-    */
-
-    //create RenderTarget for Terrain
-    //TODO: What size do you REALLY need for this?
-    m_terrain = new RenderTarget(m_d3dDevice.Get(), 200, 200);
+    // Generate terrain
+    m_World = new Grid(m_d3dDevice.Get());
 }
 
 // Executes the basic game loop.
@@ -279,37 +209,9 @@ void Game::Render()
     //update the constant buffer for the rendering of VBGOs
     VBGO::UpdateConstantBuffer(m_DD);
 
-    //Draw 3D Game Obejects
-    for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
-    {
-        (*it)->Draw(m_DD);
-    }
-/*
-    //Code potentially for drawing into the Terrain RenderTarget
-    //Draw stuff to the render texture
-    m_terrain->Begin(m_d3dContext.Get());
-    m_terrain->ClearRenderTarget(m_d3dContext.Get(), 0.f, 0.f, 0.f, 0.f);
-    m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-        //draw background stuff to begin with (probably only need to do this at the start of a level
-    m_DD2D->m_Sprites->End();
-    m_terrain->End(m_d3dContext.Get());
-
-    //Code potentially for digging from the Terrain
-    //Destruction of the terrain
-    m_terrain->Begin(m_d3dContext.Get());
-    m_d3dContext->OMSetBlendState(m_terrain->GetDigBlend(), 0, 0xffffff);
-    m_DD2D->m_Sprites->Begin(DirectX::SpriteSortMode_Deferred, m_terrain->GetDigBlend());
-        //Draw Destruction here
-    m_DD2D->m_Sprites->End();
-    m_terrain->End(m_d3dContext.Get());
-
-    //draw the terrain at the back
-    m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-    m_DD2D->m_Sprites->Draw(m_terrain->GetShaderResourceView(), XMFLOAT2(0.0f, 0.0f));
-    m_DD2D->m_Sprites->End();
-*/
     // Draw sprite batch stuff 
     m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
+    m_World->draw(m_DD2D);
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Draw(m_DD2D);
@@ -321,6 +223,8 @@ void Game::Render()
 
     Present();
 }
+
+#pragma region WindowHandlingStuff
 
 // Helper method to clear the back buffers.
 void Game::Clear()
@@ -392,8 +296,8 @@ void Game::OnWindowSizeChanged(int _width, int _height)
 void Game::GetDefaultSize(int& _width, int& _height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
-    _width = 800;
-    _height = 600;
+    _width = 1280;
+    _height = 720;
 }
 
 // These are the resources that depend on the device.
@@ -573,6 +477,8 @@ void Game::OnDeviceLost()
 
     CreateResources();
 }
+
+#pragma endregion
 
 void Game::ReadInput()
 {

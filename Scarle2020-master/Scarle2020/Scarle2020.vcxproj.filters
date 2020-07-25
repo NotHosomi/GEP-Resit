@@ -44,6 +44,9 @@
     <Filter Include="Sound\Source">
       <UniqueIdentifier>{3a9a7c92-ea31-4c2b-a902-3a6fd59547bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{79c131d3-c556-4445-b8c0-a2c9c1ddbb7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -145,6 +148,15 @@
     <ClInclude Include="RenderTarget.h">
       <Filter>Base\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -218,6 +230,15 @@
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
       <Filter>Base\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

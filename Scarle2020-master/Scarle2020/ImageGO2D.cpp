@@ -20,6 +20,12 @@ ImageGO2D::ImageGO2D(string _fileName, ID3D11Device* _GD) :m_pTextureRV(nullptr)
 
 }
 
+ImageGO2D::ImageGO2D(ImageGO2D&& other) noexcept
+{
+	m_pTextureRV = other.m_pTextureRV;
+	other.m_pTextureRV = nullptr;
+}
+
 ImageGO2D::~ImageGO2D()
 {
 	if (m_pTextureRV)
@@ -31,8 +37,6 @@ ImageGO2D::~ImageGO2D()
 
 void ImageGO2D::Tick(GameData* _GD)
 {
-	//spins!
-	m_rotation += _GD->m_dt;
 }
 
 
