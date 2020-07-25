@@ -54,6 +54,11 @@ Tile* Grid::getTile(float x, float y)
 {
 	int x_coord = static_cast<int>(floor(x));
 	int y_coord = static_cast<int>(floor(y));
+	if (x_coord < 0 || y_coord < 0 ||
+		x_coord >= GRID_WIDTH || y_coord >= GRID_HEIGHT)
+	{
+		return nullptr;
+	}
 	return &tiles[x_coord][y_coord];
 }
 
@@ -61,6 +66,11 @@ Tile* Grid::getTile(const Vector2& grid_coords)
 {
 	int x_coord = static_cast<int>(floor(grid_coords.x));
 	int y_coord = static_cast<int>(floor(grid_coords.y));
+	if (x_coord < 0 || y_coord < 0 ||
+		x_coord >= GRID_WIDTH || y_coord >= GRID_HEIGHT)
+	{
+		return nullptr;
+	}
 	return &tiles[x_coord][y_coord];
 }
 

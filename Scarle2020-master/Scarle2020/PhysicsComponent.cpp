@@ -55,6 +55,10 @@ bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object,
 	vector<Tile*> tile_list = genTileList(world, object, mv_delta);
 	return std::any_of(tile_list.begin(), tile_list.end(), [](const Tile* tile)
 	{
+		if (tile == nullptr)
+		{
+			return false;
+		}
 		return tile->isAlive();
 	});
 }
@@ -74,14 +78,14 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 	switch (dir)
 	{
 	case TRACE_N:
-		if (tile_list[0]->isAlive() || tile_list[4]->isAlive())
+		if (checkTile(tile_list[0]) || checkTile(tile_list[4]))
 			if (output.y < 0)
 			{
 				output.y = 0;
 			}
 		break;
 	case TRACE_S:
-		if (tile_list[3]->isAlive() || tile_list[6]->isAlive())
+		if (checkTile(tile_list[3]) || checkTile(tile_list[6]))
 			if (output.y > 0)
 			{
 				if (bouncy)
@@ -97,7 +101,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 			}
 		break;
 	case TRACE_W:
-		if (tile_list[0]->isAlive() || tile_list[1]->isAlive() || tile_list[2]->isAlive())
+		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || checkTile(tile_list[2]))
 			if (output.x > 0)
 			{
 				if (grounded)
@@ -107,7 +111,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 			}
 		break;
 	case TRACE_E:
-		if (tile_list[4]->isAlive() || tile_list[5]->isAlive() || tile_list[6]->isAlive())
+		if (checkTile(tile_list[4]) || checkTile(tile_list[5]) || checkTile(tile_list[6]))
 			if (output.x > 0)
 			{
 				if (grounded)
@@ -334,4 +338,13 @@ bool PhysicsComponent::isCoordUnderVector(const Vector2& origin,
 	// move to 0, 0
 	coord = coord - origin;
 	return (coord.y > delta.y * (coord.x / delta.x));
+}
+
+bool PhysicsComponent::checkTile(const Tile* tile) const
+{
+	if (tile == nullptr)
+	{
+		return false;
+	}
+	return tile->isAlive();
 }

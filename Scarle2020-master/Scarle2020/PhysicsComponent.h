@@ -61,6 +61,7 @@ private:
 	bool vertexProject(Vector2& mv_delta, Vector2 origin,
 		Collider otherHitbox, PhysicsComponent::TraceDir T_dir);
 	bool isCoordUnderVector(const Vector2& origin, const Vector2& delta, Vector2 coord);
+	bool checkTile(const Tile* tile) const;
 
 	Vector2 velocity = Vector2(0, 0);
 	bool grounded = false;
