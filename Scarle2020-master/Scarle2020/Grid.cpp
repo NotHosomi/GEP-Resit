@@ -50,14 +50,14 @@ void Grid::draw(DrawData2D* _DD)
 Tile* Grid::getTile(float x, float y)
 {
 	int x_coord = static_cast<int>(floor(x));
-	int y_coord = static_cast<int>(std::floor(y));
+	int y_coord = static_cast<int>(floor(y));
 	return &tiles[x_coord][x_coord];
 }
 
 Tile* Grid::getTile(const Vector2& grid_coords)
 {
-	int x_coord = static_cast<int>(std::floor(grid_coords.x));
-	int y_coord = static_cast<int>(std::floor(grid_coords.y));
+	int x_coord = static_cast<int>(floor(grid_coords.x));
+	int y_coord = static_cast<int>(floor(grid_coords.y));
 	return &tiles[x_coord][x_coord];
 }
 
@@ -66,8 +66,8 @@ Vector2 Grid::findGridCoords(Vector2 screen_coords)
 	Vector2 grid_coords;
 	grid_coords.x = screen_coords.x / Tile::TILE_DIMS;
 	grid_coords.y = screen_coords.y / Tile::TILE_DIMS;
-	grid_coords.x = std::floor(grid_coords.x);
-	grid_coords.y = std::floor(grid_coords.y);
+	grid_coords.x = floor(grid_coords.x);
+	grid_coords.y = floor(grid_coords.y);
 	return grid_coords;
 }
 
