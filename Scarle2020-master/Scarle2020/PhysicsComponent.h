@@ -14,7 +14,7 @@ public:
 	void addXVel(float _x) { velocity.x += _x; };
 	void addYVel(float _y) { velocity.y += _y; };
 
-	Vector2 move(float dt, Grid* world, const Vector2& startPos);
+	Vector2 move(float dt, Grid* world, const Collider& self);
 
 	Vector2 getVel() { return velocity; };
 	bool isGrounded() { return grounded; };
@@ -38,20 +38,28 @@ private:
 	};
 	enum CollisionFace
 	{
-		TOP = 0,
-		RIGHT = 1,
-		BOTTOM = 2,
-		LEFT = 3
+		NONE = 0,
+		TOP = 1,
+		RIGHT = 2,
+		BOTTOM = 4,
+		LEFT = 8
 	};
 
 	void applyFriction(float dt);
 	bool checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& velocity);
 	Vector2 checkCollisions(Grid* world, const Collider& object, const Vector2& velocity);
+	vector<Vector2> genOrigList(const Collider& object);
+	vector<Vector2> genDestList(const vector<Vector2>& orig_list, const Vector2& velocity);
+	vector<Tile&> genTileList(Grid* world, const vector<Vector2>& dest_list);
 	vector<Tile&> genTileList(Grid* world, const Collider& object, const Vector2& velocity);
 	TraceDir genTraceDir(const Vector2& mv_delta);
 
-	bool checkTile(CollisionFace* face, const Collider& incident_object,
-		const Vector2& velocity, const Collider& collider);
+	void complexTrace(vector<Vector2> orig_list, Vector2& velocity,
+		vector<Tile&> tile_list, PhysicsComponent::TraceDir dir);
+
+	bool vertexProject(Vector2& mv_delta, Vector2 origin,
+		Collider otherHitbox, PhysicsComponent::TraceDir T_dir);
+	bool isCoordUnderVector(const Vector2& origin, const Vector2& delta, Vector2 coord);
 
 	Vector2 velocity = Vector2(0, 0);
 	bool grounded = true;

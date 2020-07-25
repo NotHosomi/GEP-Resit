@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "PhysicsComponent.h"
 
-Vector2 PhysicsComponent::move(float dt, Grid* world, const Vector2& startPos)
+Vector2 PhysicsComponent::move(float dt, Grid* world, const Collider& self)
 {
 	if (grounded)
 	{
@@ -12,9 +12,9 @@ Vector2 PhysicsComponent::move(float dt, Grid* world, const Vector2& startPos)
 		velocity.y += weight * dt;
 	}
 
-	Vector2 pos = startPos;
+	Vector2 pos = Vector2(self.x, self.y);
+	checkCollisions(world, self, velocity);
 	pos += velocity * dt;
-	checkCollisions(world);
 
 	return Vector2();
 }
@@ -36,27 +36,36 @@ void PhysicsComponent::applyFriction(float dt)
 	velocity *= newspeed;
 }
 
-bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& velocity)
+// fast collision check, used to objects that die on contact
+bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& mv_delta)
 {
-	vector<Tile&> tile_list = genTileList(world, object, velocity);
+	vector<Tile&> tile_list = genTileList(world, object, mv_delta);
 	return std::any_of(tile_list.begin(), tile_list.end(), [](const Tile& tile)
 	{
 		return tile.isAlive();
 	});
 }
 
-Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, const Vector2& velocity)
+// Comprehensive collision check, used for persistent objects
+Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, const Vector2& mv_delta)
 {
-	Vector2 output = velocity;
-	vector<Tile&> tile_list = genTileList(world, object, velocity);
-	TraceDir dir = genTraceDir(velocity);
+	Vector2 output = mv_delta;
+	vector<Vector2> orig_list = genOrigList(object);
+	vector<Vector2> dest_list = genDestList(orig_list, mv_delta);
+	vector<Tile&> tile_list = genTileList(world, dest_list);
+	TraceDir dir = genTraceDir(mv_delta);
+
+	// bitflag enum
+	int faces = NONE;
 
 	switch (dir)
 	{
 	case TRACE_N:
 		if (tile_list[0].isAlive() || tile_list[4].isAlive())
-			if(output.y < 0)
+			if (output.y < 0)
+			{
 				output.y = 0;
+			}
 		break;
 	case TRACE_S:
 		if (tile_list[3].isAlive() || tile_list[6].isAlive())
@@ -94,36 +103,91 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 					output.x *= -0.5;
 			}
 		break;
+	default:
+		complexTrace(orig_list, output, tile_list, dir);
+		break;
 	}
+	return output;
 }
 
-vector<Tile&> PhysicsComponent::genTileList(Grid* world, const Collider& object, const Vector2& velocity)
+vector<Vector2> PhysicsComponent::genOrigList(const Collider& object)
+{
+	vector<Vector2> orig_list;
+	Vector2 checkCoord;
+	// Upper Left
+	checkCoord.x = object.x;
+	checkCoord.y = object.y;
+	orig_list.emplace_back(checkCoord);
+	// Middle Left
+	checkCoord.x = object.x;
+	checkCoord.y = object.y + object.height / 2;
+	orig_list.emplace_back(checkCoord);
+	// Bottom Left
+	checkCoord.x = object.x;
+	checkCoord.y = object.y + object.height;
+	orig_list.emplace_back(checkCoord);
+	// Upper Right
+	checkCoord.x = object.x + object.width;
+	checkCoord.y = object.y;
+	orig_list.emplace_back(checkCoord);
+	// Middle Right
+	checkCoord.x = object.x + object.width;
+	checkCoord.y = object.y + object.height / 2;
+	orig_list.emplace_back(checkCoord);
+	// Bottom Right
+	checkCoord.x = object.x + object.width;
+	checkCoord.y = object.y + object.height;
+	orig_list.emplace_back(checkCoord);
+	return orig_list;
+}
+
+vector<Vector2> PhysicsComponent::genDestList(const vector<Vector2>& orig_list, const Vector2& mv_delta)
+{
+	vector<Vector2> dest_list;
+	for (auto& coord : orig_list)
+	{
+		dest_list.emplace_back(coord + mv_delta);
+	}
+	return dest_list;
+}
+
+vector<Tile&> PhysicsComponent::genTileList(Grid* world, const vector<Vector2>& dest_list)
+{
+	vector<Tile&> tile_list;
+	for (auto& coord : dest_list)
+	{
+		tile_list.emplace_back(world->findTile(coord));
+	}
+	return tile_list;
+}
+
+vector<Tile&> PhysicsComponent::genTileList(Grid* world, const Collider& object, const Vector2& mv_delta)
 {
 	vector<Tile&> tile_list;
 	Vector2 checkCoord;
-	// Upper Left
-	checkCoord.x = object.x + velocity.x;
-	checkCoord.y = object.y + velocity.y;
+	// Upper Left 
+	checkCoord.x = object.x + mv_delta.x;
+	checkCoord.y = object.y + mv_delta.y;
 	tile_list.emplace_back(world->findTile(checkCoord));
-	// Middle Left
-	checkCoord.x = object.x + velocity.x;
-	checkCoord.y = object.y + velocity.y + object.height / 2;
+	// Middle Left 
+	checkCoord.x = object.x + mv_delta.x;
+	checkCoord.y = object.y + mv_delta.y + object.height / 2;
 	tile_list.emplace_back(world->findTile(checkCoord));
-	// Bottom Left
-	checkCoord.x = object.x + velocity.x;
-	checkCoord.y = object.y + velocity.y + object.height;
+	// Bottom Left 
+	checkCoord.x = object.x + mv_delta.x;
+	checkCoord.y = object.y + mv_delta.y + object.height;
 	tile_list.emplace_back(world->findTile(checkCoord));
-	// Upper Right
-	checkCoord.x = object.x + velocity.x;
-	checkCoord.y = object.y + velocity.y;
+	// Upper Right 
+	checkCoord.x = object.x + mv_delta.x;
+	checkCoord.y = object.y + mv_delta.y;
 	tile_list.emplace_back(world->findTile(checkCoord));
-	// Middle Right
-	checkCoord.x = object.x + velocity.x;
-	checkCoord.y = object.y + velocity.y + object.height / 2;
+	// Middle Right 
+	checkCoord.x = object.x + mv_delta.x;
+	checkCoord.y = object.y + mv_delta.y + object.height / 2;
 	tile_list.emplace_back(world->findTile(checkCoord));
-	// Bottom Right
-	checkCoord.x = object.x + velocity.x;
-	checkCoord.y = object.y + velocity.y + object.height;
+	// Bottom Right 
+	checkCoord.x = object.x + mv_delta.x;
+	checkCoord.y = object.y + mv_delta.y + object.height;
 	tile_list.emplace_back(world->findTile(checkCoord));
 	return tile_list;
 }
@@ -180,10 +244,81 @@ PhysicsComponent::TraceDir PhysicsComponent::genTraceDir(const Vector2& mv_delta
 	return T_dir;
 }
 
-bool PhysicsComponent::checkTile(CollisionFace* face,
-	const Collider& incident_object,
-	const Vector2& velocity,
-	const Collider& collider)
+void PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_delta,
+	vector<Tile&> tile_list, PhysicsComponent::TraceDir dir)
 {
+	for (int i = 0; i < orig_list.size(); ++i)
+	{
+		if (tile_list[i].isAlive)
+		{
+			Collider tile_col = tile_list[i].generateCollider();
+			vertexProject(mv_delta, orig_list[i], tile_col, dir);
+		}
+	}
+}
 
+bool PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
+	Collider otherHitbox, PhysicsComponent::TraceDir dir)
+{
+	Vector2 targetCoord = Vector2(otherHitbox.x, otherHitbox.y);
+	int face = 0;
+	bool vertical_collision;
+	switch (dir)
+	{
+	case TRACE_NE:
+		targetCoord.y += otherHitbox.height;
+		vertical_collision = !isCoordUnderVector(origin, mv_delta, targetCoord);
+		break;
+	case TRACE_SE:
+		vertical_collision = isCoordUnderVector(origin, mv_delta, targetCoord);
+		break;
+	case TRACE_SW:
+		targetCoord.x += otherHitbox.width;
+		vertical_collision = isCoordUnderVector(origin, mv_delta, targetCoord);
+		break;
+	case TRACE_NW:
+		targetCoord.x += otherHitbox.width;
+		targetCoord.y += otherHitbox.height;
+		vertical_collision = !isCoordUnderVector(origin, mv_delta, targetCoord);
+		break;
+	}
+
+	float numerator;
+	float denominator;
+	if (vertical_collision)
+	{
+		numerator = targetCoord.y - origin.y;
+		denominator = mv_delta.y;
+	}
+	else
+	{
+		numerator = targetCoord.x - origin.x;
+		denominator = mv_delta.x;
+	}
+	numerator = abs(numerator);
+	denominator = abs(denominator);
+	numerator -= 0.01;
+
+	float truncation = numerator / denominator;
+	if (truncation < 0)
+	{
+		truncation = 0;
+	}
+	const Vector2 in_vel = mv_delta;
+
+
+	if (mv_delta.Length >= in_vel.Length)
+	{
+		mv_delta = in_vel;
+		return false;
+	}
+	return true;
+}
+
+bool PhysicsComponent::isCoordUnderVector(const Vector2& origin,
+	const Vector2& delta, Vector2 coord)
+{
+	// move to 0, 0
+	coord = coord - origin;
+	return (coord.y > delta.y * (coord.x / delta.x));
 }

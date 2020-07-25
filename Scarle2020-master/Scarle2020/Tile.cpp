@@ -43,3 +43,8 @@ bool Tile::isAlive() const
 {
 	return alive;
 }
+
+Collider Tile::generateCollider() const
+{
+	return Collider(m_pos.x, m_pos.y, TILE_DIMS, TILE_DIMS);
+}
