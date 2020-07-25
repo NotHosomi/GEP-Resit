@@ -13,18 +13,17 @@ public:
 	void addXVel(float _x) { velocity.x += _x; };
 	void addYVel(float _y) { velocity.y += _y; };
 
-	Vector2 move(float dt, Grid* world, const Vector2& startPos);
+	Vector2 move(float dt, Vector2 startPos);
 
 	Vector2 getVel() { return velocity; };
 	bool isGrounded() { return grounded; };
 
 private:
 	static constexpr float MV_MAXSPEED = 30;
-	static constexpr float MV_PLAYERACCEL = 6;
-	static constexpr float MV_PLAYERAIRACCEL = 3;
-	static constexpr float MV_FRICTION = 4;
+	static constexpr float MV_PLAYERACCEL = 30;
+	static constexpr float MV_PLAYERAIRACCEL = 30;
 	
-	void applyFriction(float dt);
+	void applyFriction();
 	void checkCollisions(Grid* world);
 
 	Vector2 velocity = Vector2(0, 0);
