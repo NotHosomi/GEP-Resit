@@ -1,17 +1,25 @@
 #include "pch.h"
 #include "Tile.h"
+#include "DrawData2D.h"
 
-Tile::Tile(ID3D11Device* _GD, const Vector2& location)
+Tile::Tile(ID3D11Device* _GD, const Vector2& location) :
+	ImageGO2D("ground", _GD)
 {
-	SpriteCmp = new ImageGO2D("ground", _GD);
-	SpriteCmp->SetPos(location*TILE_DIMS);
+	SetPos(location*TILE_DIMS);
 }
 
-void Tile::draw(DrawData2D* _DD)
+Tile::Tile(Tile&& other) : ImageGO2D(std::move(other))
+{
+	// is this redundant, or do I need to user define it for the ImageGO2D(std::move(other)) call?
+	alive = other.alive;
+	other.alive = false;
+}
+
+void Tile::Draw(DrawData2D* _DD)
 {
 	if (alive)
 	{
-		SpriteCmp->Draw(_DD);
+		_DD->m_Sprites->Draw(m_pTextureRV, m_pos, nullptr, m_colour, m_rotation, m_origin, m_scale, SpriteEffects_None);
 	}
 }
 
@@ -27,4 +35,9 @@ Vector2 Tile::getCentre()
 	pos.x += TILE_DIMS / 2;
 	pos.y += TILE_DIMS / 2;
 	return pos;
+}
+
+bool Tile::isAlive()
+{
+	return alive;
 }
