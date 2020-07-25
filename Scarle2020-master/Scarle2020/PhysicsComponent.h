@@ -5,16 +5,16 @@
 class PhysicsComponent
 {
 public:
-	PhysicsComponent() = default;
+	PhysicsComponent(Vector2 dimensions, float _weight);
 	~PhysicsComponent() = default;
-
 	void setVel(Vector2 vel) { velocity = vel; };
 	void setXVel(float _x) { velocity.x = _x; };
 	void setYVel(float _y) { velocity.y = _y; };
+	void addVel(Vector2 vel) { velocity += vel; };
 	void addXVel(float _x) { velocity.x += _x; };
 	void addYVel(float _y) { velocity.y += _y; };
 
-	Vector2 move(float dt, Grid* world, const Collider& self);
+	Vector2 move(float dt, Grid* world, const Vector2& start_pos);
 
 	Vector2 getVel() { return velocity; };
 	bool isGrounded() { return grounded; };
@@ -24,7 +24,8 @@ private:
 	static constexpr float MV_PLAYERACCEL = 6;
 	static constexpr float MV_PLAYERAIRACCEL = 3;
 	static constexpr float MV_FRICTION = 4;
-	
+	Collider self;
+
 	enum TraceDir
 	{
 		TRACE_N = 0,
@@ -62,8 +63,8 @@ private:
 	bool isCoordUnderVector(const Vector2& origin, const Vector2& delta, Vector2 coord);
 
 	Vector2 velocity = Vector2(0, 0);
-	bool grounded = true;
+	bool grounded = false;
 	bool bouncy = false;
-	float weight = 10;
+	float weight;
 };
 

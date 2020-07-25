@@ -1,7 +1,14 @@
 #include "pch.h"
 #include "PhysicsComponent.h"
 
-Vector2 PhysicsComponent::move(float dt, Grid* world, const Collider& self)
+PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight)
+{
+	self.width = _dimensions.x;
+	self.height = _dimensions.y;
+	weight = _weight;
+}
+
+Vector2 PhysicsComponent::move(float dt, Grid* world, const Vector2& start_pos)
 {
 	if (grounded)
 	{
@@ -12,7 +19,9 @@ Vector2 PhysicsComponent::move(float dt, Grid* world, const Collider& self)
 		velocity.y += weight * dt;
 	}
 
-	Vector2 pos = Vector2(self.x, self.y);
+	Vector2 pos = start_pos;
+	self.x = start_pos.x;
+	self.y = start_pos.y;
 	checkCollisions(world, self, velocity);
 	pos += velocity * dt;
 
