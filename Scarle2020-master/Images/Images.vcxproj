@@ -149,6 +149,14 @@
   <ItemGroup>
     <ImageContentTask Include="logo_small.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="ally.png" />
+    <ImageContentTask Include="enemy.png" />
+    <ImageContentTask Include="ground.png" />
+    <ImageContentTask Include="projectile1.png" />
+    <ImageContentTask Include="projectile2.png" />
+    <ImageContentTask Include="projectile3.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
