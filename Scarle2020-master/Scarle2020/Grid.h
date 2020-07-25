@@ -1,11 +1,12 @@
 #pragma once
 #include "Tile.h"
-#include <array>
+#include <vector>
 
 class Grid
 {
 public:
 	Grid(ID3D11Device* _GD);
+	int generateAltitude(int x);
 	~Grid() = default;
 
 	Tile* getTile(float x, float y);
@@ -19,6 +20,8 @@ public:
 	static constexpr int GRID_HEIGHT = 24;
 	static constexpr int GRID_WIDTH = 43;
 private:
-	std::array<std::array<Tile, GRID_WIDTH>, GRID_HEIGHT> tiles;
+	// I am aware a 2D vector is not optimal, however it allows for
+	// simpler code at the cost of memory access optimization
+	std::vector<std::vector<Tile>> tiles;
 };
 
