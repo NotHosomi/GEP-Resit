@@ -14,7 +14,7 @@ public:
 	void addXVel(float _x) { velocity.x += _x; };
 	void addYVel(float _y) { velocity.y += _y; };
 
-	Vector2 move(float dt, Grid* world, const Vector2& start_pos);
+	void move(float dt, Grid* world, Vector2& pos);
 
 	Vector2 getVel() { return velocity; };
 	bool isGrounded() { return grounded; };

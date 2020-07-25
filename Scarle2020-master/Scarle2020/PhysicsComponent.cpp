@@ -8,7 +8,7 @@ PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight)
 	weight = _weight;
 }
 
-Vector2 PhysicsComponent::move(float dt, Grid* world, const Vector2& start_pos)
+void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
 	if (grounded)
 	{
@@ -19,13 +19,17 @@ Vector2 PhysicsComponent::move(float dt, Grid* world, const Vector2& start_pos)
 		velocity.y += weight * dt;
 	}
 
-	Vector2 pos = start_pos;
-	self.x = start_pos.x;
-	self.y = start_pos.y;
-	checkCollisions(world, self, velocity);
-	pos += velocity * dt;
 
-	return Vector2();
+	Vector2 frame_velocity = velocity;
+	frame_velocity *= dt;
+	checkCollisions(world, self, frame_velocity); // TODO crashing on second frame!
+	pos += frame_velocity;
+	// update collider position
+	self.x = pos.x;
+	self.y = pos.y;
+
+	// update persistent velocity to reflect the changes in checkCollisions();
+	velocity = frame_velocity / dt;
 }
 
 void PhysicsComponent::applyFriction(float dt)
