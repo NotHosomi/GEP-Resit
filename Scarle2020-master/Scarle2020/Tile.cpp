@@ -8,7 +8,7 @@ Tile::Tile(ID3D11Device* _GD, const Vector2& location) :
 	SetPos(location*TILE_DIMS);
 }
 
-Tile::Tile(Tile&& other) : ImageGO2D(std::move(other))
+Tile::Tile(Tile&& other) noexcept : ImageGO2D(std::move(other))
 {
 	// is this redundant, or do I need to user define it for the ImageGO2D(std::move(other)) call?
 	alive = other.alive;

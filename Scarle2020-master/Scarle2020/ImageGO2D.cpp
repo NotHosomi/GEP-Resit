@@ -20,7 +20,7 @@ ImageGO2D::ImageGO2D(string _fileName, ID3D11Device* _GD) :m_pTextureRV(nullptr)
 
 }
 
-ImageGO2D::ImageGO2D(ImageGO2D&& other)
+ImageGO2D::ImageGO2D(ImageGO2D&& other) noexcept
 {
 	m_pTextureRV = other.m_pTextureRV;
 	other.m_pTextureRV = nullptr;

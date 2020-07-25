@@ -42,7 +42,7 @@ void Grid::draw(DrawData2D* _DD)
 	{
 		for (auto& tile : column)
 		{
-			tile.draw(_DD);
+			tile.Draw(_DD);
 		}
 	}
 }
