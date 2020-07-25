@@ -166,6 +166,9 @@
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -253,6 +256,9 @@
       <Filter>GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

@@ -39,10 +39,10 @@ void PhysicsComponent::applyFriction(float dt)
 // fast collision check, used to objects that die on contact
 bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& mv_delta)
 {
-	vector<Tile&> tile_list = genTileList(world, object, mv_delta);
-	return std::any_of(tile_list.begin(), tile_list.end(), [](const Tile& tile)
+	vector<Tile*> tile_list = genTileList(world, object, mv_delta);
+	return std::any_of(tile_list.begin(), tile_list.end(), [](const Tile* tile)
 	{
-		return tile.isAlive();
+		return tile->isAlive();
 	});
 }
 
@@ -52,7 +52,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 	Vector2 output = mv_delta;
 	vector<Vector2> orig_list = genOrigList(object);
 	vector<Vector2> dest_list = genDestList(orig_list, mv_delta);
-	vector<Tile&> tile_list = genTileList(world, dest_list);
+	vector<Tile*> tile_list = genTileList(world, dest_list);
 	TraceDir dir = genTraceDir(mv_delta);
 
 	// bitflag enum
@@ -61,14 +61,14 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 	switch (dir)
 	{
 	case TRACE_N:
-		if (tile_list[0].isAlive() || tile_list[4].isAlive())
+		if (tile_list[0]->isAlive() || tile_list[4]->isAlive())
 			if (output.y < 0)
 			{
 				output.y = 0;
 			}
 		break;
 	case TRACE_S:
-		if (tile_list[3].isAlive() || tile_list[6].isAlive())
+		if (tile_list[3]->isAlive() || tile_list[6]->isAlive())
 			if (output.y > 0)
 			{
 				if (bouncy)
@@ -84,7 +84,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 			}
 		break;
 	case TRACE_W:
-		if (tile_list[0].isAlive() || tile_list[1].isAlive() || tile_list[2].isAlive())
+		if (tile_list[0]->isAlive() || tile_list[1]->isAlive() || tile_list[2]->isAlive())
 			if (output.x > 0)
 			{
 				if (grounded)
@@ -94,7 +94,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 			}
 		break;
 	case TRACE_E:
-		if (tile_list[4].isAlive() || tile_list[5].isAlive() || tile_list[6].isAlive())
+		if (tile_list[4]->isAlive() || tile_list[5]->isAlive() || tile_list[6]->isAlive())
 			if (output.x > 0)
 			{
 				if (grounded)
@@ -151,9 +151,9 @@ vector<Vector2> PhysicsComponent::genDestList(const vector<Vector2>& orig_list, 
 	return dest_list;
 }
 
-vector<Tile&> PhysicsComponent::genTileList(Grid* world, const vector<Vector2>& dest_list)
+vector<Tile*> PhysicsComponent::genTileList(Grid* world, const vector<Vector2>& dest_list)
 {
-	vector<Tile&> tile_list;
+	vector<Tile*> tile_list;
 	for (auto& coord : dest_list)
 	{
 		tile_list.emplace_back(world->findTile(coord));
@@ -161,9 +161,9 @@ vector<Tile&> PhysicsComponent::genTileList(Grid* world, const vector<Vector2>& 
 	return tile_list;
 }
 
-vector<Tile&> PhysicsComponent::genTileList(Grid* world, const Collider& object, const Vector2& mv_delta)
+vector<Tile*> PhysicsComponent::genTileList(Grid* world, const Collider& object, const Vector2& mv_delta)
 {
-	vector<Tile&> tile_list;
+	vector<Tile*> tile_list;
 	Vector2 checkCoord;
 	// Upper Left 
 	checkCoord.x = object.x + mv_delta.x;
@@ -245,13 +245,13 @@ PhysicsComponent::TraceDir PhysicsComponent::genTraceDir(const Vector2& mv_delta
 }
 
 void PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_delta,
-	vector<Tile&> tile_list, PhysicsComponent::TraceDir dir)
+	vector<Tile*> tile_list, PhysicsComponent::TraceDir dir)
 {
 	for (int i = 0; i < orig_list.size(); ++i)
 	{
-		if (tile_list[i].isAlive)
+		if (tile_list[i]->isAlive())
 		{
-			Collider tile_col = tile_list[i].generateCollider();
+			Collider tile_col = tile_list[i]->generateCollider();
 			vertexProject(mv_delta, orig_list[i], tile_col, dir);
 		}
 	}
@@ -307,7 +307,7 @@ bool PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
 	const Vector2 in_vel = mv_delta;
 
 
-	if (mv_delta.Length >= in_vel.Length)
+	if (mv_delta.Length() >= in_vel.Length())
 	{
 		mv_delta = in_vel;
 		return false;

@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="CMOGO.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="DrawData.h" />
     <ClInclude Include="DrawData2D.h" />
     <ClInclude Include="fileVBGO.h" />
@@ -208,6 +209,7 @@
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="CMOGO.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="fileVBGO.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameobject.cpp" />

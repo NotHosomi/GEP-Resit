@@ -50,12 +50,12 @@ private:
 	Vector2 checkCollisions(Grid* world, const Collider& object, const Vector2& velocity);
 	vector<Vector2> genOrigList(const Collider& object);
 	vector<Vector2> genDestList(const vector<Vector2>& orig_list, const Vector2& velocity);
-	vector<Tile&> genTileList(Grid* world, const vector<Vector2>& dest_list);
-	vector<Tile&> genTileList(Grid* world, const Collider& object, const Vector2& velocity);
+	vector<Tile*> genTileList(Grid* world, const vector<Vector2>& dest_list);
+	vector<Tile*> genTileList(Grid* world, const Collider& object, const Vector2& velocity);
 	TraceDir genTraceDir(const Vector2& mv_delta);
 
 	void complexTrace(vector<Vector2> orig_list, Vector2& velocity,
-		vector<Tile&> tile_list, PhysicsComponent::TraceDir dir);
+		vector<Tile*> tile_list, PhysicsComponent::TraceDir dir);
 
 	bool vertexProject(Vector2& mv_delta, Vector2 origin,
 		Collider otherHitbox, PhysicsComponent::TraceDir T_dir);
