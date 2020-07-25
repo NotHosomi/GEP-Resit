@@ -27,8 +27,8 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game() noexcept :
     m_window(nullptr),
-    m_outputWidth(800),
-    m_outputHeight(600),
+    m_outputWidth(1280),
+    m_outputHeight(720),
     m_featureLevel(D3D_FEATURE_LEVEL_9_1)
 {
 }
@@ -81,11 +81,11 @@ void Game::Initialize(HWND _window, int _width, int _height)
     //find how big my window is to correctly calculate my aspect ratio
     float AR = (float)_width / (float)_height;
 
-    // //create a base camera
-    // m_cam = new Camera(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
-    // m_cam->SetPos(Vector3(0.0f, 200.0f, 200.0f));
-    // m_GameObjects.push_back(m_cam);
-    // 
+    //create a base camera
+    m_cam = new Camera(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
+    m_cam->SetPos(Vector3(0.0f, 200.0f, 200.0f));
+    m_GameObjects.push_back(m_cam);
+     
     // //create a base light
     // m_light = new Light(Vector3(0.0f, 100.0f, 160.0f), Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.4f, 0.1f, 0.1f, 1.0f));
     // m_GameObjects.push_back(m_light);
@@ -121,6 +121,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
 
     // Generate terrain
     m_World = new Grid(m_d3dDevice.Get());
+    m_GD->p_world = m_World;
 
     Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(300, -100));
     m_GameObjects2D.push_back(demo_unit);
@@ -161,25 +162,8 @@ void Game::Update(DX::StepTimer const& _timer)
     }
 
     ReadInput();
-    //upon space bar switch camera state
-    //see docs here for what's going on: https://github.com/Microsoft/DirectXTK/wiki/Keyboard
-    if (m_GD->m_KBS_tracker.pressed.Space)
-    {
-        if (m_GD->m_GS == GS_PLAY_MAIN_CAM)
-        {
-            m_GD->m_GS = GS_PLAY_TPS_CAM;
-        }
-        else
-        {
-            m_GD->m_GS = GS_PLAY_MAIN_CAM;
-        }
-    }
 
     //update all objects
-    for (list<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
-    {
-        (*it)->Tick(m_GD);
-    }
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Tick(m_GD);
@@ -199,15 +183,15 @@ void Game::Render()
 
     Clear();
 
-    //set immediate context of the graphics device
-    m_DD->m_pd3dImmediateContext = m_d3dContext.Get();
-
-    //set which camera to be used
-    m_DD->m_cam = m_cam;
-    if (m_GD->m_GS == GS_PLAY_TPS_CAM)
-    {
-        m_DD->m_cam = m_TPScam;
-    }
+    ////set immediate context of the graphics device
+    //m_DD->m_pd3dImmediateContext = m_d3dContext.Get();
+    //
+    ////set which camera to be used
+    //m_DD->m_cam = m_cam;
+    //if (m_GD->m_GS == GS_PLAY_TPS_CAM)
+    //{
+    //    m_DD->m_cam = m_TPScam;
+    //}
 
     //update the constant buffer for the rendering of VBGOs
     VBGO::UpdateConstantBuffer(m_DD);
