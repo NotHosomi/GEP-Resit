@@ -22,7 +22,7 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 
 	Vector2 frame_velocity = velocity;
 	frame_velocity *= dt;
-	checkCollisions(world, self, frame_velocity); // TODO crashing on second frame!
+	frame_velocity = checkCollisions(world, self, frame_velocity);
 	pos += frame_velocity;
 	// update collider position
 	self.x = pos.x;
@@ -72,31 +72,42 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 	vector<Tile*> tile_list = genTileList(world, dest_list);
 	TraceDir dir = genTraceDir(mv_delta);
 
-	// bitflag enum
-	int faces = NONE;
+#if 1 // DEBUG
+	bool potential = std::any_of(tile_list.begin(), tile_list.end(), [](const Tile* tile)
+		{
+			if (tile == nullptr)
+			{
+				return false;
+			}
+			return tile->isAlive();
+		});
+	if (potential)
+	{
+		int x = 1;
+	}
+#endif
 
 	switch (dir)
 	{
 	case TRACE_N:
-		if (checkTile(tile_list[0]) || checkTile(tile_list[4]))
+		if (checkTile(tile_list[0]) || checkTile(tile_list[3]))
 			if (output.y < 0)
 			{
 				output.y = 0;
 			}
 		break;
 	case TRACE_S:
-		if (checkTile(tile_list[3]) || checkTile(tile_list[6]))
+		if (checkTile(tile_list[2]) || checkTile(tile_list[5]))
 			if (output.y > 0)
 			{
+				grounded = true;
 				if (bouncy)
 				{
-					grounded = true;
-					output.y = 0;
+					output.y *= -0.5;
 				}
 				else
 				{
-					grounded = true;
-					output.y *= -0.5;
+					output.y = 0;
 				}
 			}
 		break;
@@ -111,7 +122,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, c
 			}
 		break;
 	case TRACE_E:
-		if (checkTile(tile_list[4]) || checkTile(tile_list[5]) || checkTile(tile_list[6]))
+		if (checkTile(tile_list[3]) || checkTile(tile_list[4]) || checkTile(tile_list[5]))
 			if (output.x > 0)
 			{
 				if (grounded)
@@ -220,12 +231,12 @@ PhysicsComponent::TraceDir PhysicsComponent::genTraceDir(const Vector2& mv_delta
 			T_dir = TRACE_E;
 		}
 		// SOUTH EAST
-		else if (mv_delta.y < 0)
+		else if (mv_delta.y > 0)
 		{
 			T_dir = TRACE_SE;
 		}
 		// NORTH EAST
-		else if (mv_delta.y > 0)
+		else if (mv_delta.y < 0)
 		{
 			T_dir = TRACE_NE;
 		}
@@ -238,23 +249,23 @@ PhysicsComponent::TraceDir PhysicsComponent::genTraceDir(const Vector2& mv_delta
 			T_dir = TRACE_W;
 		}
 		// SOUTH WEST
-		else if (mv_delta.y < 0)
+		else if (mv_delta.y > 0)
 		{
 			T_dir = TRACE_SW;
 		}
 		// NORTH WEST
-		else if (mv_delta.y > 0)
+		else if (mv_delta.y < 0)
 		{
 			T_dir = TRACE_NW;
 		}
 	}
 	// SOUTH
-	else if (mv_delta.y < 0)
+	else if (mv_delta.y > 0)
 	{
 		T_dir = TRACE_S;
 	}
 	// NORTH
-	else if (mv_delta.y > 0)
+	else if (mv_delta.y < 0)
 	{
 		T_dir = TRACE_N;
 	}
@@ -314,15 +325,15 @@ bool PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
 	}
 	numerator = abs(numerator);
 	denominator = abs(denominator);
-	numerator -= 0.01;
+	if (numerator > denominator)
+	{
+		return false;
+	}
+	// numerator -= 0.01;
 
 	float truncation = numerator / denominator;
-	if (truncation < 0)
-	{
-		truncation = 0;
-	}
 	const Vector2 in_vel = mv_delta;
-
+	mv_delta *= truncation;
 
 	if (mv_delta.Length() >= in_vel.Length())
 	{

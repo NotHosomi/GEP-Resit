@@ -10,6 +10,9 @@ public:
 
 	void Tick(GameData* _GD) override;
 
+	// debugging
+	PhysicsComponent* getPhysCmp() { return &PhysCmp; };
+
 private:
 	// golden ratio 1 : 1.62
 	static constexpr float UNIT_HEIGHT = 26;
