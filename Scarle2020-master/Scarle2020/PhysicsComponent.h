@@ -23,8 +23,7 @@ private:
 	static constexpr float MV_MAXSPEED = 1000;
 	static constexpr float MV_PLAYERACCEL = 6;
 	static constexpr float MV_PLAYERAIRACCEL = 3;
-	static constexpr float MV_FRICTION = 10;
-	Collider self;
+	static constexpr float MV_FRICTION = 4;
 
 	enum TraceDir
 	{
@@ -39,30 +38,32 @@ private:
 	};
 	enum CollisionFace
 	{
-		NONE = 0,
-		TOP = 1,
-		RIGHT = 2,
-		BOTTOM = 4,
-		LEFT = 8
+		F_NONE = 0,
+		F_TOP = 1,
+		F_RIGHT = 2,
+		F_BOTTOM = 4,
+		F_LEFT = 8
 	};
 
 	void applyFriction(float dt);
 	bool checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& velocity);
-	Vector2 checkCollisions(Grid* world, const Collider& object, const Vector2& velocity);
+
+	Vector2 checkCollisions(Grid* world, const Collider& object, Vector2& velocity);
 	vector<Vector2> genOrigList(const Collider& object);
 	vector<Vector2> genDestList(const vector<Vector2>& orig_list, const Vector2& velocity);
 	vector<Tile*> genTileList(Grid* world, const vector<Vector2>& dest_list);
 	vector<Tile*> genTileList(Grid* world, const Collider& object, const Vector2& velocity);
 	TraceDir genTraceDir(const Vector2& mv_delta);
 
-	void complexTrace(vector<Vector2> orig_list, Vector2& velocity,
+	Vector2 complexTrace(vector<Vector2> orig_list, Vector2& velocity,
 		vector<Tile*> tile_list, PhysicsComponent::TraceDir dir);
-
-	float vertexProject(Vector2& mv_delta, Vector2 origin,
-		Collider otherHitbox, PhysicsComponent::TraceDir T_dir);
+	float vertexProject(const Vector2& mv_delta, const Vector2& origin, Collider otherHitbox,
+		PhysicsComponent::TraceDir T_dir, CollisionFace& OUT_face);
 	bool isCoordUnderVector(const Vector2& origin, const Vector2& delta, Vector2 coord);
+
 	bool checkTile(const Tile* tile) const;
 
+	Collider self;
 	Vector2 velocity = Vector2(0, 0);
 	bool grounded = false;
 	bool bouncy = false;
