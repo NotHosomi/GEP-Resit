@@ -329,7 +329,6 @@ bool PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
 	{
 		return false;
 	}
-	// numerator -= 0.01;
 
 	float truncation = numerator / denominator;
 	const Vector2 in_vel = mv_delta;
