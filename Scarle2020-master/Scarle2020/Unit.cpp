@@ -36,12 +36,14 @@ void Unit::playerMove(GameData* _GD)
 		if (_GD->m_Input.checkKey(InputManager::IN_RIGHT))
 		{
 			facing_right = true;
-			PhysCmp.addXVel(MV_ACCELERATION);
+			if (PhysCmp.getVel().x < MV_MAXAIRCONTROL)
+				PhysCmp.addXVel(MV_AIRACCELERATION);
 		}
 		if (_GD->m_Input.checkKey(InputManager::IN_LEFT))
 		{
 			facing_right = false;
-			PhysCmp.addXVel(-MV_ACCELERATION);
+			if(PhysCmp.getVel().x > -MV_MAXAIRCONTROL)
+				PhysCmp.addXVel(-MV_AIRACCELERATION);
 		}
 		return;
 	}

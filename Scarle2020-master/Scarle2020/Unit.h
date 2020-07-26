@@ -21,11 +21,12 @@ private:
 	// golden ratio 1 : 1.62
 	static constexpr float UNIT_HEIGHT = 26;
 	static constexpr float UNIT_WIDTH = 16;
-	static constexpr float UNIT_WEIGHT = 50;
+	static constexpr float UNIT_WEIGHT = 60;
 	static constexpr float UNIT_ELASTICITY = 0.1;
 	static constexpr float MV_ACCELERATION = 6;
-	static constexpr float MV_AIRACCELERATION = 3;
-	static constexpr float MV_JUMPFORCE = 20;
+	static constexpr float MV_AIRACCELERATION = 1;
+	static constexpr float MV_MAXAIRCONTROL = 100;
+	static constexpr float MV_JUMPFORCE = 50;
 
 	void playerMove(GameData* _GD);
 
