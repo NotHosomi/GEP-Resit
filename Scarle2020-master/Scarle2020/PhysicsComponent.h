@@ -22,7 +22,7 @@ public:
 
 private:
 	static constexpr float MV_MAXSPEED = 10000;
-	static constexpr float MV_FRICTION = 4;
+	static constexpr float MV_FRICTION = 10;
 	static constexpr float MV_SKIN = 0.1; // forced gap between objects that have collided
 
 	enum TraceDir

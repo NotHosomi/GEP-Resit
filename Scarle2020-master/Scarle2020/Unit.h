@@ -23,10 +23,11 @@ private:
 	static constexpr float UNIT_WIDTH = 16;
 	static constexpr float UNIT_WEIGHT = 60;
 	static constexpr float UNIT_ELASTICITY = 0.1;
-	static constexpr float MV_ACCELERATION = 6;
+	static constexpr float MV_ACCELERATION = 12;
 	static constexpr float MV_AIRACCELERATION = 1;
-	static constexpr float MV_MAXAIRCONTROL = 100;
-	static constexpr float MV_JUMPFORCE = 50;
+	static constexpr float MV_MAXAIRCONTROL = 10;
+	static constexpr float MV_JUMPFORCE_V = 60;
+	static constexpr float MV_JUMPFORCE_H = 40;
 
 	void playerMove(GameData* _GD);
 
