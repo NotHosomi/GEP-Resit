@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "PhysicsComponent.h"
 
-PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight)
+PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight, float _elasticity)
 {
 	self.width = _dimensions.x;
 	self.height = _dimensions.y;
 	weight = _weight;
+	elasticity = _elasticity;
 }
 
 void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
@@ -107,7 +108,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 				if (grounded)
 					mv_delta.x = 0;
 				else
-					mv_delta.x *= -0.5;
+					mv_delta.x *= -elasticity;
 			}
 		output = mv_delta; //temp
 		break;
@@ -118,7 +119,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 				if (grounded)
 					mv_delta.x = 0;
 				else
-					mv_delta.x *= -0.5;
+					mv_delta.x *= -elasticity;
 			}
 		output = mv_delta; // temp
 		break;
@@ -302,6 +303,7 @@ Vector2 PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_de
 		clip = 0;
 	}
 #pragma endregion
+
 	Vector2 output = mv_delta;
 	switch (closest_face)
 	{
@@ -314,7 +316,7 @@ Vector2 PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_de
 		break;
 	case F_LEFT:
 	case F_RIGHT:
-		mv_delta.x = 0;
+		mv_delta.x = grounded ? 0 : mv_delta.x * -elasticity;
 		output.x *= clip;
 		output.x += output.x > 0 ? MV_SKIN : -MV_SKIN;
 		break;

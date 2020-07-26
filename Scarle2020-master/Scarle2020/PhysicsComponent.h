@@ -5,7 +5,7 @@
 class PhysicsComponent
 {
 public:
-	PhysicsComponent(Vector2 dimensions, float _weight);
+	PhysicsComponent(Vector2 dimensions, float _weight, float _elasticity);
 	~PhysicsComponent() = default;
 	void setVel(Vector2 vel) { velocity = vel; };
 	void setXVel(float _x) { velocity.x = _x; };
@@ -24,7 +24,7 @@ private:
 	static constexpr float MV_PLAYERACCEL = 6;
 	static constexpr float MV_PLAYERAIRACCEL = 3;
 	static constexpr float MV_FRICTION = 4;
-	static constexpr float MV_SKIN = 0.01; // forced gap between objects that have collided
+	static constexpr float MV_SKIN = 0.1; // forced gap between objects that have collided
 
 	enum TraceDir
 	{
@@ -68,6 +68,7 @@ private:
 	Vector2 velocity = Vector2(0, 0);
 	bool grounded = false;
 	bool bouncy = false;
+	float elasticity;
 	float weight;
 };
 

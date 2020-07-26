@@ -18,6 +18,7 @@ private:
 	static constexpr float UNIT_HEIGHT = 26;
 	static constexpr float UNIT_WIDTH = 16;
 	static constexpr float UNIT_WEIGHT = 50;
+	static constexpr float UNIT_ELASTICITY = 0.1;
 
 	PhysicsComponent PhysCmp;
 };

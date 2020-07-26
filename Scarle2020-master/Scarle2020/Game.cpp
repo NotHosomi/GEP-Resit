@@ -124,7 +124,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD->p_world = m_World;
 
     Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 70));
-    demo_unit->getPhysCmp()->addXVel(100);
+    demo_unit->getPhysCmp()->addXVel(200);
     m_GameObjects2D.push_back(demo_unit);
     
 }
