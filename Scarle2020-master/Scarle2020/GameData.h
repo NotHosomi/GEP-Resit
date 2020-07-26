@@ -9,6 +9,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Grid.h"
+#include "InputManager.h"
 
 using namespace DirectX;
 
@@ -23,5 +24,6 @@ struct GameData
 	Keyboard::KeyboardStateTracker m_KBS_tracker;
 
 	Grid* p_world = nullptr;
+	InputManager m_Input;
 };
 #endif

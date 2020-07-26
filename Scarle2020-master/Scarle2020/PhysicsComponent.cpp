@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "PhysicsComponent.h"
+#include "GameData.h"
 
 PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight, float _elasticity)
 {

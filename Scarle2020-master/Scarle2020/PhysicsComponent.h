@@ -13,6 +13,7 @@ public:
 	void addVel(Vector2 vel) { velocity += vel; };
 	void addXVel(float _x) { velocity.x += _x; };
 	void addYVel(float _y) { velocity.y += _y; };
+	void setGrounded(bool _grounded) { grounded = _grounded; };
 
 	void move(float dt, Grid* world, Vector2& pos);
 
@@ -21,8 +22,6 @@ public:
 
 private:
 	static constexpr float MV_MAXSPEED = 10000;
-	static constexpr float MV_PLAYERACCEL = 6;
-	static constexpr float MV_PLAYERAIRACCEL = 3;
 	static constexpr float MV_FRICTION = 4;
 	static constexpr float MV_SKIN = 0.1; // forced gap between objects that have collided
 
