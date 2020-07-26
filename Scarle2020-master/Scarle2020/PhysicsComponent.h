@@ -20,7 +20,7 @@ public:
 	bool isGrounded() { return grounded; };
 
 private:
-	static constexpr float MV_MAXSPEED = 1000;
+	static constexpr float MV_MAXSPEED = 10000;
 	static constexpr float MV_PLAYERACCEL = 6;
 	static constexpr float MV_PLAYERAIRACCEL = 3;
 	static constexpr float MV_FRICTION = 4;

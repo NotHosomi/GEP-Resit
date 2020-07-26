@@ -20,16 +20,16 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	}
 
 
-	Vector2 current_velocity = velocity;
-	current_velocity *= dt;
-	Vector2 frame_velocity = checkCollisions(world, self, current_velocity);
-	pos += frame_velocity;
+	Vector2 frame_velocity = velocity;
+	frame_velocity *= dt;
+	Vector2 displacement = checkCollisions(world, self, frame_velocity);
+	pos += displacement;
 	// update collider position
 	self.x = pos.x;
 	self.y = pos.y;
 
 	// update persistent velocity to reflect the changes in checkCollisions();
-	velocity = current_velocity / dt;
+	velocity = frame_velocity / dt;
 }
 
 void PhysicsComponent::applyFriction(float dt)
@@ -101,7 +101,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 		output = mv_delta; // temp
 		break;
 	case TRACE_W:
-		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || checkTile(tile_list[2]))
+		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || (!grounded && checkTile(tile_list[2])))
 			if (mv_delta.x > 0)
 			{
 				if (grounded)
@@ -112,7 +112,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 		output = mv_delta; //temp
 		break;
 	case TRACE_E:
-		if (checkTile(tile_list[3]) || checkTile(tile_list[4]) || checkTile(tile_list[5]))
+		if (checkTile(tile_list[3]) || checkTile(tile_list[4]) || (!grounded && checkTile(tile_list[5])))
 			if (mv_delta.x > 0)
 			{
 				if (grounded)
