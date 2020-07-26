@@ -38,6 +38,40 @@ void InputManager::updateInputs(const DirectX::Keyboard::KeyboardStateTracker* k
 	{
 		m_keylist |= IN_PREV;
 	}
+
+	// release keys
+	if (keys->released.A || keys->released.J)
+	{
+		m_keylist &= ~IN_LEFT;
+	};
+	if (keys->released.D || keys->released.K)
+	{
+		m_keylist &= ~IN_RIGHT;
+	}
+	if (keys->released.W)
+	{
+		m_keylist &= ~IN_UP;
+	}
+	if (keys->released.S)
+	{
+		m_keylist &= ~IN_DOWN;
+	}
+	if (keys->released.Space || keys->released.I)
+	{
+		m_keylist &= ~IN_JUMP;
+	}
+	if (keys->released.F)
+	{
+		m_keylist &= ~IN_FIRE;
+	}
+	if (keys->released.E)
+	{
+		m_keylist &= ~IN_NEXT;
+	}
+	if (keys->released.Q)
+	{
+		m_keylist &= ~IN_PREV;
+	}
 }
 
 void InputManager::releaseKey(Inputs key)

@@ -85,18 +85,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_cam = new Camera(0.25f * XM_PI, AR, 1.0f, 10000.0f, Vector3::UnitY, Vector3::Zero);
     m_cam->SetPos(Vector3(0.0f, 200.0f, 200.0f));
     m_GameObjects.push_back(m_cam);
-     
-    // //create a base light
-    // m_light = new Light(Vector3(0.0f, 100.0f, 160.0f), Color(1.0f, 1.0f, 1.0f, 1.0f), Color(0.4f, 0.1f, 0.1f, 1.0f));
-    // m_GameObjects.push_back(m_light);
-    // 
-    // //add Player
-    // Player* pPlayer = new Player("BirdModelV1", m_d3dDevice.Get(), m_fxFactory);
-    // m_GameObjects.push_back(pPlayer);
-    // 
-    // //add a secondary camera
-    // m_TPScam = new TPSCamera(0.25f * XM_PI, AR, 1.0f, 10000.0f, pPlayer, Vector3::UnitY, Vector3(0.0f, 10.0f, 50.0f));
-    // m_GameObjects.push_back(m_TPScam);
 
     //create DrawData struct and populate its pointers
     m_DD = new DrawData;
@@ -113,7 +101,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     // ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
     // logo->SetPos(200.0f * Vector2::One);
     // m_GameObjects2D.push_back(logo);
-    // 
+
     // TextGO2D* text = new TextGO2D("Test Text");
     // text->SetPos(Vector2(100, 10));
     // text->SetColour(Color((float*)&Colors::Yellow));
@@ -478,6 +466,7 @@ void Game::ReadInput()
     {
         ExitGame();
     }
+    m_GD->m_Input.updateInputs(&m_GD->m_KBS_tracker);
 
     m_GD->m_MS = m_mouse->GetState();
 
