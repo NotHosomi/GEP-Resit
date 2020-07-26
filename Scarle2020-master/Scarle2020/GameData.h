@@ -8,6 +8,7 @@
 #include "GameState.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Grid.h"
 
 using namespace DirectX;
 
@@ -20,5 +21,7 @@ struct GameData
 	Keyboard::State m_KBS;
 	Mouse::State m_MS; 
 	Keyboard::KeyboardStateTracker m_KBS_tracker;
+
+	Grid* p_world = nullptr;
 };
 #endif

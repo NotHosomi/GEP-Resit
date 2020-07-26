@@ -47,6 +47,9 @@
     <Filter Include="Managers">
       <UniqueIdentifier>{79c131d3-c556-4445-b8c0-a2c9c1ddbb7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{12f1c19e-6d8d-426f-988d-072e689d34e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -157,6 +160,15 @@
     <ClInclude Include="Tile.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Unit.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -239,6 +251,15 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
