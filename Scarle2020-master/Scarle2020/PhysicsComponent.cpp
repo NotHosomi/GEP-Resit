@@ -19,8 +19,7 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	{
 		velocity.y += weight * dt;
 	}
-
-
+	
 	Vector2 frame_velocity = velocity;
 	frame_velocity *= dt;
 	Vector2 displacement = checkCollisions(world, self, frame_velocity);
@@ -103,7 +102,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 		break;
 	case TRACE_W:
 		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || checkTile(tile_list[2]))
-			if (mv_delta.x > 0)
+			if (mv_delta.x < 0)
 			{
 				if (grounded)
 					mv_delta.x = 0;
