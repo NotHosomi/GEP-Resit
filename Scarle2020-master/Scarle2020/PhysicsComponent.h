@@ -24,6 +24,7 @@ private:
 	static constexpr float MV_PLAYERACCEL = 6;
 	static constexpr float MV_PLAYERAIRACCEL = 3;
 	static constexpr float MV_FRICTION = 4;
+	static constexpr float MV_SKIN = 0.01; // forced gap between objects that have collided
 
 	enum TraceDir
 	{

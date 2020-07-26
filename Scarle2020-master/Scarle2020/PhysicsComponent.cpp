@@ -101,7 +101,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 		output = mv_delta; // temp
 		break;
 	case TRACE_W:
-		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || (!grounded && checkTile(tile_list[2])))
+		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || checkTile(tile_list[2]))
 			if (mv_delta.x > 0)
 			{
 				if (grounded)
@@ -112,7 +112,7 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 		output = mv_delta; //temp
 		break;
 	case TRACE_E:
-		if (checkTile(tile_list[3]) || checkTile(tile_list[4]) || (!grounded && checkTile(tile_list[5])))
+		if (checkTile(tile_list[3]) || checkTile(tile_list[4]) || checkTile(tile_list[5]))
 			if (mv_delta.x > 0)
 			{
 				if (grounded)
@@ -310,11 +310,13 @@ Vector2 PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_de
 	case F_BOTTOM:
 		mv_delta.y = 0;
 		output.y *= clip;
+		output.y = output.y > 0 ? MV_SKIN : -MV_SKIN;
 		break;
 	case F_LEFT:
 	case F_RIGHT:
 		mv_delta.x = 0;
 		output.x *= clip;
+		output.x += output.x > 0 ? MV_SKIN : -MV_SKIN;
 		break;
 	}
 	return output;
