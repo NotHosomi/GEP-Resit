@@ -24,7 +24,13 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	Vector2 frame_velocity = velocity;
 	frame_velocity *= dt;
 	Vector2 displacement = checkCollisions(world, self, frame_velocity);
+	// Using the accurate displacement would be cool, however it results in objects actually
+	// touching, which then allows them to phase into eachother. Something for the devlog I guess
+#if 0
 	pos += displacement;
+#else
+	pos += frame_velocity;
+#endif
 	// update collider position
 	self.x = pos.x;
 	self.y = pos.y;
@@ -363,13 +369,13 @@ float PhysicsComponent::vertexProject(const Vector2 &mv_delta, const Vector2& or
 		denominator = mv_delta.x;
 		OUT_face = mv_delta.x > 0 ? F_LEFT : F_RIGHT;
 	}
-	numerator = abs(numerator);
-	denominator = abs(denominator);
-	if (numerator > denominator)
-	{
-		OUT_face = F_NONE;
-		return 1;
-	}
+	// numerator = abs(numerator);
+	// denominator = abs(denominator);
+	// if (numerator > denominator)
+	// {
+	// 	OUT_face = F_NONE;
+	// 	return 1;
+	// }
 	return numerator / denominator;
 }
 
