@@ -66,27 +66,17 @@ bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object,
 // Comprehensive collision check, used for persistent objects
 Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, const Vector2& mv_delta)
 {
-	Vector2 output = mv_delta;
 	vector<Vector2> orig_list = genOrigList(object);
 	vector<Vector2> dest_list = genDestList(orig_list, mv_delta);
 	vector<Tile*> tile_list = genTileList(world, dest_list);
 	TraceDir dir = genTraceDir(mv_delta);
 
-#if 1 // DEBUG
-	bool potential = std::any_of(tile_list.begin(), tile_list.end(), [](const Tile* tile)
-		{
-			if (tile == nullptr)
-			{
-				return false;
-			}
-			return tile->isAlive();
-		});
-	if (potential)
-	{
-		int x = 1;
-	}
-#endif
+	bool potential = std::any_of(tile_list.begin(), tile_list.end(),
+		[this](const Tile* tile) { return checkTile(tile); });
+	if (!potential)
+	{ return mv_delta; }
 
+	Vector2 output = mv_delta;
 	switch (dir)
 	{
 	case TRACE_N:
@@ -275,17 +265,43 @@ PhysicsComponent::TraceDir PhysicsComponent::genTraceDir(const Vector2& mv_delta
 void PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_delta,
 	vector<Tile*> tile_list, PhysicsComponent::TraceDir dir)
 {
+	vector<float> truncator_list;
 	for (int i = 0; i < orig_list.size(); ++i)
 	{
-		if (tile_list[i]->isAlive())
+		if (checkTile(tile_list[i]))
 		{
 			Collider tile_col = tile_list[i]->generateCollider();
-			vertexProject(mv_delta, orig_list[i], tile_col, dir);
+			float trunc = vertexProject(mv_delta, orig_list[i], tile_col, dir);
+			truncator_list.emplace_back(trunc);
 		}
 	}
+	if (truncator_list.size() == 0)
+	{
+		// No tiles were found
+		return;
+	}
+
+	// vector<float>::iterator n = std::min_element(truncator_list.begin(), truncator_list.end());
+	//float shortest = 1;
+	//shortest = *n;
+	float shortest = *std::min_element(truncator_list.begin(), truncator_list.end());
+
+	// sanity checks
+	if (shortest > 1)
+	{
+		// something has gone wrong
+		return;
+	}
+	if (shortest < 0)
+	{
+		shortest = 0;
+	}
+
+	const Vector2 in_vel = mv_delta;
+	mv_delta *= shortest;
 }
 
-bool PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
+float PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
 	Collider otherHitbox, PhysicsComponent::TraceDir dir)
 {
 	Vector2 targetCoord = Vector2(otherHitbox.x, otherHitbox.y);
@@ -327,19 +343,9 @@ bool PhysicsComponent::vertexProject(Vector2 &mv_delta, Vector2 origin,
 	denominator = abs(denominator);
 	if (numerator > denominator)
 	{
-		return false;
+		return 1;
 	}
-
-	float truncation = numerator / denominator;
-	const Vector2 in_vel = mv_delta;
-	mv_delta *= truncation;
-
-	if (mv_delta.Length() >= in_vel.Length())
-	{
-		mv_delta = in_vel;
-		return false;
-	}
-	return true;
+	return numerator / denominator;
 }
 
 bool PhysicsComponent::isCoordUnderVector(const Vector2& origin,

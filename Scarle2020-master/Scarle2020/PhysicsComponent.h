@@ -58,7 +58,7 @@ private:
 	void complexTrace(vector<Vector2> orig_list, Vector2& velocity,
 		vector<Tile*> tile_list, PhysicsComponent::TraceDir dir);
 
-	bool vertexProject(Vector2& mv_delta, Vector2 origin,
+	float vertexProject(Vector2& mv_delta, Vector2 origin,
 		Collider otherHitbox, PhysicsComponent::TraceDir T_dir);
 	bool isCoordUnderVector(const Vector2& origin, const Vector2& delta, Vector2 coord);
 	bool checkTile(const Tile* tile) const;
