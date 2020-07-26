@@ -177,6 +177,7 @@
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="GameObject2D.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="grenade.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="ImageGO2D.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="GameObject2D.cpp" />
+    <ClCompile Include="grenade.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ImageGO2D.cpp" />
     <ClCompile Include="InputManager.cpp" />
