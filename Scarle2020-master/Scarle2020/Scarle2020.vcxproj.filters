@@ -50,6 +50,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{12f1c19e-6d8d-426f-988d-072e689d34e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\weapons">
+      <UniqueIdentifier>{a701a444-b3e9-4b9c-ba43-6272f1eaa867}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -169,6 +172,9 @@
     <ClInclude Include="Collider.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="grenade.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -260,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="grenade.cpp">
+      <Filter>GameObjects\weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
