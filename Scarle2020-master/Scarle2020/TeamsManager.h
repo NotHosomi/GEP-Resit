@@ -16,7 +16,7 @@ class TeamsManager
 public:
 	TeamsManager() = default;
 	~TeamsManager() = default;
-	void createUnit(ID3D11Device* _GD, const Vector2& location, int team_id);
+	Unit* createUnit(ID3D11Device* _GD, const Vector2& location, int team_id);
 	bool seekNextUnit();
 
 	int GetCurrentTeam();

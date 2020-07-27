@@ -10,6 +10,7 @@
 #include "Mouse.h"
 #include "Grid.h"
 #include "InputManager.h"
+#include "TeamsManager.h"
 
 using namespace DirectX;
 
@@ -23,7 +24,8 @@ struct GameData
 	Mouse::State m_MS; 
 	Keyboard::KeyboardStateTracker m_KBS_tracker;
 
-	Grid* p_world = nullptr;
+	Grid* p_World = nullptr;
 	InputManager m_Input;
+	TeamsManager m_Teams;
 };
 #endif

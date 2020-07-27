@@ -102,20 +102,35 @@ void Game::Initialize(HWND _window, int _width, int _height)
     // logo->SetPos(200.0f * Vector2::One);
     // m_GameObjects2D.push_back(logo);
 
-    TextGO2D* text = new TextGO2D("100");
-    text->SetPos(Vector2(0, -20));
-    text->SetScale(0.35);
-    text->SetColour(Color((float*)&Colors::Yellow));
-    m_GameObjects2D.push_back(text);
+    //TextGO2D* text = new TextGO2D("100");
+    //text->SetPos(Vector2(0, -20));
+    //text->SetScale(0.35);
+    //text->SetColour(Color((float*)&Colors::Yellow));
+    //m_GameObjects2D.push_back(text);
 
-    // Generate terrain
-    m_World = new Grid(m_d3dDevice.Get());
-    m_GD->p_world = m_World;
+    // Generate terrain // TODO: Make unique?
+#if 0
+    m_World = std::make_unique<Grid>(new Grid(m_d3dDevice.Get()));
+    m_GD->p_World = m_World.get();
+#else
+    m_GD->p_World = new Grid(m_d3dDevice.Get());
+#endif
 
-    Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 70), 0);
-    demo_unit->getPhysCmp()->addXVel(-200);
-    demo_unit->setAwake(true);
-    m_GameObjects2D.push_back(demo_unit);
+    // Hardcoded spawns, due to time restraint
+#if 0
+    Unit* new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2 (200, 50), 0);
+    new_unit->setAwake(true); // TODO: automate this
+    m_GameObjects2D.push_back(new_unit);
+
+    Unit* unit2 = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(300, 50), 0);
+    m_GameObjects2D.push_back(unit2);
+    
+    //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(400, 50), 1);
+    //m_GameObjects2D.emplace_back(new_unit);
+    //
+    //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(500, 50), 1);
+    //m_GameObjects2D.emplace_back(new_unit);
+#endif
 }
 
 // Executes the basic game loop.
@@ -155,6 +170,7 @@ void Game::Update(DX::StepTimer const& _timer)
     ReadInput();
 
     //update all objects
+
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Tick(m_GD);
@@ -189,7 +205,7 @@ void Game::Render()
 
     // Draw sprite batch stuff 
     m_DD2D->m_Sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-    m_World->draw(m_DD2D);
+    m_GD->p_World->draw(m_DD2D);
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Draw(m_DD2D);

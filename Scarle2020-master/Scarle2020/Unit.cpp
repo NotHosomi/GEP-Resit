@@ -14,10 +14,17 @@ Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 	hp_text.SetColour(TeamsManager::colourPicker(team_id));
 }
 
-//Unit::Unit(const Unit& other) : ImageGO2D(other),
-//	PhysCmp(other.PhysCmp)
-//{
-//}
+Unit::Unit(const Unit& other) : ImageGO2D(other),
+	PhysCmp(other.PhysCmp),
+	hp_text(other.hp_text)
+{
+	awake = other.awake;
+	alive = other.alive;
+	health = other.health;
+	accumulated_damage = other.accumulated_damage;
+	team_id = other.team_id;
+	facing_right = other.facing_right;
+}
 
 Unit::Unit(Unit&& other) noexcept : ImageGO2D(std::move(other)), 
 	PhysCmp(other.PhysCmp),
@@ -37,7 +44,7 @@ void Unit::Tick(GameData* _GD)
 	{
 		playerMove(_GD);
 	}
-	PhysCmp.move(_GD->m_dt, _GD->p_world, m_pos);
+	PhysCmp.move(_GD->m_dt, _GD->p_World, m_pos);
 	Vector2 hp_loc = m_pos;
 #if 0
 	hp_loc.y += UNIT_HP_BAR_OFFSET;

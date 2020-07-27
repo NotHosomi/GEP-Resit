@@ -115,5 +115,5 @@ private:
     list<Sound*>m_Sounds;
 
     // Additional members
-    Grid* m_World = nullptr; // TODO: Find Game destructor to delete this
+    // std::unique_ptr<Grid> m_World;
 };

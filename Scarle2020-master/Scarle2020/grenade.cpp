@@ -12,7 +12,7 @@ Grenade::Grenade(ID3D11Device* _GD, const Vector2& location, const Vector2& velo
 
 void Grenade::Tick(GameData* _GD)
 {
-	PhysCmp.move(_GD->m_dt, _GD->p_world, m_pos);
+	PhysCmp.move(_GD->m_dt, _GD->p_World, m_pos);
 
 	fuse_tmr += _GD->m_dt;
 	if (fuse_tmr > GREN_FUSE)

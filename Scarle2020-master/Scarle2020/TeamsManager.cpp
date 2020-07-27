@@ -15,7 +15,7 @@
 //}
 
 // Consumes the Unit ptr
-void TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int team_id)
+Unit* TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int team_id)
 {
 	while (team_id >= m_team_lists.size())
 	{
@@ -23,6 +23,7 @@ void TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int te
 	}
 	// Add the worm pointer to the team's worm list
 	m_team_lists[team_id].m_worm_list.emplace_back(_GD, location, team_id);
+	return &m_team_lists[team_id].m_worm_list.back();
 }
 
 // Fetch the next worm to play
