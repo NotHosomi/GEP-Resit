@@ -45,6 +45,7 @@ private:
 		F_LEFT = 8
 	};
 
+	void checkGrounded(Grid* world, const Collider& object);
 	void applyFriction(float dt);
 	bool checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& velocity);
 

@@ -12,8 +12,13 @@ PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight, float _el
 
 void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
+	checkGrounded(world, self);
 	if (grounded)
 	{
+		if (velocity.y > 0)
+		{
+			velocity.y = 0;
+		}
 		applyFriction(dt);
 	}
 	else
@@ -39,6 +44,36 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	velocity = frame_velocity / dt;
 }
 
+void PhysicsComponent::checkGrounded(Grid* world, const Collider& object)
+{
+	grounded = false;
+	Vector2 checkCoord;
+	Tile* tile;
+	// Bottom Left
+	checkCoord.x = object.x;
+	checkCoord.y = object.y + object.height;
+	checkCoord.y += MV_SKIN;
+	tile = world->findTile(checkCoord);
+	if (checkTile(tile))
+	{
+		grounded = true;
+	}
+	// Intermediaries
+	if (object.width > Tile::TILE_DIMS)
+	{
+		// TODO: run checks for objects wider than a tile
+	}
+	// Bottom Right
+	checkCoord.x = object.x + object.width;
+	checkCoord.y = object.y + object.height;
+	checkCoord.y += MV_SKIN;
+	tile = world->findTile(checkCoord);
+	if (checkTile(tile))
+	{
+		grounded = true;
+	}
+}
+
 void PhysicsComponent::applyFriction(float dt)
 {
 	float speed = velocity.Length();
@@ -55,6 +90,8 @@ void PhysicsComponent::applyFriction(float dt)
 
 	velocity *= newspeed;
 }
+
+#pragma region COLLISION
 
 // fast collision check, used to objects that die on contact
 bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& mv_delta)
@@ -395,3 +432,5 @@ bool PhysicsComponent::checkTile(const Tile* tile) const
 	}
 	return tile->isAlive();
 }
+
+#pragma endregion
