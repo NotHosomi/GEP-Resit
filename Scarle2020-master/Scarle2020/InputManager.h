@@ -9,10 +9,10 @@ public:
 		IN_RIGHT = 2,
 		IN_UP = 4,
 		IN_DOWN = 8,
-		IN_JUMP = 16,
-		IN_FIRE = 32,
-		IN_NEXT = 64,
-		IN_PREV = 128
+		IN_FIRE = 16,
+		IMP_JUMP = 32,
+		IMP_NEXT = 64,
+		IMP_PREV = 128
 	};
 	void updateInputs(const DirectX::Keyboard::KeyboardStateTracker* keys);
 	void releaseKey(Inputs key);

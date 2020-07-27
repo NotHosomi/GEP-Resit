@@ -22,21 +22,9 @@ void InputManager::updateInputs(const DirectX::Keyboard::KeyboardStateTracker* k
 	{
 		m_keylist |= IN_DOWN;
 	}
-	if (keys->pressed.Space || keys->pressed.I)
-	{
-		m_keylist |= IN_JUMP;
-	}
 	if (keys->pressed.F)
 	{
 		m_keylist |= IN_FIRE;
-	}
-	if (keys->pressed.E)
-	{
-		m_keylist |= IN_NEXT;
-	}
-	if (keys->pressed.Q)
-	{
-		m_keylist |= IN_PREV;
 	}
 
 	// release keys
@@ -56,21 +44,28 @@ void InputManager::updateInputs(const DirectX::Keyboard::KeyboardStateTracker* k
 	{
 		m_keylist &= ~IN_DOWN;
 	}
-	if (keys->released.Space || keys->released.I)
-	{
-		m_keylist &= ~IN_JUMP;
-	}
 	if (keys->released.F)
 	{
 		m_keylist &= ~IN_FIRE;
 	}
-	if (keys->released.E)
+
+	// Impulses - keys that are only looked at for a single frame
+	// clear stale impulses from last frame
+	m_keylist &= ~IMP_JUMP;
+	m_keylist &= ~IMP_NEXT;
+	m_keylist &= ~IMP_PREV;
+	// check for any new impulses
+	if (keys->pressed.Space || keys->pressed.I)
 	{
-		m_keylist &= ~IN_NEXT;
+		m_keylist |= IMP_JUMP;
 	}
-	if (keys->released.Q)
+	if (keys->pressed.E)
 	{
-		m_keylist &= ~IN_PREV;
+		m_keylist |= IMP_NEXT;
+	}
+	if (keys->pressed.Q)
+	{
+		m_keylist |= IMP_PREV;
 	}
 }
 

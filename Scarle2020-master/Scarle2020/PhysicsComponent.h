@@ -22,8 +22,8 @@ public:
 
 private:
 	static constexpr float MV_MAXSPEED = 10000;
-	static constexpr float MV_FRICTION = 4;
-	static constexpr float MV_SKIN = 0.1; // forced gap between objects that have collided
+	static constexpr float MV_FRICTION = 10;
+	static constexpr float MV_SKIN = 0.05; // forced gap between objects that have collided
 
 	enum TraceDir
 	{
@@ -45,6 +45,7 @@ private:
 		F_LEFT = 8
 	};
 
+	void checkGrounded(Grid* world, const Collider& object);
 	void applyFriction(float dt);
 	bool checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& velocity);
 

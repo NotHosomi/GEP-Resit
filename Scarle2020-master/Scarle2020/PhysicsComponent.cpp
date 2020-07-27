@@ -12,8 +12,13 @@ PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight, float _el
 
 void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
+	checkGrounded(world, self);
 	if (grounded)
 	{
+		if (velocity.y > 0)
+		{
+			velocity.y = 0;
+		}
 		applyFriction(dt);
 	}
 	else
@@ -24,13 +29,49 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	Vector2 frame_velocity = velocity;
 	frame_velocity *= dt;
 	Vector2 displacement = checkCollisions(world, self, frame_velocity);
+	// Using the accurate displacement would be cool, however it results in objects actually
+	// touching, which then allows them to phase into eachother. Something for the devlog I guess
+#if 0
 	pos += displacement;
+#else
+	pos += frame_velocity;
+#endif
 	// update collider position
 	self.x = pos.x;
 	self.y = pos.y;
 
 	// update persistent velocity to reflect the changes in checkCollisions();
 	velocity = frame_velocity / dt;
+}
+
+void PhysicsComponent::checkGrounded(Grid* world, const Collider& object)
+{
+	grounded = false;
+	Vector2 checkCoord;
+	Tile* tile;
+	// Bottom Left
+	checkCoord.x = object.x;
+	checkCoord.y = object.y + object.height;
+	checkCoord.y += MV_SKIN;
+	tile = world->findTile(checkCoord);
+	if (checkTile(tile))
+	{
+		grounded = true;
+	}
+	// Intermediaries
+	if (object.width > Tile::TILE_DIMS)
+	{
+		// TODO: run checks for objects wider than a tile
+	}
+	// Bottom Right
+	checkCoord.x = object.x + object.width;
+	checkCoord.y = object.y + object.height;
+	checkCoord.y += MV_SKIN;
+	tile = world->findTile(checkCoord);
+	if (checkTile(tile))
+	{
+		grounded = true;
+	}
 }
 
 void PhysicsComponent::applyFriction(float dt)
@@ -49,6 +90,8 @@ void PhysicsComponent::applyFriction(float dt)
 
 	velocity *= newspeed;
 }
+
+#pragma region COLLISION
 
 // fast collision check, used to objects that die on contact
 bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& mv_delta)
@@ -363,13 +406,13 @@ float PhysicsComponent::vertexProject(const Vector2 &mv_delta, const Vector2& or
 		denominator = mv_delta.x;
 		OUT_face = mv_delta.x > 0 ? F_LEFT : F_RIGHT;
 	}
-	numerator = abs(numerator);
-	denominator = abs(denominator);
-	if (numerator > denominator)
-	{
-		OUT_face = F_NONE;
-		return 1;
-	}
+	// numerator = abs(numerator);
+	// denominator = abs(denominator);
+	// if (numerator > denominator)
+	// {
+	// 	OUT_face = F_NONE;
+	// 	return 1;
+	// }
 	return numerator / denominator;
 }
 
@@ -389,3 +432,5 @@ bool PhysicsComponent::checkTile(const Tile* tile) const
 	}
 	return tile->isAlive();
 }
+
+#pragma endregion
