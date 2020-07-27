@@ -8,5 +8,6 @@
     <ImageContentTask Include="projectile1.png" />
     <ImageContentTask Include="projectile2.png" />
     <ImageContentTask Include="projectile3.png" />
+    <ImageContentTask Include="projectile0.png" />
   </ItemGroup>
 </Project>

@@ -102,19 +102,20 @@ void Game::Initialize(HWND _window, int _width, int _height)
     // logo->SetPos(200.0f * Vector2::One);
     // m_GameObjects2D.push_back(logo);
 
-    // TextGO2D* text = new TextGO2D("Test Text");
-    // text->SetPos(Vector2(100, 10));
-    // text->SetColour(Color((float*)&Colors::Yellow));
-    // m_GameObjects2D.push_back(text);
+    TextGO2D* text = new TextGO2D("100");
+    text->SetPos(Vector2(0, -20));
+    text->SetScale(0.35);
+    text->SetColour(Color((float*)&Colors::Yellow));
+    m_GameObjects2D.push_back(text);
 
     // Generate terrain
     m_World = new Grid(m_d3dDevice.Get());
     m_GD->p_world = m_World;
 
-    Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 70));
-    demo_unit->getPhysCmp()->addXVel(200);
+    Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 70), 0);
+    demo_unit->getPhysCmp()->addXVel(-200);
+    demo_unit->setAwake(true);
     m_GameObjects2D.push_back(demo_unit);
-    
 }
 
 // Executes the basic game loop.
