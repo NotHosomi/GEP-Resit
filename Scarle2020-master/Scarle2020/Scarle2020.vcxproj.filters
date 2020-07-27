@@ -175,6 +175,9 @@
     <ClInclude Include="grenade.h">
       <Filter>GameObjects\weapons</Filter>
     </ClInclude>
+    <ClInclude Include="TeamsManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -269,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="grenade.cpp">
       <Filter>GameObjects\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="TeamsManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

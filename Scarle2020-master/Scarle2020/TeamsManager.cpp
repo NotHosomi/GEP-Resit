@@ -13,14 +13,15 @@
 //	}
 //}
 
-void TeamsManager::AddToTeamList(int team_id, Unit& unit)
+// Consumes the Unit ptr
+void TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int team_id)
 {
 	while (team_id >= m_team_lists.size())
 	{
 		m_team_lists.push_back(TeamData());
 	}
 	// Add the worm pointer to the team's worm list
-	m_team_lists[team_id].m_worm_list.emplace_back(unit); // TODO check if this is a memory leak
+	m_team_lists[team_id].m_worm_list.emplace_back(_GD, location, team_id);
 }
 
 // Fetch the next worm to play

@@ -5,6 +5,7 @@
 class PhysicsComponent
 {
 public:
+	PhysicsComponent() = default;
 	PhysicsComponent(Vector2 dimensions, float _weight, float _elasticity);
 	~PhysicsComponent() = default;
 	void setVel(Vector2 vel) { velocity = vel; };
@@ -68,7 +69,7 @@ private:
 	Vector2 velocity = Vector2(0, 0);
 	bool grounded = false;
 	bool bouncy = false;
-	float elasticity;
-	float weight;
+	float elasticity = 0.1;
+	float weight = 100;
 };
 

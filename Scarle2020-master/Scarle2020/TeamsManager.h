@@ -13,7 +13,7 @@ class TeamsManager
 public:
 	TeamsManager() = default;
 	~TeamsManager() = default;
-	void AddToTeamList(int team_id, Unit& new_unit);
+	void createUnit(ID3D11Device* _GD, const Vector2& location, int team_id);
 	bool seekNextUnit();
 
 	int GetCurrentTeam();

@@ -2,11 +2,29 @@
 #include "Unit.h"
 #include "GameData.h"
 
-Unit::Unit(ID3D11Device* _GD, const Vector2& location) : 
+Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 	ImageGO2D("ally", _GD),
 	PhysCmp(Vector2(UNIT_WIDTH, UNIT_HEIGHT), UNIT_WEIGHT, UNIT_ELASTICITY)
 {
 	m_pos = location;
+	team_id = team;
+}
+
+//Unit::Unit(const Unit& other) : ImageGO2D(other),
+//	PhysCmp(other.PhysCmp)
+//{
+//}
+
+Unit::Unit(Unit&& other) noexcept : ImageGO2D(std::move(other)), 
+	PhysCmp(other.PhysCmp)
+{
+	awake = other.awake;
+	alive = other.alive;
+	health = other.health;
+	accumulated_damage = other.accumulated_damage;
+	team_id = other.team_id;
+	facing_right = other.facing_right;
+	jump_timer = other.jump_timer;
 }
 
 void Unit::Tick(GameData* _GD)

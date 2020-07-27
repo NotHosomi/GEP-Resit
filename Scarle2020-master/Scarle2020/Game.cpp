@@ -111,7 +111,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_World = new Grid(m_d3dDevice.Get());
     m_GD->p_world = m_World;
 
-    Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 70));
+    Unit* demo_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 70), 0);
     demo_unit->getPhysCmp()->addXVel(-200);
     m_GameObjects2D.push_back(demo_unit);
     

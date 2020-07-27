@@ -7,8 +7,9 @@ class Unit : public ImageGO2D
 {
 public:
 	Unit() = delete;
-	Unit(ID3D11Device* _GD, const Vector2& location);
+	Unit(ID3D11Device* _GD, const Vector2& location, int team);
 	Unit(const Unit& other) = delete;
+	Unit(Unit&& other) noexcept;
 
 	void Tick(GameData* _GD) override;
 
