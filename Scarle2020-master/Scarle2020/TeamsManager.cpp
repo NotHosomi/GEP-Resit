@@ -3,18 +3,8 @@
 #include <algorithm>
 #include <SimpleMath.h>
 
-//TeamsManager::~TeamsManager()
-//{
-//	for (auto& team : m_team_lists)
-//	{
-//		for (int i = 0; i < team.m_worm_list.size(); ++i)
-//		{
-//	
-//		}
-//	}
-//}
-
-// Consumes the Unit ptr
+// Cut - Create unit
+#if 0
 Unit* TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int team_id)
 {
 	while (team_id >= m_team_lists.size())
@@ -24,6 +14,18 @@ Unit* TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int t
 	// Add the worm pointer to the team's worm list
 	m_team_lists[team_id].m_worm_list.emplace_back(_GD, location, team_id);
 	return &m_team_lists[team_id].m_worm_list.back();
+}
+#endif
+
+void TeamsManager::addUnitToTeam(Unit* unit)
+{
+	int team = unit->getTeam();
+	while (team >= m_team_lists.size())
+	{
+		m_team_lists.push_back(TeamData());
+	}
+	// Add the worm pointer to the team's worm list
+	m_team_lists[team].unit_list.emplace_back(unit);
 }
 
 // Fetch the next worm to play
@@ -46,9 +48,9 @@ bool TeamsManager::seekNextUnit()
 			return true;
 		}
 
-		for (auto& unit : m_team_lists[m_current_team].m_worm_list)
+		for (auto& unit : m_team_lists[m_current_team].unit_list)
 		{
-			if (unit.isAlive())
+			if (unit->isAlive())
 			{
 				found_team = false;;
 			}
@@ -61,14 +63,14 @@ bool TeamsManager::seekNextUnit()
 
 	TeamData* current_team = &m_team_lists[m_current_team];
 	Unit* thisWorm;
-	for (int i = 0; i < current_team->m_worm_list.size(); ++i)
+	for (int i = 0; i < current_team->unit_list.size(); ++i)
 	{
 		current_team->queuedWorm++;
-		if (current_team->queuedWorm >= current_team->m_worm_list.size())
+		if (current_team->queuedWorm >= current_team->unit_list.size())
 		{
 			current_team->queuedWorm = 0;
 		}
-		thisWorm = &current_team->m_worm_list[current_team->queuedWorm];
+		thisWorm = current_team->unit_list[current_team->queuedWorm];
 		if (thisWorm->isAlive() > 0)
 		{
 			break;
@@ -93,9 +95,9 @@ void TeamsManager::applyDamages()
 {
 	for (auto& team : m_team_lists)
 	{
-		for (auto& unit : team.m_worm_list)
+		for (auto& unit : team.unit_list)
 		{
-			unit.applyDamages();
+			unit->applyDamages();
 		}
 	}
 }

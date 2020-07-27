@@ -6,9 +6,9 @@
 
 struct TeamData
 {
-	vector<Unit> m_worm_list = {};
+	vector<Unit*> unit_list = {};
 	int queuedWorm = 0;
-	array<int, 4> m_ammo_list = { -1, -1, -1, -1 };
+	array<int, 4> ammo_list = { -1, -1, -1, -1 }; // -1 means infinite ammo
 };
 
 class TeamsManager
@@ -16,7 +16,8 @@ class TeamsManager
 public:
 	TeamsManager() = default;
 	~TeamsManager() = default;
-	Unit* createUnit(ID3D11Device* _GD, const Vector2& location, int team_id);
+	//Unit* createUnit(ID3D11Device* _GD, const Vector2& location, int team_id);
+	void addUnitToTeam(Unit* unit);
 	bool seekNextUnit();
 
 	int GetCurrentTeam();

@@ -130,6 +130,16 @@ void Game::Initialize(HWND _window, int _width, int _height)
     //
     //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(500, 50), 1);
     //m_GameObjects2D.emplace_back(new_unit);
+#else
+    Unit* new_unit = new Unit(m_d3dDevice.Get(), Vector2(200, 50), 0);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    new_unit->setAwake(true); // TODO: automate this
+    m_GameObjects2D.push_back(new_unit);
+
+
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 50), 0);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
 #endif
 }
 
