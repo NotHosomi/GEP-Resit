@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Unit.h"
 #include "GameData.h"
+#include "DrawData2D.h"
+#include "TeamsManager.h"
 
 Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 	ImageGO2D("ally", _GD),
@@ -8,6 +10,8 @@ Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 {
 	m_pos = location;
 	team_id = team;
+	hp_text.SetScale(UNIT_HP_BAR_SCALE);
+	hp_text.SetColour(TeamsManager::colourPicker(team_id));
 }
 
 //Unit::Unit(const Unit& other) : ImageGO2D(other),
@@ -16,7 +20,8 @@ Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 //}
 
 Unit::Unit(Unit&& other) noexcept : ImageGO2D(std::move(other)), 
-	PhysCmp(other.PhysCmp)
+	PhysCmp(other.PhysCmp),
+	hp_text(other.hp_text)
 {
 	awake = other.awake;
 	alive = other.alive;
@@ -34,6 +39,24 @@ void Unit::Tick(GameData* _GD)
 		playerMove(_GD);
 	}
 	PhysCmp.move(_GD->m_dt, _GD->p_world, m_pos);
+	Vector2 hp_loc = m_pos;
+#if 0
+	hp_loc.y += UNIT_HP_BAR_OFFSET;
+#else
+	hp_loc.y += UNIT_HP_BAR_OFFSET;
+	hp_loc.y -= UNIT_HEIGHT;
+	hp_loc.x -= UNIT_WIDTH/2;
+#endif
+	hp_text.SetPos(hp_loc);
+}
+
+void Unit::Draw(DrawData2D* _DD)
+{
+	if (alive)
+	{
+		_DD->m_Sprites->Draw(m_pTextureRV, m_pos, nullptr, m_colour, m_rotation, m_origin, m_scale, SpriteEffects_None);
+		hp_text.Draw(_DD);
+	}
 }
 
 void Unit::setAwake(bool _awake)
@@ -60,6 +83,7 @@ void Unit::applyDamages()
 {
 	health -= accumulated_damage;
 	accumulated_damage = 0;
+	hp_text = std::to_string(health);
 	if (health <= 0)
 	{
 		// TODO: EXPLODE!

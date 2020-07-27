@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TeamsManager.h"
 #include <algorithm>
+#include <SimpleMath.h>
 
 //TeamsManager::~TeamsManager()
 //{
@@ -95,5 +96,17 @@ void TeamsManager::applyDamages()
 		{
 			unit.applyDamages();
 		}
+	}
+}
+
+Color TeamsManager::colourPicker(int team_id)
+{
+	switch (team_id)
+	{
+	case 0: return Color((float*)&Colors::Red);
+	case 1: return Color((float*)&Colors::Blue);
+	case 2: return Color((float*)&Colors::Pink);
+	case 3: return Color((float*)&Colors::Yellow);
+	default: return Color((float*)&Colors::White);
 	}
 }
