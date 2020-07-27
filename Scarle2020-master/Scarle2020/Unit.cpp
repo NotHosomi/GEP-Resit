@@ -49,7 +49,7 @@ void Unit::playerMove(GameData* _GD)
 	}
 
 	// Walk move
-	if (_GD->m_Input.checkKey(InputManager::IN_JUMP))
+	if (_GD->m_Input.checkKey(InputManager::IMP_JUMP))
 	{
 		PhysCmp.setGrounded(false);
 		PhysCmp.addYVel(-MV_JUMPFORCE_V);
