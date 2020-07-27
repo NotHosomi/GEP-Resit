@@ -29,7 +29,6 @@ Unit::Unit(Unit&& other) noexcept : ImageGO2D(std::move(other)),
 	accumulated_damage = other.accumulated_damage;
 	team_id = other.team_id;
 	facing_right = other.facing_right;
-	jump_timer = other.jump_timer;
 }
 
 void Unit::Tick(GameData* _GD)
