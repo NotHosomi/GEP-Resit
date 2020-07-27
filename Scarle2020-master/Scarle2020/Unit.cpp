@@ -28,6 +28,26 @@ int Unit::getTeam()
 	return team_id;
 }
 
+bool Unit::isAlive()
+{
+	return alive;
+}
+
+void Unit::addDamage(float amount)
+{
+	accumulated_damage += amount;
+}
+
+void Unit::applyDamages()
+{
+	health -= accumulated_damage;
+	accumulated_damage = 0;
+	if (health <= 0)
+	{
+		// TODO: EXPLODE!
+	}
+}
+
 void Unit::playerMove(GameData* _GD)
 {
 	if (!PhysCmp.isGrounded())

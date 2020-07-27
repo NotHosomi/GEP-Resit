@@ -6,13 +6,19 @@
 class Unit : public ImageGO2D
 {
 public:
+	Unit() = delete;
 	Unit(ID3D11Device* _GD, const Vector2& location);
+	Unit(const Unit& other) = delete;
 
 	void Tick(GameData* _GD) override;
 
 	// TeamsManager controls
 	void setAwake(bool _awake);
 	int getTeam();
+	bool isAlive();
+
+	void addDamage(float amount);
+	void applyDamages();
 
 	// debugging
 	PhysicsComponent* getPhysCmp() { return &PhysCmp; };
@@ -38,10 +44,12 @@ private:
 	bool awake = true; // TODO: set false
 	bool alive = true;
 
-	float health = 100;
+	int health = 100;
+	int accumulated_damage = 0;
+
 	int team_id = 0;
 	bool facing_right = true;
 
-	float jump_timer;
+	float jump_timer = 0;
 };
 
