@@ -24,8 +24,11 @@ struct GameData
 	Mouse::State m_MS; 
 	Keyboard::KeyboardStateTracker m_KBS_tracker;
 
+	ID3D11Device* p_Device = nullptr;
 	Grid* p_World = nullptr;
 	InputManager m_Input;
 	TeamsManager m_Teams;
+	vector<GameObject2D*> creation_list;
+	vector<GameObject2D*> deletion_list;
 };
 #endif
