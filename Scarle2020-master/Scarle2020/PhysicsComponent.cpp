@@ -10,7 +10,8 @@ PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight, float _el
 	elasticity = _elasticity;
 }
 
-void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
+// Returns true if there was a collision
+bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
 	if (locked)
 	{
@@ -30,9 +31,10 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	{
 		velocity.y += weight * dt;
 	}
-	
+
 	Vector2 frame_velocity = velocity;
 	frame_velocity *= dt;
+	Vector2 old_velo = frame_velocity;
 	Vector2 displacement = checkCollisions(world, self, frame_velocity);
 	// Using the accurate displacement would be cool, however it results in objects actually
 	// touching, which then allows them to phase into eachother. Something for the devlog I guess
@@ -41,12 +43,16 @@ void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 #else
 	pos += frame_velocity;
 #endif
+
 	// update collider position
 	self.x = pos.x;
 	self.y = pos.y;
 
 	// update persistent velocity to reflect the changes in checkCollisions();
 	velocity = frame_velocity / dt;
+
+	// return true if the velocity was modified by the collision check
+	return old_velo != velocity;
 }
 
 void PhysicsComponent::checkGrounded(Grid* world, const Collider& object)

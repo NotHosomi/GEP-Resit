@@ -17,7 +17,7 @@ public:
 	void setGrounded(bool _grounded) { grounded = _grounded; };
 	void setLocked(bool _locked) { locked = _locked; };
 
-	void move(float dt, Grid* world, Vector2& pos);
+	bool move(float dt, Grid* world, Vector2& pos);
 
 	Vector2 getVel() { return velocity; };
 	bool isGrounded() { return grounded; };
