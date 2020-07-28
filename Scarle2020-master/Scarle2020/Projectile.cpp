@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Projectile.h"
 #include "GameData.h"
+#include "Explosion.h"
 
 Projectile::Projectile(ID3D11Device* _GD, string texture, Vector2 _dimensions, float _weight, float _elasticity, bool _explode_on_contact)
 	: ImageGO2D(texture, _GD),
@@ -20,4 +21,6 @@ void Projectile::Tick(GameData* _GD)
 
 void Projectile::explode(GameData* _GD)
 {
+	GameObject2D* explosion = new Explosion(_GD->p_Device, m_pos, exp_radius, exp_damage);
+	_GD->creation_list.emplace_back(explosion);
 }

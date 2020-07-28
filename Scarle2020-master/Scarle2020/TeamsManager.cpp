@@ -102,7 +102,7 @@ vector<TeamData*> TeamsManager::getAllTeams()
 	vector<TeamData*> teams;
 	for (auto& team : m_team_lists)
 	{
-		teams.emplace_back(team);
+		teams.emplace_back(&team);
 	}
 	return vector<TeamData*>();
 }

@@ -15,7 +15,7 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
 	if (locked)
 	{
-		return;
+		return false;
 	}
 
 	checkGrounded(world, self);

@@ -43,7 +43,7 @@ void Explosion::Tick(GameData* _GD)
 			unit->getPhysCmp()->addVel(diff);
 		}
 	}
-	// Tell _GD to kill This
+	_GD->deletion_list.emplace_back(this);
 }
 
 

@@ -12,5 +12,7 @@ private:
 	virtual void explode(GameData* _GD);
 	PhysicsComponent PhysCmp;
 	bool explode_on_contact = false;
+	float exp_radius = 100;
+	float exp_damage = 60;
 };
 
