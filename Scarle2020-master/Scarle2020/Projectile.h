@@ -4,7 +4,7 @@
 class Projectile : public ImageGO2D
 {
 public:
-	Projectile(ID3D11Device* _GD, string texture, Vector2 velocity,
+	Projectile(ID3D11Device* _GD, string texture, Vector2 position, Vector2 velocity,
 		Vector2 _dimensions, float _weight, float _elasticity, bool _explode_on_contact);
 
 	void Tick(GameData* _GD) override;

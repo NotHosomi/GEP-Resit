@@ -3,11 +3,12 @@
 #include "GameData.h"
 #include "Explosion.h"
 
-Projectile::Projectile(ID3D11Device* _GD, string texture, Vector2 velocity,
+Projectile::Projectile(ID3D11Device* _GD, string texture, Vector2 position, Vector2 velocity,
 	Vector2 _dimensions, float _weight, float _elasticity, bool _explode_on_contact)
 	: ImageGO2D(texture, _GD),
 	PhysCmp(_dimensions, _weight, _elasticity)
 {
+	m_pos = position;
 	PhysCmp.setVel(velocity);
 	explode_on_contact = _explode_on_contact;
 }

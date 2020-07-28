@@ -181,13 +181,14 @@ void Weapon::fire(GameData* _GD)
 	GameObject2D* new_projectile = nullptr;
 	switch (current_weptype)
 	{
-	case WEP_ROCKET: new_projectile = new Rocket(_GD->p_Device, Vector2(200 * charge, 0));
+	case WEP_ROCKET: new_projectile =
+		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), Vector2(WEP0_CHARGE_MULT * charge, 0));
 		break;
-	case WEP_PISTOL: //new_projectile = new Rocket(_GD->p_Device, Vector2(100, 0));
+	case WEP_PISTOL: //new_projectile = new Bullet(_GD->p_Device, Vector2(100, 0));
 		break;
-	case WEP_GRENADE: //new_projectile = new Rocket(_GD->p_Device, Vector2(100, 0));
+	case WEP_GRENADE: //new_projectile = new Grenade(_GD->p_Device, Vector2(100, 0));
 		break;
-	case WEP_DYNAMITE: //new_projectile = new Rocket(_GD->p_Device, Vector2(100, 0));
+	case WEP_DYNAMITE: //new_projectile = new Dynamite(_GD->p_Device, Vector2(100, 0));
 		break;
 	}
 	// _GD->carrier->add Projectile

@@ -29,6 +29,7 @@ private:
 	static constexpr float WEP_MAX_CHAGE_TIME = 1.5;
 	static constexpr float WEP_NUMWEPS = 4;
 	static constexpr float HUD_LIST_DECAY_TIME = 3;
+	static constexpr float WEP0_CHARGE_MULT = 400;
 
 	void switchWep(GameData* _GD, bool forward);
 	void chargeWeapon(GameData* _GD);
