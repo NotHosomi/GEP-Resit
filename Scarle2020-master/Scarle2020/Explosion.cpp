@@ -7,9 +7,7 @@ Explosion::Explosion(ID3D11Device* _GD, Vector2 position, float _radius, float _
 {
 	m_pos = position;
 	radius = _radius;
-	Vector2 scale = Vector2(radius, radius);
-	scale / 100;
-	m_scale = scale;
+	m_scale = Vector2(radius, radius) / 100; // src sprite is 200x200
 
 	damage = damage;
 }

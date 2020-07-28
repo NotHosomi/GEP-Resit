@@ -53,7 +53,7 @@ private:
 	void applyFriction(float dt);
 	bool checkCollisionsCheap(Grid* world, const Collider& object, const Vector2& velocity);
 
-	Vector2 checkCollisions(Grid* world, const Collider& object, Vector2& velocity);
+	bool checkCollisions(Grid* world, const Collider& object, Vector2& velocity);
 	vector<Vector2> genOrigList(const Collider& object);
 	vector<Vector2> genDestList(const vector<Vector2>& orig_list, const Vector2& velocity);
 	vector<Tile*> genTileList(Grid* world, const vector<Vector2>& dest_list);

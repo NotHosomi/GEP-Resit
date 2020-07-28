@@ -15,7 +15,7 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
 	if (locked)
 	{
-		return false;
+		return true;
 	}
 
 	checkGrounded(world, self);
@@ -35,7 +35,7 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	Vector2 frame_velocity = velocity;
 	frame_velocity *= dt;
 	Vector2 old_velo = frame_velocity;
-	Vector2 displacement = checkCollisions(world, self, frame_velocity);
+	bool hit = checkCollisions(world, self, frame_velocity);
 	// Using the accurate displacement would be cool, however it results in objects actually
 	// touching, which then allows them to phase into eachother. Something for the devlog I guess
 #if 0
@@ -51,8 +51,8 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	// update persistent velocity to reflect the changes in checkCollisions();
 	velocity = frame_velocity / dt;
 
-	// return true if the velocity was modified by the collision check
-	return old_velo != velocity;
+	// return true if there was a collision
+	return hit;
 }
 
 void PhysicsComponent::checkGrounded(Grid* world, const Collider& object)
@@ -113,22 +113,21 @@ bool PhysicsComponent::checkCollisionsCheap(Grid* world, const Collider& object,
 }
 
 /* Comprehensive collision check, used for persistent objects
-*	Returns the amount to move the object/player in this frame
+*	Returns true if there was a collision
 *	mv_delta will be set to how much the player's new velocity is (is modified by delta time, requires reversion)
 */
-Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, Vector2& mv_delta)
+bool PhysicsComponent::checkCollisions(Grid* world, const Collider& object, Vector2& mv_delta)
 {
 	vector<Vector2> orig_list = genOrigList(object);
 	vector<Vector2> dest_list = genDestList(orig_list, mv_delta);
 	vector<Tile*> tile_list = genTileList(world, dest_list);
-	TraceDir dir = genTraceDir(mv_delta);
+	PhysicsComponent::TraceDir dir = genTraceDir(mv_delta);
 
 	bool potential = std::any_of(tile_list.begin(), tile_list.end(),
 		[this](const Tile* tile) { return checkTile(tile); });
 	if (!potential)
-	{ return mv_delta; }
+	{ return false; }
 
-	Vector2 output;
 	switch (dir)
 	{
 	case TRACE_N:
@@ -137,7 +136,6 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 			{
 				mv_delta.y = 0;
 			}
-		output = mv_delta; // temp
 		break;
 	case TRACE_S:
 		if (checkTile(tile_list[2]) || checkTile(tile_list[5]))
@@ -153,7 +151,6 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 					mv_delta.y = 0;
 				}
 			}
-		output = mv_delta; // temp
 		break;
 	case TRACE_W:
 		if (checkTile(tile_list[0]) || checkTile(tile_list[1]) || checkTile(tile_list[2]))
@@ -164,7 +161,6 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 				else
 					mv_delta.x *= -elasticity;
 			}
-		output = mv_delta; //temp
 		break;
 	case TRACE_E:
 		if (checkTile(tile_list[3]) || checkTile(tile_list[4]) || checkTile(tile_list[5]))
@@ -175,13 +171,14 @@ Vector2 PhysicsComponent::checkCollisions(Grid* world, const Collider& object, V
 				else
 					mv_delta.x *= -elasticity;
 			}
-		output = mv_delta; // temp
 		break;
 	default:
-		output = complexTrace(orig_list, mv_delta, tile_list, dir);
+		complexTrace(orig_list, mv_delta, tile_list, dir);
+		// ended up not using the precise return value from complexTrace, and just
+		// using it's mv_delta output instead, for consistency's sake
 		break;
 	}
-	return output;
+	return true;
 }
 
 vector<Vector2> PhysicsComponent::genOrigList(const Collider& object)
@@ -318,6 +315,7 @@ PhysicsComponent::TraceDir PhysicsComponent::genTraceDir(const Vector2& mv_delta
 	return T_dir;
 }
 
+// returns a precise amount to move the object so that it is aligned with the closest collider
 Vector2 PhysicsComponent::complexTrace(vector<Vector2> orig_list, Vector2& mv_delta,
 	vector<Tile*> tile_list, PhysicsComponent::TraceDir dir)
 {

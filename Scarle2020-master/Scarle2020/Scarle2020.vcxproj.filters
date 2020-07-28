@@ -187,6 +187,7 @@
     <ClInclude Include="Explosion.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Rocket.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -294,6 +295,7 @@
     <ClCompile Include="Explosion.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Rocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">

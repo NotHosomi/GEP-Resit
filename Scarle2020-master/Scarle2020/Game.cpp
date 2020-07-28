@@ -234,8 +234,8 @@ void Game::Update(DX::StepTimer const& _timer)
     }
     while (m_GD->creation_list.size())
     {
-        GameObject2D* ptr = m_GD->deletion_list.back();
-        m_GD->deletion_list.pop_back();
+        GameObject2D* ptr = m_GD->creation_list.back();
+        m_GD->creation_list.pop_back();
         m_GameObjects2D.emplace_back(ptr);
     }
 

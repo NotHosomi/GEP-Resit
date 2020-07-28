@@ -25,4 +25,5 @@ void Projectile::explode(GameData* _GD)
 {
 	GameObject2D* explosion = new Explosion(_GD->p_Device, m_pos, exp_radius, exp_damage);
 	_GD->creation_list.emplace_back(explosion);
+	_GD->deletion_list.emplace_back(this);
 }

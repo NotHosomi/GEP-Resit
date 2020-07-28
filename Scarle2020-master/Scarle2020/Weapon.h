@@ -36,6 +36,7 @@ private:
 	void pickColour();
 
 	bool has_fired = false;
+	bool projectile_released = false;
 	Weapon::WepType current_weptype = WEP_ROCKET;
 	float charge = 0;
 	float angle = 90;

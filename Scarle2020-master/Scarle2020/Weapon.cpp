@@ -3,6 +3,10 @@
 #include "GameData.h"
 #include "DrawData2D.h"
 #include "TeamsManager.h"
+#include "Rocket.h"
+//#include "Bullet.h"
+#include "grenade.h"
+//#include "Dynamite.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
 	ImageGO2D("weapon", _GD)
@@ -27,7 +31,7 @@ void Weapon::Tick(GameData* _GD)
 	}
 
 
-	if (charge > 0)
+	if (charge > 0 && !projectile_released)
 	{
 		chargeWeapon(_GD);
 		return;
@@ -78,6 +82,7 @@ void Weapon::Tick(GameData* _GD)
 		if (current_weptype == WEP_DYNAMITE)
 		{
 			fire(_GD);
+			_GD->m_Input.releaseKey(InputManager::IN_FIRE);
 			return;
 		}
 		chargeWeapon(_GD);
@@ -176,16 +181,18 @@ void Weapon::fire(GameData* _GD)
 	GameObject2D* new_projectile = nullptr;
 	switch (current_weptype)
 	{
-		case WEP_ROCKET:
-			break;
-		case WEP_PISTOL:
-			break;
-		case WEP_GRENADE:
-			break;
-		case WEP_DYNAMITE:
-			break;
+	case WEP_ROCKET: new_projectile = new Rocket(_GD->p_Device, Vector2(200 * charge, 0));
+		break;
+	case WEP_PISTOL: //new_projectile = new Rocket(_GD->p_Device, Vector2(100, 0));
+		break;
+	case WEP_GRENADE: //new_projectile = new Rocket(_GD->p_Device, Vector2(100, 0));
+		break;
+	case WEP_DYNAMITE: //new_projectile = new Rocket(_GD->p_Device, Vector2(100, 0));
+		break;
 	}
 	// _GD->carrier->add Projectile
+	_GD->creation_list.emplace_back(new_projectile);
+	charge = 0;
 }
 
 void Weapon::pickColour()
