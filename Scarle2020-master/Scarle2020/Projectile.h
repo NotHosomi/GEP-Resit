@@ -4,11 +4,12 @@
 class Projectile : public ImageGO2D
 {
 public:
-	Projectile(ID3D11Device* _GD, string texture, Vector2 _dimensions, float _weight, float _elasticity, bool _explode_on_contact);
+	Projectile(ID3D11Device* _GD, string texture, Vector2 velocity,
+		Vector2 _dimensions, float _weight, float _elasticity, bool _explode_on_contact);
 
 	void Tick(GameData* _GD) override;
 
-private:
+protected:
 	virtual void explode(GameData* _GD);
 	PhysicsComponent PhysCmp;
 	bool explode_on_contact = false;
