@@ -22,7 +22,9 @@ public:
 	void addUnitToTeam(Unit* unit);
 	bool seekNextUnit();
 
-	int getCurrentTeam();
+	int getCurrentTeamId();
+	TeamData* getCurrentTeam();
+	vector<TeamData*> getAllTeams();
 	Unit* getCurrentUnit();
 	int ammoCount(int wep_slot);
 	void consumeAmmo(int wep_slot);
