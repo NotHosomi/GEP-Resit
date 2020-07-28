@@ -20,8 +20,9 @@ public:
 	void addUnitToTeam(Unit* unit);
 	bool seekNextUnit();
 
-	int GetCurrentTeam();
+	int getCurrentTeam();
 	Unit* getCurrentUnit();
+	int ammoCount(int wep_slot);
 
 	void applyDamages();
 

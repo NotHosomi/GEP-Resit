@@ -80,7 +80,7 @@ bool TeamsManager::seekNextUnit()
 	return true;
 }
 
-int TeamsManager::GetCurrentTeam()
+int TeamsManager::getCurrentTeam()
 {
 	return m_current_team;
 }
@@ -88,6 +88,19 @@ int TeamsManager::GetCurrentTeam()
 Unit* TeamsManager::getCurrentUnit()
 {
 	return current_unit;
+}
+
+int TeamsManager::ammoCount(int wep_slot)
+{
+	if (wep_slot > m_team_lists[m_current_team].ammo_list.size())
+	{
+		return 0;
+	}
+	if (wep_slot < 0)
+	{
+		return 0;
+	}
+	return m_team_lists[m_current_team].ammo_list[wep_slot];
 }
 
 // call once all units have stopped moving

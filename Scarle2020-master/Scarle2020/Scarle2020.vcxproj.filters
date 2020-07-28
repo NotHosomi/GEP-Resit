@@ -178,6 +178,7 @@
     <ClInclude Include="TeamsManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -276,6 +277,7 @@
     <ClCompile Include="TeamsManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
