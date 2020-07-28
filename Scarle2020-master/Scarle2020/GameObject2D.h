@@ -34,6 +34,9 @@ public:
 	void SetScale(float _scale) { m_scale = _scale * Vector2::One; }
 	void SetOrigin(Vector2 _origin) { m_origin = _origin; }
 
+	// for making one object follow another i.e. weapon following current unit
+	[[nodiscard]] Vector2 GetPos() const { return m_pos; };
+
 protected:
 	Vector2 m_pos;
 	float m_rotation;

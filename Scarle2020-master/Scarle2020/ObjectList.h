@@ -35,4 +35,5 @@
 //Worms Objects
 #include "Tile.h"
 #include "Unit.h"
+#include "Weapon.h"
 #include "grenade.h"

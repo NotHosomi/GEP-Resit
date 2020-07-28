@@ -172,6 +172,12 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD->m_Teams.addUnitToTeam(new_unit);
     m_GameObjects2D.push_back(new_unit);
 #endif
+
+    // Add weapon last, so it also draws last
+    Weapon* weapon = new Weapon(m_d3dDevice.Get());
+    m_GameObjects2D.push_back(weapon);
+
+    m_GD->m_Teams.init();
 }
 
 // Executes the basic game loop.

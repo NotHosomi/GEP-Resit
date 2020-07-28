@@ -17,6 +17,13 @@ Unit* TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int t
 }
 #endif
 
+void TeamsManager::init()
+{
+	//m_current_team = -1;
+	//seekNextUnit();
+	current_unit = m_team_lists[0].unit_list[0];
+}
+
 void TeamsManager::addUnitToTeam(Unit* unit)
 {
 	int team = unit->getTeam();
@@ -101,6 +108,23 @@ int TeamsManager::ammoCount(int wep_slot)
 		return 0;
 	}
 	return m_team_lists[m_current_team].ammo_list[wep_slot];
+}
+
+void TeamsManager::consumeAmmo(int wep_slot)
+{
+	if (wep_slot > m_team_lists[m_current_team].ammo_list.size())
+	{
+		return;
+	}
+	if (wep_slot < 0)
+	{
+		return;
+	}
+	if (m_team_lists[m_current_team].ammo_list[wep_slot] <= 0)
+	{
+		return;
+	}
+	m_team_lists[m_current_team].ammo_list[wep_slot]--;
 }
 
 // call once all units have stopped moving

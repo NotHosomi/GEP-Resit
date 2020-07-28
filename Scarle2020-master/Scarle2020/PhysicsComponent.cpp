@@ -12,6 +12,11 @@ PhysicsComponent::PhysicsComponent(Vector2 _dimensions, float _weight, float _el
 
 void PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 {
+	if (locked)
+	{
+		return;
+	}
+
 	checkGrounded(world, self);
 	if (grounded)
 	{

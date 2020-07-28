@@ -15,11 +15,14 @@ public:
 	void addXVel(float _x) { velocity.x += _x; };
 	void addYVel(float _y) { velocity.y += _y; };
 	void setGrounded(bool _grounded) { grounded = _grounded; };
+	void setLocked(bool _locked) { locked = _locked; };
 
 	void move(float dt, Grid* world, Vector2& pos);
 
 	Vector2 getVel() { return velocity; };
 	bool isGrounded() { return grounded; };
+	// True when velocity is negligable
+	bool isStill() { return velocity.Length() < 0.2; };
 
 private:
 	static constexpr float MV_MAXSPEED = 10000;
@@ -68,6 +71,7 @@ private:
 	Collider self;
 	Vector2 velocity = Vector2(0, 0);
 	bool grounded = false;
+	bool locked = false;
 	bool bouncy = false;
 	float elasticity = 0.1;
 	float weight = 100;
