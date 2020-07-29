@@ -67,7 +67,7 @@ void Weapon::Tick(GameData* _GD)
 		list_display_timer = HUD_LIST_DECAY_TIME + WEP_MAX_CHARGE_TIME;
 		has_fired = true;
 		current_unit->getPhysCmp()->setLocked(true);
-		if (current_weptype == WEP_DYNAMITE)
+		if (current_weptype == WEP_PISTOL || current_weptype == WEP_DYNAMITE)
 		{
 			fire(_GD);
 			_GD->m_Input.releaseKey(InputManager::IN_FIRE);
@@ -182,6 +182,9 @@ void Weapon::fire(GameData* _GD)
 	}
 	_GD->creation_list.emplace_back(new_projectile);
 	charge = 0;
+
+	// end the turn
+	_GD->m_Turn.nextStage(&_GD->m_Teams);
 }
 
 void Weapon::changeAngle(GameData* _GD, bool is_up)

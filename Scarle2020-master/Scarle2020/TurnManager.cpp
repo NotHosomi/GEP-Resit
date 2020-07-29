@@ -71,8 +71,8 @@ void TurnManager::init(GameData* _GD)
 	hud_alert.SetPos(ALERT_POS);
 	hud_alert.SetString(ALERT_START);
 	hud_alert.SetColour(TeamsManager::colourPicker(team_id));
-	hud_alert_subtitle.SetPos(ALERT_SUB_SCALE);
-	hud_alert_subtitle.SetScale(0.8);
+	hud_alert_subtitle.SetPos(ALERT_SUB_POS);
+	hud_alert_subtitle.SetScale(ALERT_SUB_SCALE);
 	hud_alert_subtitle.SetString(ALERT_SUB_PRE);
 	hud_alert_subtitle.SetColour(TeamsManager::colourPicker(team_id));
 }
@@ -90,6 +90,11 @@ void TurnManager::nextStage(TeamsManager* _TM)
 	case TS_WAIT: stagePre(_TM);
 		break;
 	}
+}
+
+TurnManager::TurnState TurnManager::getState()
+{
+	return state;
 }
 
 void TurnManager::stagePre(TeamsManager* _TM)

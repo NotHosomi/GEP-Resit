@@ -19,15 +19,15 @@ public:
 		TS_END
 	};
 
-	// TODO init??
-	// TODO integrate with Gamecpp
+	TurnState getState();
+	void nextStage(TeamsManager* _TM);
 private:
-	static constexpr float TIME_PRE = 2;
+	static constexpr float TIME_PRE = 5;
 	static constexpr float TIME_ACT = 60;
 	static constexpr float TIME_FLEE = 5;
 	static constexpr float TIME_POST = 0.999;
 	const Vector2 ALERT_POS = Vector2(400, 10);
-	const Vector2 ALERT_SUB_POS = Vector2(400, 40);
+	const Vector2 ALERT_SUB_POS = Vector2(400, 60);
 	const Vector2 ALERT_SUB_SCALE = Vector2(0.8, 0.8);
 	const string ALERT_START = "WORMS!";
 	const string ALERT_PRE = "Player ";
@@ -36,15 +36,13 @@ private:
 	const string ALERT_SUB_END_1 = "Player ";
 	const string ALERT_SUB_END_2 = " wins!";
 
-	void nextStage(TeamsManager* _TM);
-
 	void stagePre(TeamsManager* _TM);
 	void stageAct(TeamsManager* _TM);
 	void stageFlee(TeamsManager* _TM);
 	void stageWait(TeamsManager* _TM);
 	void stageEnd(TeamsManager* _TM);
 
-	TurnManager::TurnState state = TS_PRE; //global GameState
+	TurnManager::TurnState state = TS_PRE;
 	float timer = 0;
 	bool show_alert = true;
 	TextGO2D hud_timer = TextGO2D("");
