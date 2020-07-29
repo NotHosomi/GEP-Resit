@@ -9,17 +9,35 @@
 //#include "Dynamite.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
-	ImageGO2D("weapon", _GD)
+	ImageGO2D("weapon", _GD),
+	aim_indicator("aim_indicator", _GD),
+	charge_indicator("charge_indicator", _GD)
 {
 	m_rotation = angle;
 	pickColour();
 	hud_weaponlist.SetColour(Color((float*)&Colors::OrangeRed));
 	hud_weaponlist.SetScale(0.5);
+
 }
 
 void Weapon::Tick(GameData* _GD)
 {
-	updateWepListHudElement(&_GD->m_Teams); // TODO: Move to Turn Manager
+	m_pos = _GD->m_Teams.getCurrentUnit()->GetPos();
+	aim_indicator.SetPos(m_pos);
+	charge_indicator.SetPos(m_pos);
+
+	if (_GD->m_Turn.getState() == TurnManager::TurnState::TS_PRE)
+	{
+		updateWepListHudElement(&_GD->m_Teams); // Only needs to happen once, but this is good enough for now
+		if (has_fired)
+		{
+			has_fired = false;
+			projectile_released = false;
+			charge = 0;
+		}
+		current_weptype = WEP_ROCKET;
+		angle = 0.5 * PI;
+	}
 
 	if (list_display_timer)
 	{
@@ -30,21 +48,24 @@ void Weapon::Tick(GameData* _GD)
 		}
 	}
 
-
-	if (charge > 0 && !projectile_released)
+	// We've already fired. Just sleep
+	if (projectile_released)
+	{
+		return;
+	}
+	// Fire is held, charging up
+	if (charge > 0)
 	{
 		chargeWeapon(_GD);
 		return;
 	}
-
-	Unit* current_unit = _GD->m_Teams.getCurrentUnit();
-	m_pos = current_unit->GetPos();
-	bool still = current_unit->getPhysCmp()->isStill();
-	if (has_fired || !still)
+	// Player must be stood still
+	if (!_GD->m_Teams.getCurrentUnit()->getPhysCmp()->isStill())
 	{
 		return;
 	}
-	// Player must be stood still, and not have already fired this turn
+	// Enable the aim helper if we're in the act phase 
+	draw_aimer = (_GD->m_Turn.getState() == TurnManager::TurnState::TS_ACT);
 
 	if (_GD->m_Input.checkKey(InputManager::IMP_NEXT))
 	{
@@ -66,8 +87,8 @@ void Weapon::Tick(GameData* _GD)
 	{
 		list_display_timer = HUD_LIST_DECAY_TIME + WEP_MAX_CHARGE_TIME;
 		has_fired = true;
-		current_unit->getPhysCmp()->setLocked(true);
-		if (current_weptype == WEP_DYNAMITE)
+		_GD->m_Teams.getCurrentUnit()->getPhysCmp()->setLocked(true);
+		if (current_weptype == WEP_PISTOL || current_weptype == WEP_DYNAMITE)
 		{
 			fire(_GD);
 			_GD->m_Input.releaseKey(InputManager::IN_FIRE);
@@ -87,6 +108,14 @@ void Weapon::Draw(DrawData2D* _DD)
 	if (list_display_timer)
 	{
 		hud_weaponlist.Draw(_DD);
+	}
+	if (draw_aimer)
+	{
+		aim_indicator.Draw(_DD);
+	}
+	if (charge)
+	{
+		charge_indicator.Draw(_DD);
 	}
 }
 
@@ -149,11 +178,13 @@ void Weapon::switchWep(GameData* _GD, bool forward)
 	// update the weapon and sprite colour
 	current_weptype = static_cast<Weapon::WepType>(wep_id);
 	pickColour();
+	updateWepListHudElement(&_GD->m_Teams);
 }
 
 void Weapon::chargeWeapon(GameData* _GD)
 {
 	charge += _GD->m_dt;
+	charge_indicator.SetScale(charge / WEP_MAX_CHARGE_TIME);
 	if (charge > WEP_MAX_CHARGE_TIME ||
 		!_GD->m_Input.checkKey(InputManager::IN_FIRE))
 	{
@@ -165,7 +196,9 @@ void Weapon::fire(GameData* _GD)
 {
 	list_display_timer = HUD_LIST_DECAY_TIME;
 	_GD->m_Teams.consumeAmmo(current_weptype);
+	updateWepListHudElement(&_GD->m_Teams);
 	_GD->m_Teams.getCurrentUnit()->getPhysCmp()->setLocked(false);
+	draw_aimer = false;
 
 	GameObject2D* new_projectile = nullptr;
 	switch (current_weptype)
@@ -182,6 +215,10 @@ void Weapon::fire(GameData* _GD)
 	}
 	_GD->creation_list.emplace_back(new_projectile);
 	charge = 0;
+	projectile_released = true;
+
+	// end the turn
+	_GD->m_Turn.nextStage(&_GD->m_Teams);
 }
 
 void Weapon::changeAngle(GameData* _GD, bool is_up)
@@ -220,6 +257,8 @@ void Weapon::changeAngle(GameData* _GD, bool is_up)
 			angle = AIM_MAX_ANGLE;
 	}
 	m_rotation = angle;
+	aim_indicator.SetRot(angle);
+	charge_indicator.SetRot(angle);
 }
 
 void Weapon::pickColour()
@@ -249,6 +288,4 @@ Vector2 Weapon::generateAimVector()
 }
 
 
-// TODO:
-// explosions wiping map
-// charge indicator
+// TODO: charge indicator

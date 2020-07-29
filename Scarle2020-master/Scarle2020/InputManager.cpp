@@ -88,3 +88,8 @@ bool InputManager::any()
 {
 	return static_cast<bool>(m_keylist);
 }
+
+void InputManager::clear()
+{
+	m_keylist = 0;
+}

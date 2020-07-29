@@ -22,6 +22,7 @@ void TeamsManager::init()
 	//m_current_team = -1;
 	//seekNextUnit();
 	current_unit = m_team_lists[0].unit_list[0];
+	current_unit->setAwake(true);
 }
 
 void TeamsManager::addUnitToTeam(Unit* unit)
@@ -59,7 +60,7 @@ bool TeamsManager::seekNextUnit()
 		{
 			if (unit->isAlive())
 			{
-				found_team = false;;
+				found_team = true;
 			}
 			else
 			{
@@ -84,7 +85,7 @@ bool TeamsManager::seekNextUnit()
 		}
 	}
 	current_unit = thisWorm;
-	return true;
+	return false;
 }
 
 int TeamsManager::getCurrentTeamId()
