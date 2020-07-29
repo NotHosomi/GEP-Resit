@@ -169,6 +169,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GameObjects2D.push_back(weapon);
 
     m_GD->m_Teams.init();
+    m_GD->m_Turn.init(m_GD);
 }
 
 // Executes the basic game loop.

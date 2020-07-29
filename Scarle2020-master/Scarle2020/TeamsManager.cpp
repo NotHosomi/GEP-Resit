@@ -110,10 +110,6 @@ vector<TeamData*> TeamsManager::getAllTeams()
 
 Unit* TeamsManager::getCurrentUnit()
 {
-	if (current_unit == nullptr)
-	{
-		current_unit = m_team_lists[0].unit_list[0];
-	}
 	return current_unit;
 }
 
