@@ -98,9 +98,29 @@ Vector2 Grid::findWorldCoords(const Vector2& grid_coords)
 	return world_coords;
 }
 
+// Note: Does not round output, if you want rounded output use findGridCoords()
 Vector2 Grid::convertToGridCoords(const Vector2& world_coords)
 {
 	Vector2 out = world_coords;
-	out *= (1 / Tile::TILE_DIMS);
+	out /= Tile::TILE_DIMS;
 	return out;
+}
+
+vector<Tile*> Grid::getTilesInRadius(Vector2 origin, float radius)
+{
+	vector<Tile*> tile_list;
+
+	for (auto& column : tiles)
+	{
+		for (auto& tile : column)
+		{
+			Vector2 diff = tile.GetPos() - origin;
+			if (diff.Length() < radius)
+			{
+				tile_list.emplace_back(&tile);
+			}
+		}
+	}
+
+	return tile_list;
 }

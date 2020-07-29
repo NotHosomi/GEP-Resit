@@ -14,6 +14,8 @@ public:
 
 	virtual void Tick(GameData* _GD);
 	virtual void Draw(DrawData2D* _DD);
+
+	void SetString(string _text) { m_text = _text; };
 protected:
 	string m_text;
 };

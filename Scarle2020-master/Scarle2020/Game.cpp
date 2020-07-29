@@ -97,16 +97,9 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD = new GameData;
     m_GD->m_GS = GS_PLAY_MAIN_CAM;
 
-    //example basic 2D stuff
-    // ImageGO2D* logo = new ImageGO2D("logo_small", m_d3dDevice.Get());
-    // logo->SetPos(200.0f * Vector2::One);
-    // m_GameObjects2D.push_back(logo);
-
-    //TextGO2D* text = new TextGO2D("100");
-    //text->SetPos(Vector2(0, -20));
-    //text->SetScale(0.35);
-    //text->SetColour(Color((float*)&Colors::Yellow));
-    //m_GameObjects2D.push_back(text);
+    // Give the device to GameData, so entities can create other entities like explosions.
+    // Bad practice? Maybe. But I'm under time pressure
+    m_GD->p_Device = m_d3dDevice.Get();
 
     // Generate terrain // TODO: Make unique?
 #if 0
@@ -172,6 +165,12 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD->m_Teams.addUnitToTeam(new_unit);
     m_GameObjects2D.push_back(new_unit);
 #endif
+
+    // Add weapon last, so it also draws last (Haven't the time to experiment with Z ordering)
+    Weapon* weapon = new Weapon(m_d3dDevice.Get());
+    m_GameObjects2D.push_back(weapon);
+
+    m_GD->m_Teams.init();
 }
 
 // Executes the basic game loop.
@@ -215,6 +214,29 @@ void Game::Update(DX::StepTimer const& _timer)
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Tick(m_GD);
+    }
+
+    // Delete all the objects listed in the deletion list
+    while (m_GD->deletion_list.size())
+    {
+        GameObject2D* ptr = m_GD->deletion_list.back();
+        m_GD->deletion_list.pop_back();
+        for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
+        {
+            if ((*it) == ptr)
+            {
+                delete (*it);
+                (*it) = nullptr;
+                m_GameObjects2D.erase(it);
+                break;
+            }
+        }
+    }
+    while (m_GD->creation_list.size())
+    {
+        GameObject2D* ptr = m_GD->creation_list.back();
+        m_GD->creation_list.pop_back();
+        m_GameObjects2D.emplace_back(ptr);
     }
 
     elapsedTime;

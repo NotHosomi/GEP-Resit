@@ -19,6 +19,7 @@ public:
 	void setAwake(bool _awake);
 	int getTeam();
 	bool isAlive();
+	bool isFlipped();
 
 	void addDamage(float amount);
 	void applyDamages();

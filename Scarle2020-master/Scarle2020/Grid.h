@@ -16,6 +16,8 @@ public:
 	static Vector2 findWorldCoords(const Vector2& grid_coords);
 	Vector2 convertToGridCoords(const Vector2& world_coords);
 
+	vector<Tile*> getTilesInRadius(Vector2 origin, float radius);
+
 	void draw(DrawData2D* _DD);
 
 	static constexpr int GRID_HEIGHT = 46;

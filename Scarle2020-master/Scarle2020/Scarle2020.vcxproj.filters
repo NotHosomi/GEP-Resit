@@ -178,6 +178,18 @@
     <ClInclude Include="TeamsManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Rocket.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -275,6 +287,18 @@
     </ClCompile>
     <ClCompile Include="TeamsManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>GameObjects\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rocket.cpp">
+      <Filter>GameObjects\weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

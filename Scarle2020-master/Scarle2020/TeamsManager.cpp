@@ -17,6 +17,13 @@ Unit* TeamsManager::createUnit(ID3D11Device* _GD, const Vector2& location, int t
 }
 #endif
 
+void TeamsManager::init()
+{
+	//m_current_team = -1;
+	//seekNextUnit();
+	current_unit = m_team_lists[0].unit_list[0];
+}
+
 void TeamsManager::addUnitToTeam(Unit* unit)
 {
 	int team = unit->getTeam();
@@ -80,14 +87,59 @@ bool TeamsManager::seekNextUnit()
 	return true;
 }
 
-int TeamsManager::GetCurrentTeam()
+int TeamsManager::getCurrentTeamId()
 {
 	return m_current_team;
+}
+
+TeamData* TeamsManager::getCurrentTeam()
+{
+	return &m_team_lists[m_current_team];
+}
+
+vector<TeamData*> TeamsManager::getAllTeams()
+{
+	vector<TeamData*> teams;
+	for (auto& team : m_team_lists)
+	{
+		teams.emplace_back(&team);
+	}
+	return teams;
 }
 
 Unit* TeamsManager::getCurrentUnit()
 {
 	return current_unit;
+}
+
+int TeamsManager::ammoCount(int wep_slot)
+{
+	if (wep_slot > m_team_lists[m_current_team].ammo_list.size())
+	{
+		return 0;
+	}
+	if (wep_slot < 0)
+	{
+		return 0;
+	}
+	return m_team_lists[m_current_team].ammo_list[wep_slot];
+}
+
+void TeamsManager::consumeAmmo(int wep_slot)
+{
+	if (wep_slot > m_team_lists[m_current_team].ammo_list.size())
+	{
+		return;
+	}
+	if (wep_slot < 0)
+	{
+		return;
+	}
+	if (m_team_lists[m_current_team].ammo_list[wep_slot] <= 0)
+	{
+		return;
+	}
+	m_team_lists[m_current_team].ammo_list[wep_slot]--;
 }
 
 // call once all units have stopped moving
