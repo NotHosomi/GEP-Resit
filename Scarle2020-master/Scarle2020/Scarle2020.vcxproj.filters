@@ -193,6 +193,9 @@
     <ClInclude Include="TurnManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -305,6 +308,9 @@
     </ClCompile>
     <ClCompile Include="TurnManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>GameObjects\weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
