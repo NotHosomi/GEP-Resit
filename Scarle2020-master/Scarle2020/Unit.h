@@ -46,6 +46,7 @@ private:
 	static constexpr float MV_JUMPCOOLDOWN = 2;
 
 	void playerMove(GameData* _GD);
+	void OOBCheck(GameData* _GD);
 
 	PhysicsComponent PhysCmp;
 	bool awake = false;

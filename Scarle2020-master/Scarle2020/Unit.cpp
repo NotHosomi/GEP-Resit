@@ -139,3 +139,23 @@ void Unit::playerMove(GameData* _GD)
 		PhysCmp.addXVel(-MV_ACCELERATION);
 	}
 }
+
+void Unit::OOBCheck(GameData* _GD)
+{
+	bool OOB = false;
+	// URGH! Hard coded bounds, disgusting!
+	// TODO: pass the window resolution thru GameData
+	if (m_pos.x + PhysCmp.getCollider().width / 2 < 0 ||
+		m_pos.x - PhysCmp.getCollider().width / 2 > 1280 ||
+		m_pos.x - PhysCmp.getCollider().height / 2 > 720)
+	{
+		// effectively turn off the PhysCmp
+		PhysCmp.setLocked(true);
+		PhysCmp.setVel(Vector2(0, 0));
+		// kills the unit
+		addDamage(health);
+		applyDamages();
+		// TODO: Improve this after unit death has been implemented
+	}
+	// Note: Intentionally permits objects to go above the screen, as gravity will bring them back down
+}

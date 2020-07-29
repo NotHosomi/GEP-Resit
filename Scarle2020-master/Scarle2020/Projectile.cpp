@@ -41,4 +41,5 @@ void Projectile::OOBCheck(GameData* _GD)
 		_GD->deletion_list.emplace_back(this);
 		_GD->m_Turn.setWaiting(false);
 	}
+	// Note: Intentionally permits objects to go above the screen, as gravity will bring them back down
 }
