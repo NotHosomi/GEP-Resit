@@ -203,6 +203,7 @@
     <ClInclude Include="TPSCamera.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TreeBit.h" />
+    <ClInclude Include="TurnManager.h" />
     <ClInclude Include="Unit.h" />
     <ClInclude Include="VBCube.h" />
     <ClInclude Include="VBGO.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="TPSCamera.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="treebit.cpp" />
+    <ClCompile Include="TurnManager.cpp" />
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="VBCube.cpp" />
     <ClCompile Include="VBGO.cpp" />

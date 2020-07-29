@@ -8,6 +8,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Grid.h"
+#include "GameState.h"
 #include "InputManager.h"
 #include "TeamsManager.h"
 
@@ -16,6 +17,7 @@ using namespace DirectX;
 struct GameData
 {
 	float m_dt;  //time step since last frame
+	GameState m_GS = GS_PLAY_MAIN_CAM;
 
 	//player input
 	Keyboard::State m_KBS;
