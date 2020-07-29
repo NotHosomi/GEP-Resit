@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Explosion.h"
 #include "GameData.h"
+#include "Unit.h"
 
 Explosion::Explosion(ID3D11Device* _GD, Vector2 position, float _radius, float _damage) :
 	ImageGO2D("explosion", _GD)
@@ -24,9 +25,20 @@ void Explosion::Tick(GameData* _GD)
 		for (auto& unit : team->unit_list)
 		{
 			Vector2 diff = unit->GetPos() - m_pos;
+			// reduces the diff by the radius of the UNIT_DMG_COLLIDER
+			if (diff.Length() < Unit::UNIT_DMG_COLLIDER)
+			{
+				// explosion center is inside unit's damage circle
+				diff *= 0;
+			}
+			else
+			{
+				diff *= 1 - Unit::UNIT_DMG_COLLIDER / diff.Length();
+			}
+
+			// check if this unit was in the explosion
 			if (diff.Length() > radius)
 			{
-				// This unit isn't in the explosion
 				continue;
 			}
 			// quadratic explosion damage falloff
@@ -34,12 +46,12 @@ void Explosion::Tick(GameData* _GD)
 			float dmg = damage;
 			dmg *= -(falloff * falloff) + 1;
 			unit->addDamage(dmg);
-			//temp
-			unit->applyDamages(); // Why ain't this workin chief
+			// TODO: Move applyDmg to end of turn, like in original game
+			unit->applyDamages();
 
 			// linear knockback falloff
 			diff.Normalize();
-			diff *= damage * falloff * EXP_KNOCKBACK_MULTIPLIER;
+			diff *= damage * (1 - falloff) * EXP_KNOCKBACK_MULTIPLIER;
 			unit->getPhysCmp()->addVel(diff);
 		}
 	}
