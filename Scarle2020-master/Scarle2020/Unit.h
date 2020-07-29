@@ -33,15 +33,15 @@ private:
 	static constexpr float UNIT_HP_BAR_OFFSET = -5;
 	static constexpr float UNIT_HP_BAR_SCALE = 0.35;
 
-	static constexpr float UNIT_WEIGHT = 60;
+	static constexpr float UNIT_WEIGHT = 200;
 	static constexpr float UNIT_ELASTICITY = 0.1;
 
 	static constexpr float MV_ACCELERATION = 12;
 	static constexpr float MV_AIRACCELERATION = 1;
 	static constexpr float MV_MAXAIRCONTROL = 10;
 
-	static constexpr float MV_JUMPFORCE_V = 60;
-	static constexpr float MV_JUMPFORCE_H = 40;
+	static constexpr float MV_JUMPFORCE_V = 150;
+	static constexpr float MV_JUMPFORCE_H = 50;
 	static constexpr float MV_JUMPCOOLDOWN = 2;
 
 	void playerMove(GameData* _GD);
