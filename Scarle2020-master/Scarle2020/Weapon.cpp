@@ -247,3 +247,8 @@ Vector2 Weapon::generateAimVector()
 	float y = -cos(angle);
 	return Vector2(x, y) * charge;
 }
+
+
+// TODO:
+// explosions wiping map
+// charge indicator

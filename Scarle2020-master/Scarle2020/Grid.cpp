@@ -115,7 +115,7 @@ vector<Tile*> Grid::getTilesInRadius(Vector2 origin, float radius)
 		for (auto& tile : column)
 		{
 			Vector2 diff = tile.GetPos() - origin;
-			if (diff.Length() > radius)
+			if (diff.Length() < radius)
 			{
 				tile_list.emplace_back(&tile);
 			}

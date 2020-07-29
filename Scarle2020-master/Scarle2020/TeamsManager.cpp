@@ -104,7 +104,7 @@ vector<TeamData*> TeamsManager::getAllTeams()
 	{
 		teams.emplace_back(&team);
 	}
-	return vector<TeamData*>();
+	return teams;
 }
 
 Unit* TeamsManager::getCurrentUnit()

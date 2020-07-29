@@ -9,7 +9,7 @@ Explosion::Explosion(ID3D11Device* _GD, Vector2 position, float _radius, float _
 	radius = _radius;
 	m_scale = Vector2(radius, radius) / 100; // src sprite is 200x200
 
-	damage = damage;
+	damage = _damage;
 }
 
 void Explosion::Tick(GameData* _GD)
@@ -34,6 +34,8 @@ void Explosion::Tick(GameData* _GD)
 			float dmg = damage;
 			dmg *= -(falloff * falloff) + 1;
 			unit->addDamage(dmg);
+			//temp
+			unit->applyDamages(); // Why ain't this workin chief
 
 			// linear knockback falloff
 			diff.Normalize();

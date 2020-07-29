@@ -94,7 +94,7 @@ void Unit::applyDamages()
 {
 	health -= accumulated_damage;
 	accumulated_damage = 0;
-	hp_text = std::to_string(health);
+	hp_text.SetString(std::to_string(health));
 	if (health <= 0)
 	{
 		// TODO: EXPLODE!
