@@ -4,9 +4,9 @@
 #include "DrawData2D.h"
 #include "TeamsManager.h"
 #include "Rocket.h"
-//#include "Bullet.h"
+#include "Bullet.h"
 #include "grenade.h"
-//#include "Dynamite.h"
+#include "Dynamite.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
 	ImageGO2D("weapon", _GD),
@@ -204,13 +204,17 @@ void Weapon::fire(GameData* _GD)
 	switch (current_weptype)
 	{
 	case WEP_ROCKET: new_projectile =
-		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_CHARGE_MULT);
+		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_SPEED);
 		break;
-	case WEP_PISTOL: //new_projectile = new Bullet(_GD->p_Device, Vector2(100, 0));
+	case WEP_PISTOL: new_projectile = 
+		new Bullet(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP1_SPEED);
 		break;
-	case WEP_GRENADE: //new_projectile = new Grenade(_GD->p_Device, Vector2(100, 0));
+	case WEP_GRENADE: new_projectile = 
+		new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP2_SPEED);
 		break;
-	case WEP_DYNAMITE: //new_projectile = new Dynamite(_GD->p_Device, Vector2(100, 0));
+	case WEP_DYNAMITE:
+		float dir = _GD->m_Teams.getCurrentUnit()->isFlipped() ? -1 : 1;
+		new_projectile = new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), Vector2(WEP3_SPEED * dir, 0));
 		break;
 	}
 	_GD->creation_list.emplace_back(new_projectile);
@@ -284,7 +288,8 @@ Vector2 Weapon::generateAimVector()
 {
 	float x = sin(angle);
 	float y = -cos(angle);
-	return Vector2(x, y) * charge;
+	float boost = charge > 0 ? charge : WEP_MAX_CHARGE_TIME;
+	return Vector2(x, y) * boost;
 }
 
 

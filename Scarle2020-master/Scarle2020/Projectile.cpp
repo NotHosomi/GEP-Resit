@@ -4,19 +4,18 @@
 #include "Explosion.h"
 
 Projectile::Projectile(ID3D11Device* _GD, string texture, Vector2 position, Vector2 velocity,
-	Vector2 _dimensions, float _weight, float _elasticity, bool _explode_on_contact)
+	Vector2 _dimensions, float _weight, float _elasticity)
 	: ImageGO2D(texture, _GD),
 	PhysCmp(_dimensions, _weight, _elasticity)
 {
 	m_pos = position;
 	PhysCmp.setVel(velocity);
-	explode_on_contact = _explode_on_contact;
 }
 
 void Projectile::Tick(GameData* _GD)
 {
 	bool hit = PhysCmp.move(_GD->m_dt, _GD->p_World, m_pos);
-	if (explode_on_contact && hit)
+	if (hit)
 	{
 		explode(_GD);
 	}

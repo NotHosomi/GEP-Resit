@@ -27,6 +27,7 @@ public:
 	// debugging
 	PhysicsComponent* getPhysCmp() { return &PhysCmp; };
 
+	static constexpr float UNIT_DMG_COLLIDER = 10;
 private:
 	static constexpr float UNIT_WIDTH = 16;
 	static constexpr float UNIT_HEIGHT = 26; // golden ratio 1 : 1.62

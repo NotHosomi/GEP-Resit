@@ -2,21 +2,22 @@
 #include "Grenade.h"
 #include "GameData.h"
 
-Grenade::Grenade(ID3D11Device* _GD, const Vector2& location, const Vector2& velocity) :
-	ImageGO2D("projectile2", _GD),
-	PhysCmp(Vector2(GREN_DIMS, GREN_DIMS), GREN_WEIGHT, GREN_ELASTICITY)
+Grenade::Grenade(ID3D11Device* _GD, Vector2 position, Vector2 velocity, float weight, float elasticity) :
+	Projectile(_GD, "projectile2", position, velocity, Vector2(GREN_DIMS, GREN_DIMS), weight, elasticity)
 {
-	m_pos = location;
-	PhysCmp.setVel(velocity);
+	exp_radius = GREN_EXP_RADIUS;
+	exp_damage = GREN_EXP_DMG;
+	fuse = GREN_FUSE;
 }
 
 void Grenade::Tick(GameData* _GD)
 {
+	// TODO: Fix grenade disappearing on collision
 	PhysCmp.move(_GD->m_dt, _GD->p_World, m_pos);
 
 	fuse_tmr += _GD->m_dt;
-	if (fuse_tmr > GREN_FUSE)
+	if (fuse_tmr > fuse)
 	{
-		// TODO: Explode!
+		explode(_GD);
 	}
 }
