@@ -3,7 +3,7 @@
 #include "GameData.h"
 
 Grenade::Grenade(ID3D11Device* _GD, Vector2 position, Vector2 velocity) :
-	Projectile(_GD, "projectile2", position, velocity, Vector2(GREN_DIMS, GREN_DIMS), GREN_WEIGHT, GREN_WEIGHT)
+	Projectile(_GD, "projectile2", position, velocity, Vector2(GREN_DIMS, GREN_DIMS), GREN_WEIGHT, GREN_ELASTICITY)
 {
 	exp_radius = GREN_EXP_RADIUS;
 	exp_damage = GREN_EXP_DMG;
