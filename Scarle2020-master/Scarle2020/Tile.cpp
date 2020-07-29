@@ -2,12 +2,13 @@
 #include "Tile.h"
 #include "DrawData2D.h"
 
-Tile::Tile(ID3D11Device* _GD, const Vector2& location) :
-	ImageGO2D("ground", _GD)
+Tile::Tile(ID3D11Device* _GD, const Vector2& location, Color colour) :
+	ImageGO2D("tile", _GD)
 {
 	SetPos(location * TILE_DIMS);
 
 	SetScale(Vector2(TILE_DIMS, TILE_DIMS));
+	// SetColour(colour); // WHY IS THIS NOT WORKING??? Just gonna set the raw sprite to brown in paint :<
 }
 
 Tile::Tile(Tile&& other) noexcept : ImageGO2D(std::move(other))

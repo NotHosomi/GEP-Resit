@@ -168,10 +168,10 @@
     <ImageContentTask Include="charge_indicator.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="blank.png" />
+    <ImageContentTask Include="unit.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="unit.png" />
+    <ImageContentTask Include="tile.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

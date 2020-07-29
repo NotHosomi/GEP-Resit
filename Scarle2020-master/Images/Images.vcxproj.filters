@@ -10,7 +10,7 @@
     <ImageContentTask Include="explosion.png" />
     <ImageContentTask Include="charge_indicator.png" />
     <ImageContentTask Include="aim_indicator.png" />
-    <ImageContentTask Include="blank.png" />
     <ImageContentTask Include="unit.png" />
+    <ImageContentTask Include="tile.png" />
   </ItemGroup>
 </Project>

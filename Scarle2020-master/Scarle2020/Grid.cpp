@@ -19,7 +19,10 @@ Grid::Grid(ID3D11Device* _GD)
 		}
 		for (int y = altitude; y < GRID_HEIGHT; ++y)
 		{
-			tiles.back().emplace_back(_GD, Vector2(x, y));
+			if (y == altitude)
+				tiles.back().emplace_back(_GD, Vector2(x, y), Tile::COLOUR_GRASS);
+			else
+				tiles.back().emplace_back(_GD, Vector2(x, y));
 		}
 	}
 }
