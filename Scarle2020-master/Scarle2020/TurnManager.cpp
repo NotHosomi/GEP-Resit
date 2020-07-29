@@ -57,6 +57,19 @@ void TurnManager::DrawHud(DrawData2D* _DD)
 	hud_alert_subtitle.Draw(_DD);
 }
 
+void TurnManager::init(GameData* _GD)
+{
+	state = TS_PRE;
+	timer = 60;
+	show_alert = true;
+	_GD->m_Teams.getCurrentUnit();
+	int team_id = _GD->m_Teams.getCurrentTeamId();
+	hud_alert.SetString(ALERT_START);
+	hud_alert.SetColour(TeamsManager::colourPicker(team_id));
+	hud_alert_subtitle.SetString(ALERT_SUB_PRE);
+	hud_alert_subtitle.SetColour(TeamsManager::colourPicker(team_id));
+}
+
 void TurnManager::nextStage(TeamsManager* _TM)
 {
 	switch (state)
@@ -74,6 +87,8 @@ void TurnManager::nextStage(TeamsManager* _TM)
 
 void TurnManager::stagePre(TeamsManager* _TM)
 {
+	state = TS_PRE;
+	timer = TIME_PRE;
 	show_alert = true;
 	bool gameOver = false;
 	gameOver = _TM->seekNextUnit();
@@ -91,29 +106,32 @@ void TurnManager::stagePre(TeamsManager* _TM)
 
 void TurnManager::stageAct(TeamsManager* _TM)
 {
+	state = TS_ACT;
+	timer = TIME_ACT;
 	show_alert = false;
 	_TM->getCurrentUnit()->setAwake(true);
-	timer = TIME_ACT;
 }
 
 void TurnManager::stageFlee(TeamsManager* _TM)
 {
-	_TM->getCurrentUnit()->setAwake(true);
+	state = TS_FLEE;
 	timer = TIME_FLEE;
 }
 
 void TurnManager::stageWait(TeamsManager* _TM)
 {
-	_TM->getCurrentUnit()->setAwake(true);
+	state = TS_WAIT;
 	timer = TIME_POST;
+	_TM->getCurrentUnit()->setAwake(false);
 }
 
 void TurnManager::stageEnd(TeamsManager* _TM)
 {
+	state = TS_END;
+	timer = 0;
 	int winner_id = _TM->getCurrentTeamId();
 	hud_alert.SetString(ALERT_END);
 	hud_alert.SetColour(TeamsManager::colourPicker(winner_id));
 	hud_alert_subtitle.SetString(ALERT_SUB_END_1 + to_string(winner_id + 1) + ALERT_SUB_END_2);
 	hud_alert_subtitle.SetColour(TeamsManager::colourPicker(winner_id));
-	timer = 0;
 }

@@ -60,7 +60,7 @@ bool TeamsManager::seekNextUnit()
 		{
 			if (unit->isAlive())
 			{
-				found_team = false;;
+				found_team = true;
 			}
 			else
 			{
@@ -110,6 +110,10 @@ vector<TeamData*> TeamsManager::getAllTeams()
 
 Unit* TeamsManager::getCurrentUnit()
 {
+	if (current_unit == nullptr)
+	{
+		current_unit = m_team_lists[0].unit_list[0];
+	}
 	return current_unit;
 }
 

@@ -237,7 +237,7 @@ void Game::Update(DX::StepTimer const& _timer)
         m_GameObjects2D.emplace_back(ptr);
     }
 
-    elapsedTime;
+    m_GD->m_Turn.Tick(m_GD);
 }
 
 // Draws the scene.
@@ -261,6 +261,7 @@ void Game::Render()
     {
         (*it)->Draw(m_DD2D);
     }
+    m_GD->m_Turn.DrawHud(m_DD2D);
     m_DD2D->m_Sprites->End();
 
     //drawing text screws up the Depth Stencil State, this puts it back again!

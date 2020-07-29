@@ -26,6 +26,7 @@ private:
 	static constexpr float TIME_ACT = 60;
 	static constexpr float TIME_FLEE = 5;
 	static constexpr float TIME_POST = 0.999;
+	const string ALERT_START = "WORMS!";
 	const string ALERT_PRE = "Player ";
 	const string ALERT_SUB_PRE = "Press any key";
 	const string ALERT_END = "GAME OVER";

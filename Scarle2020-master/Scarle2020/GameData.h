@@ -11,6 +11,7 @@
 #include "GameState.h"
 #include "InputManager.h"
 #include "TeamsManager.h"
+#include "TurnManager.h"
 
 using namespace DirectX;
 
@@ -28,6 +29,7 @@ struct GameData
 	Grid* p_World = nullptr;
 	InputManager m_Input;
 	TeamsManager m_Teams;
+	TurnManager m_Turn;
 	vector<GameObject2D*> creation_list;
 	vector<GameObject2D*> deletion_list;
 };
