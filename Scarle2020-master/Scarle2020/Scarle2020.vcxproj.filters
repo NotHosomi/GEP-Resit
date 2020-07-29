@@ -196,6 +196,7 @@
     <ClInclude Include="Bullet.h">
       <Filter>GameObjects\weapons</Filter>
     </ClInclude>
+    <ClInclude Include="Dynamite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -312,6 +313,7 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>GameObjects\weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Dynamite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">

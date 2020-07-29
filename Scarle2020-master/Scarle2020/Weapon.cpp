@@ -6,7 +6,7 @@
 #include "Rocket.h"
 #include "Bullet.h"
 #include "grenade.h"
-//#include "Dynamite.h"
+#include "Dynamite.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
 	ImageGO2D("weapon", _GD),
@@ -212,7 +212,9 @@ void Weapon::fire(GameData* _GD)
 	case WEP_GRENADE: new_projectile = 
 		new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP2_SPEED);
 		break;
-	case WEP_DYNAMITE: //new_projectile = new Dynamite(_GD->p_Device, Vector2(100, 0));
+	case WEP_DYNAMITE:
+		float dir = _GD->m_Teams.getCurrentUnit()->isFlipped() ? -1 : 1;
+		new_projectile = new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), Vector2(WEP3_SPEED * dir, 0));
 		break;
 	}
 	_GD->creation_list.emplace_back(new_projectile);
