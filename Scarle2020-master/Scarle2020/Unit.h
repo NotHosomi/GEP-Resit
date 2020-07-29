@@ -47,6 +47,7 @@ private:
 
 	void playerMove(GameData* _GD);
 	void OOBCheck(GameData* _GD);
+	void die(GameData* _GD);
 
 	PhysicsComponent PhysCmp;
 	bool awake = false;

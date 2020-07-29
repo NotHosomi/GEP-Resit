@@ -149,13 +149,31 @@ void Unit::OOBCheck(GameData* _GD)
 		m_pos.x - PhysCmp.getCollider().width / 2 > 1280 ||
 		m_pos.x - PhysCmp.getCollider().height / 2 > 720)
 	{
-		// effectively turn off the PhysCmp
-		PhysCmp.setLocked(true);
-		PhysCmp.setVel(Vector2(0, 0));
-		// kills the unit
-		addDamage(health);
-		applyDamages();
-		// TODO: Improve this after unit death has been implemented
+		die(_GD);
 	}
 	// Note: Intentionally permits objects to go above the screen, as gravity will bring them back down
+}
+
+// Does not explode the unit. Call that separately
+void Unit::die(GameData* _GD)
+{
+	alive = false;
+	awake = false;
+	// effectively turn off the PhysCmp
+	PhysCmp.setLocked(true);
+	PhysCmp.setVel(Vector2(0, 0));
+
+	//check if the current unit was the one that just died
+	if (_GD->m_Teams.getCurrentUnit() == this)
+	{
+		if (_GD->m_Turn.getState() == TurnManager::TurnState::TS_ACT)
+		{
+			_GD->m_Turn.nextStage(&_GD->m_Teams);
+			_GD->m_Turn.nextStage(&_GD->m_Teams);
+		}
+		else if (_GD->m_Turn.getState() == TurnManager::TurnState::TS_FLEE)
+		{
+			_GD->m_Turn.nextStage(&_GD->m_Teams);
+		}
+	}
 }
