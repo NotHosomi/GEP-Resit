@@ -53,8 +53,11 @@ void TurnManager::Tick(GameData* _GD)
 void TurnManager::DrawHud(DrawData2D* _DD)
 {
 	hud_timer.Draw(_DD);
-	hud_alert.Draw(_DD);
-	hud_alert_subtitle.Draw(_DD);
+	if (show_alert)
+	{
+		hud_alert.Draw(_DD);
+		hud_alert_subtitle.Draw(_DD);
+	}
 }
 
 void TurnManager::init(GameData* _GD)
@@ -63,6 +66,7 @@ void TurnManager::init(GameData* _GD)
 	timer = 60;
 	show_alert = true;
 	_GD->m_Teams.getCurrentUnit();
+
 	int team_id = _GD->m_Teams.getCurrentTeamId();
 	hud_alert.SetString(ALERT_START);
 	hud_alert.SetColour(TeamsManager::colourPicker(team_id));

@@ -85,7 +85,7 @@ bool TeamsManager::seekNextUnit()
 		}
 	}
 	current_unit = thisWorm;
-	return true;
+	return false;
 }
 
 int TeamsManager::getCurrentTeamId()
