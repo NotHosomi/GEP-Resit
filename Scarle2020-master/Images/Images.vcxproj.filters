@@ -11,5 +11,7 @@
     <ImageContentTask Include="projectile0.png" />
     <ImageContentTask Include="weapon.png" />
     <ImageContentTask Include="explosion.png" />
+    <ImageContentTask Include="charge_indicator.png" />
+    <ImageContentTask Include="aim_indicator.png" />
   </ItemGroup>
 </Project>
