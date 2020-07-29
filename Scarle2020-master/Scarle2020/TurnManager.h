@@ -21,6 +21,7 @@ public:
 
 	TurnState getState();
 	void nextStage(TeamsManager* _TM);
+	void setWaiting(bool _wait);
 private:
 	static constexpr float TIME_PRE = 5;
 	static constexpr float TIME_ACT = 60;
@@ -45,6 +46,7 @@ private:
 	TurnManager::TurnState state = TS_PRE;
 	float timer = 0;
 	bool show_alert = true;
+	bool waiting_on_projectile = false;
 	TextGO2D hud_timer = TextGO2D("");
 	TextGO2D hud_alert = TextGO2D("");
 	TextGO2D hud_alert_subtitle = TextGO2D("");
