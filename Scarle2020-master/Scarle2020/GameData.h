@@ -5,7 +5,6 @@
 //Data to be passed by game to all Game Objects via Tick
 //=================================================================
 
-#include "GameState.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Grid.h"
@@ -17,7 +16,6 @@ using namespace DirectX;
 struct GameData
 {
 	float m_dt;  //time step since last frame
-	GameState m_GS; //global GameState
 
 	//player input
 	Keyboard::State m_KBS;

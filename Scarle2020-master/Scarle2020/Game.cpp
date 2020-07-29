@@ -11,7 +11,6 @@
 #include "DrawData2D.h"
 #include "ObjectList.h"
 #include "GameData.h"
-#include "GameState.h"
 #include "RenderTarget.h"
 
 //DXTK Headers
@@ -95,7 +94,6 @@ void Game::Initialize(HWND _window, int _width, int _height)
     
     //create GameData struct and populate its pointers
     m_GD = new GameData;
-    m_GD->m_GS = GS_PLAY_MAIN_CAM;
 
     // Give the device to GameData, so entities can create other entities like explosions.
     // Bad practice? Maybe. But I'm under time pressure
@@ -252,16 +250,6 @@ void Game::Render()
     }
 
     Clear();
-
-    ////set immediate context of the graphics device
-    //m_DD->m_pd3dImmediateContext = m_d3dContext.Get();
-    //
-    ////set which camera to be used
-    //m_DD->m_cam = m_cam;
-    //if (m_GD->m_GS == GS_PLAY_TPS_CAM)
-    //{
-    //    m_DD->m_cam = m_TPScam;
-    //}
 
     //update the constant buffer for the rendering of VBGOs
     VBGO::UpdateConstantBuffer(m_DD);
