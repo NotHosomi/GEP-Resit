@@ -80,6 +80,11 @@ bool Unit::isAlive()
 	return alive;
 }
 
+bool Unit::isFlipped()
+{
+	return !facing_right;
+}
+
 void Unit::addDamage(float amount)
 {
 	accumulated_damage += amount;

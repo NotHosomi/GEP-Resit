@@ -46,7 +46,6 @@ void Weapon::Tick(GameData* _GD)
 	}
 	// Player must be stood still, and not have already fired this turn
 
-	// TODO: Next/Prev controls
 	if (_GD->m_Input.checkKey(InputManager::IMP_NEXT))
 	{
 		switchWep(_GD, true);
@@ -57,26 +56,15 @@ void Weapon::Tick(GameData* _GD)
 	}
 	if (_GD->m_Input.checkKey(InputManager::IN_UP))
 	{
-		angle -= WEP_ROT_SPEED * _GD->m_dt;
-		// TODO: check if we're flipped
-		if (angle < AIM_MIN_ANGLE)
-			angle = AIM_MIN_ANGLE;
-		else if (angle > AIM_MAX_ANGLE)
-			angle = AIM_MAX_ANGLE;
-		m_rotation = angle;
-	}
+		changeAngle(_GD, true);
+	};
 	if (_GD->m_Input.checkKey(InputManager::IN_DOWN))
 	{
-		angle += WEP_ROT_SPEED * _GD->m_dt;
-		// TODO: check if we're flipped
-		if (angle < AIM_MIN_ANGLE)
-			angle = AIM_MIN_ANGLE;
-		else if (angle > AIM_MAX_ANGLE)
-			angle = AIM_MAX_ANGLE;
-		m_rotation = angle;
+		changeAngle(_GD, false);
 	}
 	if (_GD->m_Input.checkKey(InputManager::IN_FIRE))
 	{
+		list_display_timer = HUD_LIST_DECAY_TIME + WEP_MAX_CHARGE_TIME;
 		has_fired = true;
 		current_unit->getPhysCmp()->setLocked(true);
 		if (current_weptype == WEP_DYNAMITE)
@@ -85,6 +73,7 @@ void Weapon::Tick(GameData* _GD)
 			_GD->m_Input.releaseKey(InputManager::IN_FIRE);
 			return;
 		}
+		list_display_timer = HUD_LIST_DECAY_TIME + WEP_MAX_CHARGE_TIME;
 		chargeWeapon(_GD);
 	}
 }
@@ -165,7 +154,7 @@ void Weapon::switchWep(GameData* _GD, bool forward)
 void Weapon::chargeWeapon(GameData* _GD)
 {
 	charge += _GD->m_dt;
-	if (charge > WEP_MAX_CHAGE_TIME ||
+	if (charge > WEP_MAX_CHARGE_TIME ||
 		!_GD->m_Input.checkKey(InputManager::IN_FIRE))
 	{
 		fire(_GD);
@@ -182,7 +171,7 @@ void Weapon::fire(GameData* _GD)
 	switch (current_weptype)
 	{
 	case WEP_ROCKET: new_projectile =
-		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), Vector2(WEP0_CHARGE_MULT * charge, 0));
+		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_CHARGE_MULT);
 		break;
 	case WEP_PISTOL: //new_projectile = new Bullet(_GD->p_Device, Vector2(100, 0));
 		break;
@@ -191,9 +180,46 @@ void Weapon::fire(GameData* _GD)
 	case WEP_DYNAMITE: //new_projectile = new Dynamite(_GD->p_Device, Vector2(100, 0));
 		break;
 	}
-	// _GD->carrier->add Projectile
 	_GD->creation_list.emplace_back(new_projectile);
 	charge = 0;
+}
+
+void Weapon::changeAngle(GameData* _GD, bool is_up)
+{
+	bool flipped = _GD->m_Teams.getCurrentUnit()->isFlipped();
+	int modi = 1;
+	// bool XOR
+	if (is_up != flipped)
+	{
+		modi = -1;
+		// we only invert the increment if doing down when
+		// facing right, or when going up when facing left
+	}
+	angle += WEP_ROT_SPEED * _GD->m_dt * modi;
+
+	if (flipped)
+	{
+		if (angle > 0)
+		{
+			angle *= -1;
+		}
+		if (angle > -AIM_MIN_ANGLE)
+			angle = -AIM_MIN_ANGLE;
+		else if (angle < -AIM_MAX_ANGLE)
+			angle = -AIM_MAX_ANGLE;
+	}
+	else
+	{
+		if (angle < 0)
+		{
+			angle *= -1;
+		}
+		if (angle < AIM_MIN_ANGLE)
+			angle = AIM_MIN_ANGLE;
+		else if (angle > AIM_MAX_ANGLE)
+			angle = AIM_MAX_ANGLE;
+	}
+	m_rotation = angle;
 }
 
 void Weapon::pickColour()
@@ -215,7 +241,9 @@ void Weapon::pickColour()
 	}
 }
 
-/// Note for late
-// Some kind of object creation/deletion message system embedded in GameData perhaps?
-// A delete vector, and you add "this" to the vector
-// A creation vector, you create the object, then give the pointer to the vector
+Vector2 Weapon::generateAimVector()
+{
+	float x = sin(angle);
+	float y = -cos(angle);
+	return Vector2(x, y) * charge;
+}

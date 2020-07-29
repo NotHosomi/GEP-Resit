@@ -187,7 +187,9 @@
     <ClInclude Include="Explosion.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Rocket.h" />
+    <ClInclude Include="Rocket.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -295,7 +297,9 @@
     <ClCompile Include="Explosion.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Rocket.cpp" />
+    <ClCompile Include="Rocket.cpp">
+      <Filter>GameObjects\weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
