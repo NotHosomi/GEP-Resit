@@ -29,7 +29,10 @@ private:
 	static constexpr float WEP_MAX_CHARGE_TIME = 1.5;
 	static constexpr float WEP_NUMWEPS = 4;
 	static constexpr float HUD_LIST_DECAY_TIME = 3;
-	static constexpr float WEP0_CHARGE_MULT = 400;
+	static constexpr float WEP0_SPEED = 400; // rocket
+	static constexpr float WEP1_SPEED = 600; // pistol
+	static constexpr float WEP2_SPEED = 300; // grenade
+	static constexpr float WEP3_SPEED = 10; // dynamite
 	static constexpr float PI = 3.14159265; // can't find D3DX_PI for some reason
 
 	void switchWep(GameData* _GD, bool forward);

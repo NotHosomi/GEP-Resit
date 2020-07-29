@@ -9,7 +9,7 @@ public:
 private:
 	static constexpr float ROCKET_DIMS = 12;
 	static constexpr float ROCKET_WEIGHT = 150;
-	static constexpr float ROCKET_EXP_RADIUS = 100;
-	static constexpr float ROCKET_EXP_DMG = 60;
+	static constexpr float ROCKET_EXP_RADIUS = 70;
+	static constexpr float ROCKET_EXP_DMG = 45;
 };
 

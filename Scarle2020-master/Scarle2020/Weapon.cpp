@@ -204,7 +204,7 @@ void Weapon::fire(GameData* _GD)
 	switch (current_weptype)
 	{
 	case WEP_ROCKET: new_projectile =
-		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_CHARGE_MULT);
+		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_SPEED);
 		break;
 	case WEP_PISTOL: //new_projectile = new Bullet(_GD->p_Device, Vector2(100, 0));
 		break;
