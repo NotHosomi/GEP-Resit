@@ -5,9 +5,9 @@
 Tile::Tile(ID3D11Device* _GD, const Vector2& location) :
 	ImageGO2D("ground", _GD)
 {
-	SetPos(location*TILE_DIMS);
-	// For some reason, Scarle2020 is displaying a 30x30 sprite as 10x10, so scale it up
-	SetScale(TILE_DIMS/10);
+	SetPos(location * TILE_DIMS);
+
+	SetScale(Vector2(TILE_DIMS, TILE_DIMS));
 }
 
 Tile::Tile(Tile&& other) noexcept : ImageGO2D(std::move(other))
