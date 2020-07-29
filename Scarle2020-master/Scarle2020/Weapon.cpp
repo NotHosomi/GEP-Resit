@@ -208,7 +208,8 @@ void Weapon::fire(GameData* _GD)
 		break;
 	case WEP_PISTOL: //new_projectile = new Bullet(_GD->p_Device, Vector2(100, 0));
 		break;
-	case WEP_GRENADE: //new_projectile = new Grenade(_GD->p_Device, Vector2(100, 0));
+	case WEP_GRENADE: new_projectile = 
+		new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP1_SPEED);
 		break;
 	case WEP_DYNAMITE: //new_projectile = new Dynamite(_GD->p_Device, Vector2(100, 0));
 		break;
