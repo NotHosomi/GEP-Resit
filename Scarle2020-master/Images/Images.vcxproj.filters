@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ImageContentTask Include="logo_small.png" />
-    <ImageContentTask Include="ally.png" />
-    <ImageContentTask Include="enemy.png" />
-    <ImageContentTask Include="ground.png" />
     <ImageContentTask Include="projectile1.png" />
     <ImageContentTask Include="projectile2.png" />
     <ImageContentTask Include="projectile3.png" />
@@ -13,5 +10,7 @@
     <ImageContentTask Include="explosion.png" />
     <ImageContentTask Include="charge_indicator.png" />
     <ImageContentTask Include="aim_indicator.png" />
+    <ImageContentTask Include="unit.png" />
+    <ImageContentTask Include="tile.png" />
   </ItemGroup>
 </Project>

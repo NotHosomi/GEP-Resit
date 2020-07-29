@@ -209,7 +209,6 @@ void Game::Update(DX::StepTimer const& _timer)
     ReadInput();
 
     //update all objects
-
     for (list<GameObject2D*>::iterator it = m_GameObjects2D.begin(); it != m_GameObjects2D.end(); it++)
     {
         (*it)->Tick(m_GD);
