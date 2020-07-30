@@ -26,6 +26,7 @@ void Weapon::Tick(GameData* _GD)
 	aim_indicator.SetPos(m_pos);
 	charge_indicator.SetPos(m_pos);
 
+
 	if (_GD->m_Turn.getState() == TurnManager::TurnState::TS_PRE)
 	{
 		updateWepListHudElement(&_GD->m_Teams); // Only needs to happen once, but this is good enough for now
@@ -37,6 +38,28 @@ void Weapon::Tick(GameData* _GD)
 		}
 		current_weptype = WEP_ROCKET;
 		angle = 0.5 * PI;
+	}
+
+	// Flip the angle if the player has just flipped
+	if (_GD->m_Teams.getCurrentUnit()->isFlipped())
+	{
+		if (angle > 0)
+		{
+			angle *= -1;
+			m_rotation = angle;
+			aim_indicator.SetRot(angle);
+			charge_indicator.SetRot(angle);
+		}
+	}
+	else
+	{
+		if (angle < 0)
+		{
+			angle *= -1;
+			m_rotation = angle;
+			aim_indicator.SetRot(angle);
+			charge_indicator.SetRot(angle);
+		}
 	}
 
 	if (list_display_timer)
