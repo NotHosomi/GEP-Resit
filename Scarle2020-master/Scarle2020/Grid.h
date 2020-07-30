@@ -20,8 +20,10 @@ public:
 
 	void draw(DrawData2D* _DD);
 
-	static constexpr int GRID_HEIGHT = 46;
-	static constexpr int GRID_WIDTH = 80;
+	// static constexpr int GRID_HEIGHT = 46;
+	// static constexpr int GRID_WIDTH = 80;
+	static constexpr int GRID_HEIGHT = 60;
+	static constexpr int GRID_WIDTH = 106;
 private:
 	// I am aware a 2D vector is not optimal, however it allows for
 	// simpler code at the cost of memory access optimization

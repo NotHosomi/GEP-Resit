@@ -29,10 +29,10 @@ public:
 
 	static constexpr float UNIT_DMG_COLLIDER = 10;
 private:
-	static constexpr float UNIT_WIDTH = 16;
-	static constexpr float UNIT_HEIGHT = 26; // golden ratio 1 : 1.62
+	static constexpr float UNIT_WIDTH = 12;
+	static constexpr float UNIT_HEIGHT = 19; // golden ratio 1 : 1.62
 	static constexpr float UNIT_HP_BAR_OFFSET = -5;
-	static constexpr float UNIT_HP_BAR_SCALE = 0.35;
+	static constexpr float UNIT_HP_BAR_SCALE = 0.3;
 
 	static constexpr float UNIT_WEIGHT = 200;
 	static constexpr float UNIT_ELASTICITY = 0.1;

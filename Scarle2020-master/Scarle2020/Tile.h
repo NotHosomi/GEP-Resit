@@ -16,7 +16,7 @@ public:
 	[[nodiscard]] bool isAlive() const;
 	[[nodiscard]] Collider generateCollider() const;
 
-	static constexpr float TILE_DIMS = 16;
+	static constexpr float TILE_DIMS = 12;
 	static constexpr Color COLOUR_GRASS = Color(81, 194, 83); // green
 	static constexpr Color COLOUR_DIRT = Color(81, 194, 83); // brown
 private:
