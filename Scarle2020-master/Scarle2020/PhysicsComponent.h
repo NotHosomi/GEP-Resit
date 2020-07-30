@@ -20,6 +20,7 @@ public:
 	bool move(float dt, Grid* world, Vector2& pos);
 
 	Vector2 getVel() { return velocity; };
+	Collider getCollider() { return self; };
 	bool isGrounded() { return grounded; };
 	// True when velocity is negligable
 	bool isStill() { return velocity.Length() < 0.2; };

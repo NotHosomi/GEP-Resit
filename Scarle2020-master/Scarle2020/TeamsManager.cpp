@@ -42,10 +42,10 @@ bool TeamsManager::seekNextUnit()
 {
 	int start_team = m_current_team;
 	// Search for next alive 
-	m_current_team++;
 	bool found_team = false;
 	do
 	{
+		m_current_team++;
 		if (m_current_team == m_team_lists.size())
 		{
 			m_current_team = 0;
@@ -56,17 +56,12 @@ bool TeamsManager::seekNextUnit()
 			return true;
 		}
 
-		for (auto& unit : m_team_lists[m_current_team].unit_list)
-		{
-			if (unit->isAlive())
+		
+		found_team = std::any_of(m_team_lists[m_current_team].unit_list.begin(), m_team_lists[m_current_team].unit_list.end(),
+			[](Unit* unit)
 			{
-				found_team = true;
-			}
-			else
-			{
-				m_current_team++;
-			}
-		}
+				return unit->isAlive();
+			});
 	} while (!found_team);
 
 	TeamData* current_team = &m_team_lists[m_current_team];
@@ -144,13 +139,13 @@ void TeamsManager::consumeAmmo(int wep_slot)
 }
 
 // call once all units have stopped moving
-void TeamsManager::applyDamages()
+void TeamsManager::applyDamages(GameData* _GD)
 {
 	for (auto& team : m_team_lists)
 	{
 		for (auto& unit : team.unit_list)
 		{
-			unit->applyDamages();
+			unit->applyDamages(_GD);
 		}
 	}
 }

@@ -223,6 +223,7 @@ void Weapon::fire(GameData* _GD)
 
 	// end the turn
 	_GD->m_Turn.nextStage(&_GD->m_Teams);
+	_GD->m_Turn.setWaiting(true);	
 }
 
 void Weapon::changeAngle(GameData* _GD, bool is_up)

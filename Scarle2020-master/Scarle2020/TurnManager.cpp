@@ -8,6 +8,10 @@ void TurnManager::Tick(GameData* _GD)
 {
 	if (state == TS_WAIT)
 	{
+		if (waiting_on_projectile)
+		{
+			return;
+		}
 		vector<TeamData*> teams = _GD->m_Teams.getAllTeams();
 		// If any worms are not still
 		if (std::any_of(teams.begin(), teams.end(),
@@ -21,6 +25,7 @@ void TurnManager::Tick(GameData* _GD)
 			// TODO: Check if ALL gameobjects are still, not just units
 			return;
 		}
+		_GD->m_Teams.applyDamages(_GD);
 	}
 	if (state == TS_END)
 	{
@@ -90,6 +95,11 @@ void TurnManager::nextStage(TeamsManager* _TM)
 	case TS_WAIT: stagePre(_TM);
 		break;
 	}
+}
+
+void TurnManager::setWaiting(bool _wait)
+{
+	waiting_on_projectile = _wait;
 }
 
 TurnManager::TurnState TurnManager::getState()

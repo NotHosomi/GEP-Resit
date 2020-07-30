@@ -11,6 +11,8 @@ public:
 
 protected:
 	virtual void explode(GameData* _GD);
+	void OOBCheck(GameData* _GD);
+
 	PhysicsComponent PhysCmp;
 	float exp_radius = 100;
 	float exp_damage = 60;
