@@ -3,6 +3,7 @@
 #include "ImageGO2D.h"
 #include "TextGO2D.h"
 #include "PhysicsComponent.h"
+#include "GridReso.h"
 
 class Unit : public ImageGO2D
 {
@@ -29,8 +30,13 @@ public:
 
 	static constexpr float UNIT_DMG_COLLIDER = 10;
 private:
+#ifdef _GRID_RESO_HIGH
 	static constexpr float UNIT_WIDTH = 12;
 	static constexpr float UNIT_HEIGHT = 19; // golden ratio 1 : 1.62
+#else
+	static constexpr float UNIT_WIDTH = 16;
+	static constexpr float UNIT_HEIGHT = 26; // golden ratio 1 : 1.62
+#endif
 	static constexpr float UNIT_HP_BAR_OFFSET = -5;
 	static constexpr float UNIT_HP_BAR_SCALE = 0.3;
 

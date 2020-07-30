@@ -197,6 +197,7 @@
       <Filter>GameObjects\weapons</Filter>
     </ClInclude>
     <ClInclude Include="Dynamite.h" />
+    <ClInclude Include="GridReso.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
