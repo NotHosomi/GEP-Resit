@@ -23,7 +23,7 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	{
 		if (velocity.y > 0)
 		{
-			velocity.y = 0;
+			velocity.y *= -elasticity;
 		}
 		applyFriction(dt);
 	}
