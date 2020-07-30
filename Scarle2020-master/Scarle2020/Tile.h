@@ -1,6 +1,7 @@
 #pragma once
 #include "ImageGO2D.h"
 #include "Collider.h"
+#include "GridReso.h"
 
 class Tile : public ImageGO2D
 {
@@ -16,7 +17,11 @@ public:
 	[[nodiscard]] bool isAlive() const;
 	[[nodiscard]] Collider generateCollider() const;
 
+#ifdef _GRID_RESO_HIGH
+	static constexpr float TILE_DIMS = 12;
+#else
 	static constexpr float TILE_DIMS = 16;
+#endif
 	static constexpr Color COLOUR_GRASS = Color(81, 194, 83); // green
 	static constexpr Color COLOUR_DIRT = Color(81, 194, 83); // brown
 private:

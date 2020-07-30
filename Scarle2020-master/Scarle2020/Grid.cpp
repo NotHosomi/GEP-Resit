@@ -32,14 +32,22 @@ int Grid::generateAltitude(int x)
 #if 0
 	// generate altitude using sine wave
 	float y = 2 * sin(0.4 * x) + 15;
-	return floor(y);
+#endif
+#ifdef _GRID_RESO_HIGH
+	// generate altitude using a quartic polynomial
+	// i.e. two peaks with a valley
+	float f = 0.23 * x - 12;
+	float y = 0.008 * (f + 5.7) * (f + 6.5) * (f - 8.7) * (f - 3.1) + 25;
+
+	// alternative map
+	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
 #else
 	// generate altitude using a quartic polynomial
 	// i.e. two peaks with a valley
-	float f = 0.31 * x - 13;
+	float f = 0.23 * x - 13;
 	float y = 0.01 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 20;
-	return floor(y);
 #endif
+	return floor(y);
 }
 
 void Grid::draw(DrawData2D* _DD)
