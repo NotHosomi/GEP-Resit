@@ -117,6 +117,7 @@ void TurnManager::stagePre(TeamsManager* _TM)
 	if (gameOver)
 	{
 		stageEnd(_TM);
+		return;
 	}
 	// update Hud alert
 	int team_id = _TM->getCurrentTeamId();
