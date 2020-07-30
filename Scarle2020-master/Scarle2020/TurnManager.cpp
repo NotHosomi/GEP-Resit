@@ -25,6 +25,7 @@ void TurnManager::Tick(GameData* _GD)
 			// TODO: Check if ALL gameobjects are still, not just units
 			return;
 		}
+		_GD->m_Teams.applyDamages(_GD);
 	}
 	if (state == TS_END)
 	{

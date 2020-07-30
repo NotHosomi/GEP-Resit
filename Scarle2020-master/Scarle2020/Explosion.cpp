@@ -46,8 +46,6 @@ void Explosion::Tick(GameData* _GD)
 			float dmg = damage;
 			dmg *= -(falloff * falloff) + 1;
 			unit->addDamage(dmg);
-			// TODO: Move applyDmg to end of turn, like in original game
-			unit->applyDamages(_GD);
 
 			// linear knockback falloff
 			diff.Normalize();
