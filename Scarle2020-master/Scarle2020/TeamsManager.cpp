@@ -155,7 +155,7 @@ Color TeamsManager::colourPicker(int team_id)
 	switch (team_id)
 	{
 	case 0: return Color((float*)&Colors::Red);
-	case 1: return Color((float*)&Colors::Blue);
+	case 1: return Color((float*)&Colors::Cyan);
 	case 2: return Color((float*)&Colors::Pink);
 	case 3: return Color((float*)&Colors::Yellow);
 	default: return Color((float*)&Colors::White);

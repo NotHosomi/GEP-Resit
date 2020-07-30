@@ -11,6 +11,7 @@ Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 {
 	m_pos = location;
 	team_id = team;
+	m_scale = Vector2(UNIT_WIDTH, UNIT_HEIGHT);
 	hp_text.SetScale(UNIT_HP_BAR_SCALE);
 	hp_text.SetColour(TeamsManager::colourPicker(team_id));
 }
