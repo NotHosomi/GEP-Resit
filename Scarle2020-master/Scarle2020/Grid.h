@@ -21,7 +21,7 @@ public:
 	void draw(DrawData2D* _DD);
 
 #ifdef _GRID_RESO_HIGH
-	static constexpr int GRID_HEIGHT = 60;
+	static constexpr int GRID_HEIGHT = 61;
 	static constexpr int GRID_WIDTH = 106;
 #else
 	// static constexpr int GRID_HEIGHT = 46;
