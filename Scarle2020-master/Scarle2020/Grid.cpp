@@ -13,7 +13,15 @@ Grid::Grid(ID3D11Device* _GD)
 		tiles.emplace_back(std::vector<Tile>());
 		tiles.back().reserve(GRID_HEIGHT);
 		int altitude = generateAltitude(x);
-
+		// sanity checks
+		if (altitude > GRID_HEIGHT)
+		{
+			altitude = GRID_HEIGHT;
+		}
+		if (altitude < 0)
+		{
+			altitude = 0;
+		}
 		// spawn tiles
 		for (int y = 0; y < altitude; ++y)
 		{
@@ -46,8 +54,8 @@ int Grid::generateAltitude(int x)
 	// alternative map
 	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
 
-	float f = 0.23 * x - 12;
-	float y = q_m * (f + q_a) * (f + q_b) * (f - q_c) * (f - q_d) + q_e;
+	float f = 0.22 * x - 12;
+	float y = q_m * (f + q_a) * (f + q_b) * (f + q_c) * (f + q_d) + q_e;
 #endif
 	return floor(y);
 }
@@ -57,17 +65,20 @@ void Grid::seedTerrain()
 	std::default_random_engine re{ std::random_device{}() };
 	std::uniform_int_distribution<int> dist{ 0, 100 };
 	q_m = dist(re);
-	q_m *= (GRID_QUARTIC_M_MAX - GRID_QUARTIC_M_MIN) / 100 + GRID_QUARTIC_M_MIN;
+	q_m = q_m * (GRID_QUARTIC_M_MAX - GRID_QUARTIC_M_MIN) / 100 + GRID_QUARTIC_M_MIN;
 	q_a = dist(re);
-	q_a *= (GRID_QUARTIC_A_MAX - GRID_QUARTIC_A_MIN) / 100 + GRID_QUARTIC_A_MIN;
+	q_a = q_a * (GRID_QUARTIC_A_MAX - GRID_QUARTIC_A_MIN) / 100 + GRID_QUARTIC_A_MIN;
+	q_b = dist(re);
+	q_b = q_b * (GRID_QUARTIC_B_MAX - GRID_QUARTIC_B_MIN) / 100 + GRID_QUARTIC_B_MIN;
 	q_c = dist(re);
-	q_c *= (GRID_QUARTIC_B_MAX - GRID_QUARTIC_B_MIN) / 100 + GRID_QUARTIC_B_MIN;
-	q_c = dist(re);
-	q_c *= (GRID_QUARTIC_C_MAX - GRID_QUARTIC_C_MIN) / 100 + GRID_QUARTIC_C_MIN;
+	q_c = q_c * (GRID_QUARTIC_C_MAX - GRID_QUARTIC_C_MIN) / 100 + GRID_QUARTIC_C_MIN;
 	q_d = dist(re);
-	q_d *= (GRID_QUARTIC_D_MAX - GRID_QUARTIC_D_MIN) / 100 + GRID_QUARTIC_D_MIN;
+	q_d = q_d * (GRID_QUARTIC_D_MAX - GRID_QUARTIC_D_MIN) / 100 + GRID_QUARTIC_D_MIN;
 	q_e = dist(re);
-	q_e *= (GRID_QUARTIC_E_MAX - GRID_QUARTIC_E_MIN) / 100 + GRID_QUARTIC_E_MIN;
+	q_e /= 100;
+	q_e *= GRID_QUARTIC_E_MAX - GRID_QUARTIC_E_MIN;
+	q_e += GRID_QUARTIC_E_MIN;
+	//q_e = q_e * (GRID_QUARTIC_E_MAX - GRID_QUARTIC_E_MIN) / 100 + GRID_QUARTIC_E_MIN;
 }
 
 void Grid::draw(DrawData2D* _DD)
