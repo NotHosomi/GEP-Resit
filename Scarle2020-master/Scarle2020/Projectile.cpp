@@ -19,6 +19,7 @@ void Projectile::Tick(GameData* _GD)
 	{
 		explode(_GD);
 	}
+	OOBCheck(_GD);
 }
 
 void Projectile::explode(GameData* _GD)
@@ -36,7 +37,7 @@ void Projectile::OOBCheck(GameData* _GD)
 	// TODO: pass the window resolution thru GameData
 	if (m_pos.x + PhysCmp.getCollider().width / 2 < 0 ||
 		m_pos.x - PhysCmp.getCollider().width / 2 > 1280 ||
-		m_pos.x - PhysCmp.getCollider().height / 2 > 720)
+		m_pos.y - PhysCmp.getCollider().height / 2 > 720)
 	{
 		_GD->deletion_list.emplace_back(this);
 		_GD->m_Turn.setWaiting(false);

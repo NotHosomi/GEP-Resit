@@ -144,13 +144,13 @@ void TeamsManager::consumeAmmo(int wep_slot)
 }
 
 // call once all units have stopped moving
-void TeamsManager::applyDamages()
+void TeamsManager::applyDamages(GameData* _GD)
 {
 	for (auto& team : m_team_lists)
 	{
 		for (auto& unit : team.unit_list)
 		{
-			unit->applyDamages();
+			unit->applyDamages(_GD);
 		}
 	}
 }

@@ -15,7 +15,7 @@ Explosion::Explosion(ID3D11Device* _GD, Vector2 position, float _radius, float _
 
 void Explosion::Tick(GameData* _GD)
 {
-	vector<Tile*> tiles = _GD->p_World->getTilesInRadius(m_pos, radius);
+ 	vector<Tile*> tiles = _GD->p_World->getTilesInRadius(m_pos, radius);
 	for (auto& tile : tiles)
 	{
 		tile->kill();
@@ -47,7 +47,7 @@ void Explosion::Tick(GameData* _GD)
 			dmg *= -(falloff * falloff) + 1;
 			unit->addDamage(dmg);
 			// TODO: Move applyDmg to end of turn, like in original game
-			unit->applyDamages();
+			unit->applyDamages(_GD);
 
 			// linear knockback falloff
 			diff.Normalize();

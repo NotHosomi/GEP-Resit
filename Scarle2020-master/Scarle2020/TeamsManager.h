@@ -29,7 +29,7 @@ public:
 	int ammoCount(int wep_slot);
 	void consumeAmmo(int wep_slot);
 
-	void applyDamages();
+	void applyDamages(GameData* _GD);
 
 	static Color colourPicker(int team_id);
 private:

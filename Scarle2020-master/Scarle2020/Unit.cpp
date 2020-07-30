@@ -3,6 +3,7 @@
 #include "GameData.h"
 #include "DrawData2D.h"
 #include "TeamsManager.h"
+#include "Explosion.h"
 
 Unit::Unit(ID3D11Device* _GD, const Vector2& location, int team) :
 	ImageGO2D("unit", _GD),
@@ -54,6 +55,7 @@ void Unit::Tick(GameData* _GD)
 	hp_loc.x -= UNIT_WIDTH/2;
 #endif
 	hp_text.SetPos(hp_loc);
+	OOBCheck(_GD);
 }
 
 void Unit::Draw(DrawData2D* _DD)
@@ -90,14 +92,15 @@ void Unit::addDamage(float amount)
 	accumulated_damage += amount;
 }
 
-void Unit::applyDamages()
+void Unit::applyDamages(GameData* _GD)
 {
 	health -= accumulated_damage;
 	accumulated_damage = 0;
 	hp_text.SetString(std::to_string(health));
-	if (health <= 0)
+	if (health <= 0 && alive)
 	{
-		// TODO: EXPLODE!
+		die(_GD);
+		explode(_GD);
 	}
 }
 
@@ -147,7 +150,7 @@ void Unit::OOBCheck(GameData* _GD)
 	// TODO: pass the window resolution thru GameData
 	if (m_pos.x + PhysCmp.getCollider().width / 2 < 0 ||
 		m_pos.x - PhysCmp.getCollider().width / 2 > 1280 ||
-		m_pos.x - PhysCmp.getCollider().height / 2 > 720)
+		m_pos.y - PhysCmp.getCollider().height / 2 > 720)
 	{
 		die(_GD);
 	}
@@ -176,4 +179,10 @@ void Unit::die(GameData* _GD)
 			_GD->m_Turn.nextStage(&_GD->m_Teams);
 		}
 	}
+}
+
+void Unit::explode(GameData* _GD)
+{
+	GameObject2D* explosion = new Explosion(_GD->p_Device, m_pos, DEATH_EXP_RADIUS, DEATH_EXP_DMG);
+	_GD->creation_list.emplace_back(explosion);
 }

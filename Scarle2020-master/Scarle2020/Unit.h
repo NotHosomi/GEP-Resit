@@ -22,7 +22,7 @@ public:
 	bool isFlipped();
 
 	void addDamage(float amount);
-	void applyDamages();
+	void applyDamages(GameData* _GD);
 
 	// debugging
 	PhysicsComponent* getPhysCmp() { return &PhysCmp; };
@@ -45,9 +45,13 @@ private:
 	static constexpr float MV_JUMPFORCE_H = 50;
 	static constexpr float MV_JUMPCOOLDOWN = 2;
 
+	static constexpr float DEATH_EXP_RADIUS = 30;
+	static constexpr float DEATH_EXP_DMG = 2;
+
 	void playerMove(GameData* _GD);
 	void OOBCheck(GameData* _GD);
 	void die(GameData* _GD);
+	void explode(GameData* _GD);
 
 	PhysicsComponent PhysCmp;
 	bool awake = false;
