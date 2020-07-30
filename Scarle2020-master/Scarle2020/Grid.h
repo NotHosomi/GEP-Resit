@@ -33,16 +33,16 @@ private:
 	// 0.01 * (f + 3.5) * (f + 3.5) * (f - 2.5) * (f - 2.5) + 15; // minimums
 	static constexpr float GRID_QUARTIC_M_MIN = 0.01;
 	static constexpr float GRID_QUARTIC_M_MAX = 0.015;
-	static constexpr float GRID_QUARTIC_A_MIN = 3.5;
+	static constexpr float GRID_QUARTIC_A_MIN = 5;
 	static constexpr float GRID_QUARTIC_A_MAX = 7;
-	static constexpr float GRID_QUARTIC_B_MIN = 3.5;
+	static constexpr float GRID_QUARTIC_B_MIN = 5;
 	static constexpr float GRID_QUARTIC_B_MAX = 7;
-	static constexpr float GRID_QUARTIC_C_MIN = -6.5;
-	static constexpr float GRID_QUARTIC_C_MAX = -2.5;
-	static constexpr float GRID_QUARTIC_D_MIN = -6.5;
-	static constexpr float GRID_QUARTIC_D_MAX = -2.5;
-	static constexpr float GRID_QUARTIC_E_MIN = 15;
-	static constexpr float GRID_QUARTIC_E_MAX = 23;
+	static constexpr float GRID_QUARTIC_C_MIN = -7;
+	static constexpr float GRID_QUARTIC_C_MAX = -6;
+	static constexpr float GRID_QUARTIC_D_MIN = -7;
+	static constexpr float GRID_QUARTIC_D_MAX = -6;
+	static constexpr float GRID_QUARTIC_E_MIN = 13;
+	static constexpr float GRID_QUARTIC_E_MAX = 18;
 #endif
 	int generateAltitude(int x);
 	void seedTerrain();
