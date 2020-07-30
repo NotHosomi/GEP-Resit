@@ -41,6 +41,9 @@ int Grid::generateAltitude(int x)
 
 	// alternative map
 	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
+
+	// 0.01 * (f + 7.5) * (f + 7.5) * (f - 7.5) * (f - 4) + 15; // extremes
+	// 0.01 * (f + 3.5) * (f + 3.5) * (f - 2.5) * (f - 2.5) + 35; // minimums
 #else
 	// generate altitude using a quartic polynomial
 	// i.e. two peaks with a valley
