@@ -85,6 +85,8 @@ void Weapon::Tick(GameData* _GD)
 	// Player must be stood still
 	if (!_GD->m_Teams.getCurrentUnit()->getPhysCmp()->isStill())
 	{
+		// hide the aim helper
+		draw_aimer = false;
 		return;
 	}
 	// Enable the aim helper if we're in the act phase 
