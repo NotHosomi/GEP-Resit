@@ -14,6 +14,8 @@ Weapon::Weapon(ID3D11Device* _GD) :
 	charge_indicator("charge_indicator", _GD)
 {
 	m_rotation = angle;
+	aim_indicator.SetRot(angle);
+	charge_indicator.SetRot(angle);
 	pickColour();
 	hud_weaponlist.SetColour(Color((float*)&Colors::OrangeRed));
 	hud_weaponlist.SetScale(0.5);
@@ -29,15 +31,20 @@ void Weapon::Tick(GameData* _GD)
 
 	if (_GD->m_Turn.getState() == TurnManager::TurnState::TS_PRE)
 	{
-		updateWepListHudElement(&_GD->m_Teams); // Only needs to happen once, but this is good enough for now
+		// Only needs to happen once, but this is good enough for now
 		if (has_fired)
 		{
 			has_fired = false;
 			projectile_released = false;
 			charge = 0;
 		}
-		current_weptype = WEP_ROCKET;
 		angle = 0.5 * PI;
+		// update the weapon and sprite colour
+		current_weptype = WEP_ROCKET;
+		pickColour();
+		// Wep List display timer
+		updateWepListHudElement(&_GD->m_Teams);
+		list_display_timer = HUD_LIST_DECAY_TIME;
 	}
 
 	// Flip the angle if the player has just flipped
@@ -198,12 +205,12 @@ void Weapon::switchWep(GameData* _GD, bool forward)
 		// check if the current weapon has ammo
 		// -1 (infinite ammo) is cast to true
 	} while (!_GD->m_Teams.ammoCount(wep_id));
-	// set Wep List display timer
-	list_display_timer = HUD_LIST_DECAY_TIME;
 	// update the weapon and sprite colour
 	current_weptype = static_cast<Weapon::WepType>(wep_id);
 	pickColour();
+	// Wep List display timer
 	updateWepListHudElement(&_GD->m_Teams);
+	list_display_timer = HUD_LIST_DECAY_TIME;
 }
 
 void Weapon::chargeWeapon(GameData* _GD)
