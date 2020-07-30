@@ -21,6 +21,7 @@ public:
 
 	Vector2 getVel() { return velocity; };
 	Collider getCollider() { return self; };
+	float getWeight() { return weight; };
 	bool isGrounded() { return grounded; };
 	// True when velocity is negligable
 	bool isStill() { return velocity.Length() < 0.2; };
