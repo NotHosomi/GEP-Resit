@@ -80,7 +80,18 @@ bool TeamsManager::seekNextUnit()
 		}
 	}
 	current_unit = thisWorm;
-	return false;
+
+	// Is this the last team standing?
+	int teams_alive = 
+		std::count_if(m_team_lists.begin(), m_team_lists.end(), [](TeamData& team)
+		{
+			return std::any_of(team.unit_list.begin(), team.unit_list.end(),
+				[](Unit* unit)
+				{
+					return unit->isAlive();
+				});
+		});
+	return teams_alive <= 1;  
 }
 
 int TeamsManager::getCurrentTeamId()

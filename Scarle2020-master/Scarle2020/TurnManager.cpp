@@ -31,8 +31,7 @@ void TurnManager::Tick(GameData* _GD)
 	{
 		if (_GD->m_Input.any())
 		{
-			// TODO: Reset game
-			_GD->m_Input.clear();
+			wish_new_game = true;
 		}
 		return;
 	}
@@ -41,7 +40,6 @@ void TurnManager::Tick(GameData* _GD)
 		if (_GD->m_Input.any())
 		{
 			timer = 0;
-			_GD->m_Input.clear();
 		}
 	}
 
@@ -117,6 +115,7 @@ void TurnManager::stagePre(TeamsManager* _TM)
 	if (gameOver)
 	{
 		stageEnd(_TM);
+		return;
 	}
 	// update Hud alert
 	int team_id = _TM->getCurrentTeamId();

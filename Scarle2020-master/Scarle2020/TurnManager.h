@@ -22,6 +22,7 @@ public:
 	TurnState getState();
 	void nextStage(TeamsManager* _TM);
 	void setWaiting(bool _wait);
+	bool wishNewGame() { return wish_new_game; };
 private:
 	static constexpr float TIME_PRE = 5;
 	static constexpr float TIME_ACT = 60;
@@ -35,7 +36,7 @@ private:
 	const string ALERT_SUB_PRE = "Press any key";
 	const string ALERT_END = "GAME OVER";
 	const string ALERT_SUB_END_1 = "Player ";
-	const string ALERT_SUB_END_2 = " wins!";
+	const string ALERT_SUB_END_2 = " wins!\n\nPress any key to restart";
 
 	void stagePre(TeamsManager* _TM);
 	void stageAct(TeamsManager* _TM);
@@ -50,5 +51,7 @@ private:
 	TextGO2D hud_timer = TextGO2D("");
 	TextGO2D hud_alert = TextGO2D("");
 	TextGO2D hud_alert_subtitle = TextGO2D("");
+
+	bool wish_new_game = false;
 };
 

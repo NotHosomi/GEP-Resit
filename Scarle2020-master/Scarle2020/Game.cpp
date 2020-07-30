@@ -92,84 +92,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_DD->m_cam = m_cam;
     m_DD->m_light = m_light;
     
-    //create GameData struct and populate its pointers
-    m_GD = new GameData;
-
-    // Give the device to GameData, so entities can create other entities like explosions.
-    // Bad practice? Maybe. But I'm under time pressure
-    m_GD->p_Device = m_d3dDevice.Get();
-
-    // Generate terrain // TODO: Make unique?
-#if 0
-    m_World = std::make_unique<Grid>(new Grid(m_d3dDevice.Get()));
-    m_GD->p_World = m_World.get();
-#else
-    m_GD->p_World = new Grid(m_d3dDevice.Get());
-#endif
-
-    // Hardcoded spawns, due to time restraint
-#if 0
-    Unit* new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2 (200, 50), 0);
-    new_unit->setAwake(true); // TODO: automate this
-    m_GameObjects2D.push_back(new_unit);
-
-    Unit* unit2 = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(300, 50), 0);
-    m_GameObjects2D.push_back(unit2);
-    
-    //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(400, 50), 1);
-    //m_GameObjects2D.emplace_back(new_unit);
-    //
-    //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(500, 50), 1);
-    //m_GameObjects2D.emplace_back(new_unit);
-#else
-    Unit* new_unit = new Unit(m_d3dDevice.Get(), Vector2(400, 100), 0);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    new_unit->setAwake(true); // TODO: automate this
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 0);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(600, 200), 0);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 100), 0);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(330, 100), 1);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(1100, 100), 1);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(700, 200), 1);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(550, 200), 1);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(860, 100), 2);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 2);
-    m_GD->m_Teams.addUnitToTeam(new_unit);
-    m_GameObjects2D.push_back(new_unit);
-#endif
-
-    // Add weapon last, so it also draws last (Haven't the time to experiment with Z ordering)
-    Weapon* weapon = new Weapon(m_d3dDevice.Get());
-    m_GameObjects2D.push_back(weapon);
-
-    m_GD->m_Teams.init();
-    m_GD->m_Turn.init(m_GD);
+    InitGameData();
 }
 
 // Executes the basic game loop.
@@ -238,6 +161,19 @@ void Game::Update(DX::StepTimer const& _timer)
     }
 
     m_GD->m_Turn.Tick(m_GD);
+    if (m_GD->m_Turn.wishNewGame())
+    {
+        while (m_GameObjects2D.size())
+        {
+            // garbage collection
+            list<GameObject2D*>::iterator it = m_GameObjects2D.begin();
+            delete (*it);
+            m_GameObjects2D.erase(it);
+        }
+        delete m_GD;
+        m_GD = nullptr;
+        InitGameData();
+    }
 }
 
 // Draws the scene.
@@ -268,6 +204,89 @@ void Game::Render()
     m_d3dContext->OMSetDepthStencilState(m_states->DepthDefault(), 0);
 
     Present();
+}
+
+void Game::InitGameData()
+{
+    //create GameData struct and populate its pointers
+    m_GD = new GameData;
+
+    // Give the device to GameData, so entities can create other entities like explosions.
+    // Bad practice? Maybe. But I'm under time pressure
+    m_GD->p_Device = m_d3dDevice.Get();
+
+    // Generate terrain // TODO: Make unique?
+#if 0
+    m_World = std::make_unique<Grid>(new Grid(m_d3dDevice.Get()));
+    m_GD->p_World = m_World.get();
+#else
+    m_GD->p_World = new Grid(m_d3dDevice.Get());
+#endif
+
+    // Hardcoded spawns, due to time restraint
+    // TODO: Used grid-altitude range based spawning
+#if 0
+    Unit* new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(200, 50), 0);
+    new_unit->setAwake(true); // TODO: automate this
+    m_GameObjects2D.push_back(new_unit);
+
+    Unit* unit2 = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(300, 50), 0);
+    m_GameObjects2D.push_back(unit2);
+
+    //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(400, 50), 1);
+    //m_GameObjects2D.emplace_back(new_unit);
+    //
+    //new_unit = m_GD->m_Teams.createUnit(m_d3dDevice.Get(), Vector2(500, 50), 1);
+    //m_GameObjects2D.emplace_back(new_unit);
+#else
+    Unit* new_unit = new Unit(m_d3dDevice.Get(), Vector2(400, 100), 0);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    new_unit->setAwake(true); // TODO: automate this
+    m_GameObjects2D.push_back(new_unit);
+
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 0);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+    // 
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(600, 200), 0);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+    // 
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 100), 0);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(330, 100), 1);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(1100, 100), 1);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+    // 
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(700, 200), 1);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+    // 
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(550, 200), 1);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+    // 
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(860, 100), 2);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+    // 
+    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 2);
+    // m_GD->m_Teams.addUnitToTeam(new_unit);
+    // m_GameObjects2D.push_back(new_unit);
+#endif
+
+    // Add weapon last, so it also draws last (Haven't the time to experiment with Z ordering)
+    Weapon* weapon = new Weapon(m_d3dDevice.Get());
+    m_GameObjects2D.push_back(weapon);
+
+    m_GD->m_Teams.init();
+    m_GD->m_Turn.init(m_GD);
 }
 
 #pragma region WindowHandlingStuff

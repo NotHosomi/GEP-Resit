@@ -62,6 +62,8 @@ private:
     void Update(DX::StepTimer const& _timer);
     void Render();
 
+    void InitGameData();
+
     void Clear();
     void Present();
 
