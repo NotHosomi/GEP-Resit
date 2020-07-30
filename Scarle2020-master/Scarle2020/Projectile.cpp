@@ -43,4 +43,10 @@ void Projectile::OOBCheck(GameData* _GD)
 		_GD->m_Turn.setWaiting(false);
 	}
 	// Note: Intentionally permits objects to go above the screen, as gravity will bring them back down
+	// if no gravity, also check that bound
+	if (!PhysCmp.getWeight() && m_pos.y + PhysCmp.getCollider().height / 2 < 0)
+	{
+		_GD->deletion_list.emplace_back(this);
+		_GD->m_Turn.setWaiting(false);
+	}
 }
