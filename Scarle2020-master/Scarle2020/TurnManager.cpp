@@ -120,7 +120,7 @@ void TurnManager::stagePre(TeamsManager* _TM)
 	}
 	// update Hud alert
 	int team_id = _TM->getCurrentTeamId();
-	hud_alert.SetString(ALERT_PRE);
+	hud_alert.SetString(ALERT_PRE + to_string(team_id));
 	hud_alert.SetColour(TeamsManager::colourPicker(team_id));
 	hud_alert_subtitle.SetString(ALERT_SUB_PRE);
 	hud_alert_subtitle.SetColour(TeamsManager::colourPicker(team_id));
