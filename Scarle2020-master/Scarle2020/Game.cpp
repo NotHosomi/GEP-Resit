@@ -244,41 +244,41 @@ void Game::InitGameData()
     new_unit->setAwake(true); // TODO: automate this
     m_GameObjects2D.push_back(new_unit);
 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 0);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
-    // 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(600, 200), 0);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
-    // 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 100), 0);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 0);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+    
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(600, 200), 0);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+    
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(1000, 100), 0);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
 
     new_unit = new Unit(m_d3dDevice.Get(), Vector2(330, 100), 1);
     m_GD->m_Teams.addUnitToTeam(new_unit);
     m_GameObjects2D.push_back(new_unit);
 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(1100, 100), 1);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
-    // 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(700, 200), 1);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
-    // 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(550, 200), 1);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
-    // 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(860, 100), 2);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
-    // 
-    // new_unit = new Unit(m_d3dDevice.Get(), Vector2(300, 100), 2);
-    // m_GD->m_Teams.addUnitToTeam(new_unit);
-    // m_GameObjects2D.push_back(new_unit);
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(1100, 100), 1);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+    
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(700, 200), 1);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+    
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(550, 200), 1);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+    
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(860, 100), 2);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
+    
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(470, 100), 2);
+    m_GD->m_Teams.addUnitToTeam(new_unit);
+    m_GameObjects2D.push_back(new_unit);
 #endif
 
     // Add weapon last, so it also draws last (Haven't the time to experiment with Z ordering)
