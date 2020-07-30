@@ -19,6 +19,7 @@ public:
 	vector<Tile*> getTilesInRadius(Vector2 origin, float radius);
 
 	void draw(DrawData2D* _DD);
+	Vector2 genSpawnCoord();
 
 #ifdef _GRID_RESO_HIGH
 	static constexpr int GRID_HEIGHT = 61;

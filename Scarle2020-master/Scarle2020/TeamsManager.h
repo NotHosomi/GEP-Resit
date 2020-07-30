@@ -32,6 +32,9 @@ public:
 	void applyDamages(GameData* _GD);
 
 	static Color colourPicker(int team_id);
+
+	static constexpr int NUM_PLAYERS = 4;
+	static constexpr int NUM_UNITS_PER_TEAM = 4;
 private:
 	std::vector<TeamData> m_team_lists = {};
 	int m_current_team = 0;

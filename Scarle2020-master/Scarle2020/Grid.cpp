@@ -92,6 +92,23 @@ void Grid::draw(DrawData2D* _DD)
 	}
 }
 
+Vector2 Grid::genSpawnCoord()
+{
+	std::default_random_engine re{ std::random_device{}() };
+	std::uniform_int_distribution<int> dist{ 0, GRID_WIDTH };
+	int x = 0;
+	int y = 0;
+	do
+	{
+		x = dist(re);
+		y = generateAltitude(x);
+	} while (y > GRID_HEIGHT - 8);
+	y -= 2;
+	Vector2 position = Vector2(x, y);
+	position *= Tile::TILE_DIMS;
+	return position;
+}
+
 Tile* Grid::getTile(float x, float y)
 {
 	int x_coord = static_cast<int>(floor(x));
