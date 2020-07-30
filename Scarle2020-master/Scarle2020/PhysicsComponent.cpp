@@ -17,13 +17,14 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	{
 		return true;
 	}
-
+	bool contact = false;
 	checkGrounded(world, self);
 	if (grounded)
 	{
 		if (velocity.y > 0)
 		{
 			velocity.y *= -elasticity;
+			contact = true;
 		}
 		applyFriction(dt);
 	}
@@ -47,7 +48,7 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 	// update persistent velocity to reflect the changes from checkCollisions();
 	velocity = frame_velocity / dt;
 	// return true if there was a collision
-	return hit;
+	return hit || contact;
 }
 
 // Update the position of our collider
