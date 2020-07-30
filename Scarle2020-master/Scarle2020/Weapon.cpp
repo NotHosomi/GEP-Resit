@@ -19,7 +19,7 @@ Weapon::Weapon(ID3D11Device* _GD) :
 	pickColour();
 	hud_weaponlist.SetColour(Color((float*)&Colors::OrangeRed));
 	hud_weaponlist.SetScale(0.5);
-
+	hud_weaponlist.SetPos(Vector2(0, 50));
 }
 
 void Weapon::Tick(GameData* _GD)
