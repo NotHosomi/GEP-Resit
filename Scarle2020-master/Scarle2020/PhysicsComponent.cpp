@@ -43,16 +43,30 @@ bool PhysicsComponent::move(float dt, Grid* world, Vector2& pos)
 #else
 	pos += frame_velocity;
 #endif
-
-	// update collider position
-	self.x = pos.x;
-	self.y = pos.y;
-
-	// update persistent velocity to reflect the changes in checkCollisions();
+	moveSelf(pos);
+	// update persistent velocity to reflect the changes from checkCollisions();
 	velocity = frame_velocity / dt;
-
 	// return true if there was a collision
 	return hit;
+}
+
+// Update the position of our collider
+void PhysicsComponent::moveSelf(const Vector2& new_pos)
+{
+	float nudge = 0;
+	// due to how the collider origin is it's top left corner, but GameObject's pos is their center
+	// it's faster to do this collider nudge than to translate between GO origin and Collider origin each frame
+	if (self.width > self.height)
+	{
+		nudge = self.height / 4;
+	}
+	self.x = new_pos.x - nudge;
+
+	if (self.width < self.height)
+	{
+		nudge = self.width / 4;
+	}
+	self.y = new_pos.y - nudge;
 }
 
 void PhysicsComponent::checkGrounded(Grid* world, const Collider& object)
