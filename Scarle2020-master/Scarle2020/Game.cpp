@@ -143,7 +143,7 @@ void Game::Initialize(HWND _window, int _width, int _height)
     m_GD->m_Teams.addUnitToTeam(new_unit);
     m_GameObjects2D.push_back(new_unit);
 
-    new_unit = new Unit(m_d3dDevice.Get(), Vector2(1100, 400), 1);
+    new_unit = new Unit(m_d3dDevice.Get(), Vector2(1100, 100), 1);
     m_GD->m_Teams.addUnitToTeam(new_unit);
     m_GameObjects2D.push_back(new_unit);
 
