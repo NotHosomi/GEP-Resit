@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "Grid.h"
+#include <random>
 
 Grid::Grid(ID3D11Device* _GD)
-{ // TODO array construction? Use vector maybe
+{
 	// generate terrain
+	seedTerrain();
+
 	tiles.reserve(GRID_WIDTH);
 	for (int x = 0; x < GRID_WIDTH; ++x)
 	{
@@ -29,28 +32,42 @@ Grid::Grid(ID3D11Device* _GD)
 
 int Grid::generateAltitude(int x)
 {
-#if 0
-	// generate altitude using sine wave
-	float y = 2 * sin(0.4 * x) + 15;
-#endif
-#ifdef _GRID_RESO_HIGH
-	// generate altitude using a quartic polynomial
-	// i.e. two peaks with a valley
-	float f = 0.23 * x - 12;
-	float y = 0.008 * (f + 5.7) * (f + 6.5) * (f - 8.7) * (f - 3.1) + 25;
-
-	// alternative map
-	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
-
-	// 0.01 * (f + 7.5) * (f + 7.5) * (f - 7.5) * (f - 4) + 15; // extremes
-	// 0.01 * (f + 3.5) * (f + 3.5) * (f - 2.5) * (f - 2.5) + 35; // minimums
-#else
+#ifndef _GRID_RESO_HIGH
 	// generate altitude using a quartic polynomial
 	// i.e. two peaks with a valley
 	float f = 0.23 * x - 13;
 	float y = 0.01 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 20;
+#else
+	// generate altitude using a quartic polynomial
+	// i.e. two peaks with a valley
+	// float f = 0.23 * x - 12;
+	// float y = 0.008 * (f + 5.7) * (f + 6.5) * (f - 8.7) * (f - 3.1) + 25;
+
+	// alternative map
+	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
+
+	float f = 0.23 * x - 12;
+	float y = q_m * (f + q_a) * (f + q_b) * (f - q_c) * (f - q_d) + q_e;
 #endif
 	return floor(y);
+}
+
+void Grid::seedTerrain()
+{
+	std::default_random_engine re{ std::random_device{}() };
+	std::uniform_int_distribution<int> dist{ 0, 100 };
+	q_m = dist(re);
+	q_m *= (GRID_QUARTIC_M_MAX - GRID_QUARTIC_M_MIN) / 100 + GRID_QUARTIC_M_MIN;
+	q_a = dist(re);
+	q_a *= (GRID_QUARTIC_A_MAX - GRID_QUARTIC_A_MIN) / 100 + GRID_QUARTIC_A_MIN;
+	q_c = dist(re);
+	q_c *= (GRID_QUARTIC_B_MAX - GRID_QUARTIC_B_MIN) / 100 + GRID_QUARTIC_B_MIN;
+	q_c = dist(re);
+	q_c *= (GRID_QUARTIC_C_MAX - GRID_QUARTIC_C_MIN) / 100 + GRID_QUARTIC_C_MIN;
+	q_d = dist(re);
+	q_d *= (GRID_QUARTIC_D_MAX - GRID_QUARTIC_D_MIN) / 100 + GRID_QUARTIC_D_MIN;
+	q_e = dist(re);
+	q_e *= (GRID_QUARTIC_E_MAX - GRID_QUARTIC_E_MIN) / 100 + GRID_QUARTIC_E_MIN;
 }
 
 void Grid::draw(DrawData2D* _DD)
