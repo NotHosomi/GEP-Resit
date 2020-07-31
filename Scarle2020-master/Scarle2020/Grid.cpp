@@ -1,16 +1,27 @@
 #include "pch.h"
 #include "Grid.h"
+#include <random>
 
 Grid::Grid(ID3D11Device* _GD)
-{ // TODO array construction? Use vector maybe
+{
 	// generate terrain
+	seedTerrain();
+
 	tiles.reserve(GRID_WIDTH);
 	for (int x = 0; x < GRID_WIDTH; ++x)
 	{
 		tiles.emplace_back(std::vector<Tile>());
 		tiles.back().reserve(GRID_HEIGHT);
 		int altitude = generateAltitude(x);
-
+		// sanity checks
+		if (altitude > GRID_HEIGHT)
+		{
+			altitude = GRID_HEIGHT;
+		}
+		if (altitude < 0)
+		{
+			altitude = 0;
+		}
 		// spawn tiles
 		for (int y = 0; y < altitude; ++y)
 		{
@@ -29,25 +40,45 @@ Grid::Grid(ID3D11Device* _GD)
 
 int Grid::generateAltitude(int x)
 {
-#if 0
-	// generate altitude using sine wave
-	float y = 2 * sin(0.4 * x) + 15;
-#endif
-#ifdef _GRID_RESO_HIGH
-	// generate altitude using a quartic polynomial
-	// i.e. two peaks with a valley
-	float f = 0.23 * x - 12;
-	float y = 0.008 * (f + 5.7) * (f + 6.5) * (f - 8.7) * (f - 3.1) + 25;
-
-	// alternative map
-	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
-#else
+#ifndef _GRID_RESO_HIGH
 	// generate altitude using a quartic polynomial
 	// i.e. two peaks with a valley
 	float f = 0.23 * x - 13;
 	float y = 0.01 * (f + 3.2) * (f + 8.5) * (f - 7.2) * (f - 2.1) + 20;
+#else
+	// generate altitude using a quartic polynomial
+	// i.e. two peaks with a valley
+	// float f = 0.23 * x - 12;
+	// float y = 0.008 * (f + 5.7) * (f + 6.5) * (f - 8.7) * (f - 3.1) + 25;
+
+	// alternative map
+	// float y = 0.01 * (f + 5.9) * (f + 6.7) * (f - 8.7) * (f - 5.8) + 20;
+
+	float f = 0.22 * x - 12;
+	float y = q_m * (f + q_a) * (f + q_b) * (f + q_c) * (f + q_d) + q_e;
 #endif
 	return floor(y);
+}
+
+void Grid::seedTerrain()
+{
+	std::default_random_engine re{ std::random_device{}() };
+	std::uniform_int_distribution<int> dist{ 0, 100 };
+	q_m = dist(re);
+	q_m = q_m * (GRID_QUARTIC_M_MAX - GRID_QUARTIC_M_MIN) / 100 + GRID_QUARTIC_M_MIN;
+	q_a = dist(re);
+	q_a = q_a * (GRID_QUARTIC_A_MAX - GRID_QUARTIC_A_MIN) / 100 + GRID_QUARTIC_A_MIN;
+	q_b = dist(re);
+	q_b = q_b * (GRID_QUARTIC_B_MAX - GRID_QUARTIC_B_MIN) / 100 + GRID_QUARTIC_B_MIN;
+	q_c = dist(re);
+	q_c = q_c * (GRID_QUARTIC_C_MAX - GRID_QUARTIC_C_MIN) / 100 + GRID_QUARTIC_C_MIN;
+	q_d = dist(re);
+	q_d = q_d * (GRID_QUARTIC_D_MAX - GRID_QUARTIC_D_MIN) / 100 + GRID_QUARTIC_D_MIN;
+	q_e = dist(re);
+	q_e /= 100;
+	q_e *= GRID_QUARTIC_E_MAX - GRID_QUARTIC_E_MIN;
+	q_e += GRID_QUARTIC_E_MIN;
+	//q_e = q_e * (GRID_QUARTIC_E_MAX - GRID_QUARTIC_E_MIN) / 100 + GRID_QUARTIC_E_MIN;
 }
 
 void Grid::draw(DrawData2D* _DD)
@@ -59,6 +90,27 @@ void Grid::draw(DrawData2D* _DD)
 			tile.Draw(_DD);
 		}
 	}
+}
+
+Vector2 Grid::genSpawnCoord()
+{
+	std::default_random_engine re{ std::random_device{}() };
+	std::uniform_int_distribution<int> dist{ 0, GRID_WIDTH };
+	int x = 0;
+	int y = 0;
+	do
+	{
+		do
+		{
+			x = dist(re);
+		} while (any_of(unit_spawns.begin(), unit_spawns.end(), [x](int it) { return x == it; }));
+		y = generateAltitude(x);
+	} while (y > GRID_HEIGHT - 8);
+	unit_spawns.push_back(x);
+	y -= 2;
+	Vector2 position = Vector2(x, y);
+	position *= Tile::TILE_DIMS;
+	return position;
 }
 
 Tile* Grid::getTile(float x, float y)

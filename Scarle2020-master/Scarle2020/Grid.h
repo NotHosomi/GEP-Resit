@@ -7,7 +7,6 @@ class Grid
 {
 public:
 	Grid(ID3D11Device* _GD);
-	int generateAltitude(int x);
 	~Grid() = default;
 
 	Tile* getTile(float x, float y);
@@ -20,17 +19,47 @@ public:
 	vector<Tile*> getTilesInRadius(Vector2 origin, float radius);
 
 	void draw(DrawData2D* _DD);
+	Vector2 genSpawnCoord();
 
 #ifdef _GRID_RESO_HIGH
-	static constexpr int GRID_HEIGHT = 60;
+	static constexpr int GRID_HEIGHT = 61;
 	static constexpr int GRID_WIDTH = 106;
 #else
 	// static constexpr int GRID_HEIGHT = 46;
 	// static constexpr int GRID_WIDTH = 80;
 #endif
 private:
+#ifdef _GRID_RESO_HIGH
+	// 0.015 * (f + 7.5) * (f + 7.5) * (f - 6.5) * (f - 6.5) + 23; // extremes
+	// 0.01 * (f + 3.5) * (f + 3.5) * (f - 2.5) * (f - 2.5) + 15; // minimums
+	static constexpr float GRID_QUARTIC_M_MIN = 0.01;
+	static constexpr float GRID_QUARTIC_M_MAX = 0.015;
+	static constexpr float GRID_QUARTIC_A_MIN = 5;
+	static constexpr float GRID_QUARTIC_A_MAX = 7;
+	static constexpr float GRID_QUARTIC_B_MIN = 5;
+	static constexpr float GRID_QUARTIC_B_MAX = 7;
+	static constexpr float GRID_QUARTIC_C_MIN = -7;
+	static constexpr float GRID_QUARTIC_C_MAX = -6;
+	static constexpr float GRID_QUARTIC_D_MIN = -7;
+	static constexpr float GRID_QUARTIC_D_MAX = -6;
+	static constexpr float GRID_QUARTIC_E_MIN = 13;
+	static constexpr float GRID_QUARTIC_E_MAX = 18;
+#endif
+	int generateAltitude(int x);
+	void seedTerrain();
+
+	// quartic components
+	float q_m = 0;
+	float q_a = 0;
+	float q_b = 0;
+	float q_c = 0;
+	float q_d = 0;
+	float q_e = 0;
+
 	// I am aware a 2D vector is not optimal, however it allows for
 	// simpler code at the cost of memory access optimization
 	std::vector<std::vector<Tile>> tiles;
+
+	std::vector<int> unit_spawns;
 };
 
