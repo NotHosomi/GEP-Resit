@@ -18,9 +18,13 @@ void TurnManager::Tick(GameData* _GD)
 			[](TeamData* team)
 			{
 				return std::any_of(team->unit_list.begin(), team->unit_list.end(),
-					[](Unit* unit) { return !unit->getPhysCmp()->isStill(); });
+					[](Unit* unit)
+					{
+						return !unit->getPhysCmp()->isStill() && unit->isAlive();
+					});
 			}))
 		{
+			// continue IF all units are still	(
 			// Note: would've rather done "If not all units are still", but std::all_of() was not being recognised
 			// TODO: Check if ALL gameobjects are still, not just units
 			return;

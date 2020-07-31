@@ -100,9 +100,13 @@ Vector2 Grid::genSpawnCoord()
 	int y = 0;
 	do
 	{
-		x = dist(re);
+		do
+		{
+			x = dist(re);
+		} while (any_of(unit_spawns.begin(), unit_spawns.end(), [x](int it) { return x == it; }));
 		y = generateAltitude(x);
 	} while (y > GRID_HEIGHT - 8);
+	unit_spawns.push_back(x);
 	y -= 2;
 	Vector2 position = Vector2(x, y);
 	position *= Tile::TILE_DIMS;

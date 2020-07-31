@@ -59,5 +59,7 @@ private:
 	// I am aware a 2D vector is not optimal, however it allows for
 	// simpler code at the cost of memory access optimization
 	std::vector<std::vector<Tile>> tiles;
+
+	std::vector<int> unit_spawns;
 };
 
