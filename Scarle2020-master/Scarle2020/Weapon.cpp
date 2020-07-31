@@ -322,8 +322,10 @@ void Weapon::pickColour()
 	case WEP_CLUSTER:
 		// Colors::Orange darkened by 0.6, like the projectile
 		m_colour = Color(0.6, 0.388, 0);
+		break;
 	case WEP_AIRSTRIKE:
-		m_colour = Color((float*)&Colors::LightCyan);
+		m_colour = Color((float*)&Colors::Cyan);
+		break;
 	}
 }
 
