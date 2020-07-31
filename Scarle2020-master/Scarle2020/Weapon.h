@@ -17,7 +17,9 @@ public:
 		WEP_ROCKET = 0,
 		WEP_PISTOL,
 		WEP_GRENADE,
-		WEP_DYNAMITE
+		WEP_DYNAMITE,
+		WEP_CLUSTER,
+		WEP_AIRSTRIKE
 		// TODO: add more
 	};
 
@@ -27,12 +29,15 @@ private:
 	static constexpr float WEP_ROT_SPEED = 1;
 	static constexpr float WEP_DYNAMITE_SPEED = 20;
 	static constexpr float WEP_MAX_CHARGE_TIME = 1.5;
-	static constexpr float WEP_NUMWEPS = 4;
+	static constexpr int WEP_NUMWEPS = 5;
 	static constexpr float HUD_LIST_DECAY_TIME = 3;
+	// using separate values as arrays cant be static consts
 	static constexpr float WEP0_SPEED = 400; // rocket
 	static constexpr float WEP1_SPEED = 600; // pistol
 	static constexpr float WEP2_SPEED = 300; // grenade
 	static constexpr float WEP3_SPEED = 10; // dynamite
+	static constexpr float WEP4_SPEED = 300; // cluster
+	static constexpr float WEP5_SPEED = 300; // airstrike
 	static constexpr float PI = 3.14159265; // can't find D3DX_PI for some reason
 
 	void switchWep(GameData* _GD, bool forward);

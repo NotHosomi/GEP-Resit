@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "grenade.h"
 #include "Dynamite.h"
+#include "Cluster.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
 	ImageGO2D("weapon", _GD),
@@ -238,16 +239,23 @@ void Weapon::fire(GameData* _GD)
 	case WEP_ROCKET: new_projectile =
 		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_SPEED);
 		break;
-	case WEP_PISTOL: new_projectile = 
+	case WEP_PISTOL: new_projectile =
 		new Bullet(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP1_SPEED);
 		break;
-	case WEP_GRENADE: new_projectile = 
+	case WEP_GRENADE: new_projectile =
 		new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP2_SPEED);
 		break;
 	case WEP_DYNAMITE:
+	{
 		float dir = _GD->m_Teams.getCurrentUnit()->isFlipped() ? -1 : 1;
 		new_projectile = new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), Vector2(WEP3_SPEED * dir, 0));
+	}
 		break;
+	case WEP_CLUSTER: new_projectile =
+		new Cluster(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP4_SPEED);
+		break;
+	//case WEP_AIRSTRIKE: new_projectile =
+	//	new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP5_SPEED);
 	}
 	_GD->creation_list.emplace_back(new_projectile);
 	charge = 0;

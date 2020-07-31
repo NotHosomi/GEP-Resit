@@ -196,8 +196,16 @@
     <ClInclude Include="Bullet.h">
       <Filter>GameObjects\weapons</Filter>
     </ClInclude>
-    <ClInclude Include="Dynamite.h" />
     <ClInclude Include="GridReso.h" />
+    <ClInclude Include="Dynamite.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Cluster.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="ClusterChild.h">
+      <Filter>GameObjects\weapons</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -314,7 +322,15 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>GameObjects\weapons</Filter>
     </ClCompile>
-    <ClCompile Include="Dynamite.cpp" />
+    <ClCompile Include="Cluster.cpp">
+      <Filter>GameObjects\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Dynamite.cpp">
+      <Filter>GameObjects\weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="ClusterChild.cpp">
+      <Filter>GameObjects\weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico">
