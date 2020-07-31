@@ -29,7 +29,9 @@ void Explosion::Tick(GameData* _GD)
 			if (diff.Length() < Unit::UNIT_DMG_COLLIDER)
 			{
 				// explosion center is inside unit's damage circle
-				diff *= 0;
+				// set to a very small value to maintain the vector's direction
+				diff.Normalize();
+				diff *= 0.1;
 			}
 			else
 			{
