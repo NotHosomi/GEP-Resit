@@ -17,12 +17,13 @@ void AirStrikeFlare::Tick(GameData* _GD)
 	if (strike_started)
 	{
 		strikeTick(_GD);
+		return;
 	}
 
 	if (PhysCmp.isStill())
 	{
 		PhysCmp.setLocked(true);
-
+		strike_started = true;
 	}
 
 	OOBCheck(_GD);
@@ -33,7 +34,7 @@ void AirStrikeFlare::strikeTick(GameData* _GD)
 	strike_timer += _GD->m_dt;
 	if (strike_timer > STRIKE_GAP)
 	{
-		strike_timer = 0;
+ 		strike_timer = 0;
 		if (strikes_occured < STRIKE_NUM)
 		{
 			strike(_GD);
@@ -49,10 +50,11 @@ void AirStrikeFlare::strikeTick(GameData* _GD)
 
 void AirStrikeFlare::strike(GameData* _GD)
 {
+	strikes_occured++;
 	Vector2 pos = m_pos;
 	pos.y = -10;
 	pos.x += STRIKE_GAP_DIST * STRIKE_NUM / 2;
 	pos.x += STRIKE_GAP_DIST * strikes_occured;
-	GameObject2D* new_strike = new Bullet(_GD->p_Device, pos, Vector2(), STRIKE_DMG, STRIKE_EXP_RADIUS);
+	GameObject2D* new_strike = new Bullet(_GD->p_Device, pos, Vector2(0, STRIKE_SPEED), STRIKE_DMG, STRIKE_EXP_RADIUS);
 	_GD->creation_list.emplace_back(new_strike);
 }
