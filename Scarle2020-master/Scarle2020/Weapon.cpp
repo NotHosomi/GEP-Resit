@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "grenade.h"
 #include "Dynamite.h"
+#include "Cluster.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
 	ImageGO2D("weapon", _GD),
@@ -157,34 +158,30 @@ void Weapon::updateWepListHudElement(TeamsManager* _TM)
 	// But it seems like overkill given the time constraint
 	int amount;
 	string str = "";
-	if (current_weptype == 0)
-		str += ">";
-	str += "BAZOOKA: ";
-	amount = _TM->ammoCount(0);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-	str += "\n";
-
-	if (current_weptype == 1)
-		str += ">";
-	str += "PISTOL: ";
-	amount = _TM->ammoCount(1);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-	str += "\n";
-
-	if (current_weptype == 2)
-		str += ">";
-	str += "GRENADE: ";
-	amount = _TM->ammoCount(2);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-	str += "\n";
-
-	if (current_weptype == 3)
-		str += ">";
-	str += "DYNAMITE: ";
-	amount = _TM->ammoCount(3);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-
+	for (int id = 0; id < WEP_NUMWEPS; ++id)
+	{
+		if (current_weptype == id)
+			str += ">";
+		str += getWeaponName(id);
+		str += ": ";
+		str += _TM->ammoCount(id) < 0 ? "INFINITE" : to_string(_TM->ammoCount(id));
+		str += "\n";
+	}
 	hud_weaponlist.SetString(str);
+}
+
+string Weapon::getWeaponName(int wep_id)
+{
+	switch (wep_id)
+	{
+	case 0: return "BAZOOKA";
+	case 1: return "PISTOL";
+	case 2: return "GRENADE";
+	case 3: return "DYNAMITE";
+	case 4: return "CLUSTER BOMB";
+	case 5: return "AIR SUPPORT";
+	default: return "NULL_WEP";
+	}
 }
 
 void Weapon::switchWep(GameData* _GD, bool forward)
@@ -238,16 +235,23 @@ void Weapon::fire(GameData* _GD)
 	case WEP_ROCKET: new_projectile =
 		new Rocket(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP0_SPEED);
 		break;
-	case WEP_PISTOL: new_projectile = 
+	case WEP_PISTOL: new_projectile =
 		new Bullet(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP1_SPEED);
 		break;
-	case WEP_GRENADE: new_projectile = 
+	case WEP_GRENADE: new_projectile =
 		new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP2_SPEED);
 		break;
 	case WEP_DYNAMITE:
+	{
 		float dir = _GD->m_Teams.getCurrentUnit()->isFlipped() ? -1 : 1;
 		new_projectile = new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), Vector2(WEP3_SPEED * dir, 0));
+	}
 		break;
+	case WEP_CLUSTER: new_projectile =
+		new Cluster(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP4_SPEED);
+		break;
+	//case WEP_AIRSTRIKE: new_projectile =
+	//	new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP5_SPEED);
 	}
 	_GD->creation_list.emplace_back(new_projectile);
 	charge = 0;

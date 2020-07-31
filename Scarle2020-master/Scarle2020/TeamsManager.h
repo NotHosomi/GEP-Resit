@@ -8,7 +8,7 @@ struct TeamData
 {
 	vector<Unit*> unit_list = {};
 	int queuedWorm = 0;
-	array<int, 4> ammo_list = { -1, 5, 5, 2 }; // -1 means infinite ammo
+	array<int, 6> ammo_list = { -1, 5, 5, 2, 3, 1 }; // -1 means infinite ammo
 };
 
 class TeamsManager
