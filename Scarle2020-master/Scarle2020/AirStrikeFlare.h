@@ -16,7 +16,7 @@ private:
 	// static constexpr float STRIKE_GAP_DIST = 10; // distance between strikes
 	static constexpr float STRIKE_DEVIANCE = 20; // Standard Deviation of the strike
 	static constexpr int STRIKE_NUM = 5;
-	static constexpr float STRIKE_DMG = 17;
+	static constexpr float STRIKE_DMG = 23;
 	static constexpr float STRIKE_EXP_RADIUS = 30;
 	static constexpr float STRIKE_SPEED = 700;
 

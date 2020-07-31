@@ -23,7 +23,6 @@ void AirStrikeFlare::Tick(GameData* _GD)
 
 	if (PhysCmp.isStill())
 	{
-		PhysCmp.setLocked(true);
 		strike_started = true;
 	}
 
