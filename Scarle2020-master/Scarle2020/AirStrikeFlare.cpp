@@ -2,6 +2,7 @@
 #include "AirStrikeFlare.h"
 #include "GameData.h"
 #include "Bullet.h"
+#include <random>
 
 AirStrikeFlare::AirStrikeFlare(ID3D11Device* _GD, Vector2 position, Vector2 velocity) :
 	Projectile(_GD, "projectile", position, velocity, Vector2(FLARE_DIMS, FLARE_DIMS), FLARE_WEIGHT, FLARE_ELASTICITY)
@@ -53,8 +54,10 @@ void AirStrikeFlare::strike(GameData* _GD)
 	strikes_occured++;
 	Vector2 pos = m_pos;
 	pos.y = -10;
-	pos.x += STRIKE_GAP_DIST * STRIKE_NUM / 2;
-	pos.x += STRIKE_GAP_DIST * strikes_occured;
+	
+	std::default_random_engine re{ std::random_device{}() };
+	std::normal_distribution<> dist{ 0, STRIKE_DEVIANCE };
+	pos.x += dist(re);
 	GameObject2D* new_strike = new Bullet(_GD->p_Device, pos, Vector2(0, STRIKE_SPEED), STRIKE_DMG, STRIKE_EXP_RADIUS);
 	_GD->creation_list.emplace_back(new_strike);
 }
