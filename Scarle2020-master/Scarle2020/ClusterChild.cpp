@@ -24,13 +24,7 @@ void ClusterChild::Tick(GameData* _GD)
 	fuse_tmr += _GD->m_dt;
 	if (fuse_tmr > fuse)
 	{
-		if (!hidden)
-		{
-			explode(_GD);
-		}
-		// This mess with checking Hidden and not destroying itself after exploding is
-		// so that the turn manager doesn't stop waiting after only the first child has exploded
-		// Thus, they all wait until the full fuse has passed before ending the turn and destroying
+		explode(_GD);
 		_GD->deletion_list.emplace_back(this);
 		_GD->m_Turn.setWaiting(false);
 	}
@@ -46,6 +40,14 @@ void ClusterChild::Draw(DrawData2D* _DD)
 
 void ClusterChild::explode(GameData* _GD)
 {
+	// This mess with checking Hidden and not destroying itself after exploding is
+	// so that the turn manager doesn't stop waiting after only the first child has exploded
+	// Thus, they all wait until the full fuse has passed before ending the turn and destroying
+	if (hidden)
+	{
+		return;
+	}
 	GameObject2D* explosion = new Explosion(_GD->p_Device, m_pos, exp_radius, exp_damage);
 	_GD->creation_list.emplace_back(explosion);
+	hidden = true;
 }
