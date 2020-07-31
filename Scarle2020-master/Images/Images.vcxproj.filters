@@ -12,5 +12,6 @@
     <ImageContentTask Include="aim_indicator.png" />
     <ImageContentTask Include="unit.png" />
     <ImageContentTask Include="tile.png" />
+    <ImageContentTask Include="projectile.png" />
   </ItemGroup>
 </Project>

@@ -53,6 +53,9 @@
     <Filter Include="GameObjects\weapons">
       <UniqueIdentifier>{a701a444-b3e9-4b9c-ba43-6272f1eaa867}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects\weapons\Cluster">
+      <UniqueIdentifier>{702b6b70-0979-4678-b6de-bac03c3e2848}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StepTimer.h">
@@ -201,9 +204,12 @@
       <Filter>GameObjects\weapons</Filter>
     </ClInclude>
     <ClInclude Include="Cluster.h">
-      <Filter>GameObjects\weapons</Filter>
+      <Filter>GameObjects\weapons\Cluster</Filter>
     </ClInclude>
     <ClInclude Include="ClusterChild.h">
+      <Filter>GameObjects\weapons\Cluster</Filter>
+    </ClInclude>
+    <ClInclude Include="AirStrikeFlare.h">
       <Filter>GameObjects\weapons</Filter>
     </ClInclude>
   </ItemGroup>
@@ -322,13 +328,16 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>GameObjects\weapons</Filter>
     </ClCompile>
-    <ClCompile Include="Cluster.cpp">
-      <Filter>GameObjects\weapons</Filter>
-    </ClCompile>
     <ClCompile Include="Dynamite.cpp">
       <Filter>GameObjects\weapons</Filter>
     </ClCompile>
+    <ClCompile Include="Cluster.cpp">
+      <Filter>GameObjects\weapons\Cluster</Filter>
+    </ClCompile>
     <ClCompile Include="ClusterChild.cpp">
+      <Filter>GameObjects\weapons\Cluster</Filter>
+    </ClCompile>
+    <ClCompile Include="AirStrikeFlare.cpp">
       <Filter>GameObjects\weapons</Filter>
     </ClCompile>
   </ItemGroup>
