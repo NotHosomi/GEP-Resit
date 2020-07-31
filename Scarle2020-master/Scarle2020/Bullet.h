@@ -8,7 +8,7 @@ public:
 private:
 	static constexpr float BULLET_DIMS = 12;
 	static constexpr float BULLET_WEIGHT = 150;
-	static constexpr float BULLET_EXP_RADIUS = 20;
-	static constexpr float BULLET_EXP_DMG = 25;
+	static constexpr float BULLET_EXP_RADIUS = 15;
+	static constexpr float BULLET_EXP_DMG = 35;
 };
 
