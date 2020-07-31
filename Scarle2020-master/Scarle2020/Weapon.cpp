@@ -8,6 +8,7 @@
 #include "grenade.h"
 #include "Dynamite.h"
 #include "Cluster.h"
+#include "AirStrikeFlare.h"
 
 Weapon::Weapon(ID3D11Device* _GD) :
 	ImageGO2D("weapon", _GD),
@@ -250,8 +251,8 @@ void Weapon::fire(GameData* _GD)
 	case WEP_CLUSTER: new_projectile =
 		new Cluster(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP4_SPEED);
 		break;
-	//case WEP_AIRSTRIKE: new_projectile =
-	//	new Grenade(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP5_SPEED);
+	case WEP_AIRSTRIKE: new_projectile =
+		new AirStrikeFlare(_GD->p_Device, _GD->m_Teams.getCurrentUnit()->GetPos(), generateAimVector() * WEP5_SPEED);
 	}
 	_GD->creation_list.emplace_back(new_projectile);
 	charge = 0;
@@ -322,7 +323,6 @@ void Weapon::pickColour()
 		// Colors::Orange darkened by 0.6, like the projectile
 		m_colour = Color(0.6, 0.388, 0);
 	case WEP_AIRSTRIKE:
-		// Colors::Orange darkened by 0.6, like the projectile
 		m_colour = Color((float*)&Colors::LightCyan);
 	}
 }

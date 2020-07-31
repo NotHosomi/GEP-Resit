@@ -29,7 +29,7 @@ private:
 	static constexpr float WEP_ROT_SPEED = 1;
 	static constexpr float WEP_DYNAMITE_SPEED = 20;
 	static constexpr float WEP_MAX_CHARGE_TIME = 1.5;
-	static constexpr int WEP_NUMWEPS = 5;
+	static constexpr int WEP_NUMWEPS = 6;
 	static constexpr float HUD_LIST_DECAY_TIME = 3;
 	// using separate values as arrays cant be static consts
 	static constexpr float WEP0_SPEED = 400; // rocket
