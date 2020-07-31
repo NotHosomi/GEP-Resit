@@ -158,34 +158,30 @@ void Weapon::updateWepListHudElement(TeamsManager* _TM)
 	// But it seems like overkill given the time constraint
 	int amount;
 	string str = "";
-	if (current_weptype == 0)
-		str += ">";
-	str += "BAZOOKA: ";
-	amount = _TM->ammoCount(0);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-	str += "\n";
-
-	if (current_weptype == 1)
-		str += ">";
-	str += "PISTOL: ";
-	amount = _TM->ammoCount(1);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-	str += "\n";
-
-	if (current_weptype == 2)
-		str += ">";
-	str += "GRENADE: ";
-	amount = _TM->ammoCount(2);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-	str += "\n";
-
-	if (current_weptype == 3)
-		str += ">";
-	str += "DYNAMITE: ";
-	amount = _TM->ammoCount(3);
-	str += amount < 0 ? "INFINITE" : to_string(amount);
-
+	for (int id = 0; id < WEP_NUMWEPS; ++id)
+	{
+		if (current_weptype == id)
+			str += ">";
+		str += getWeaponName(id);
+		str += ": ";
+		str += _TM->ammoCount(id) < 0 ? "INFINITE" : to_string(_TM->ammoCount(id));
+		str += "\n";
+	}
 	hud_weaponlist.SetString(str);
+}
+
+string Weapon::getWeaponName(int wep_id)
+{
+	switch (wep_id)
+	{
+	case 0: return "BAZOOKA";
+	case 1: return "PISTOL";
+	case 2: return "GRENADE";
+	case 3: return "DYNAMITE";
+	case 4: return "CLUSTER BOMB";
+	case 5: return "AIR SUPPORT";
+	default: return "NULL_WEP";
+	}
 }
 
 void Weapon::switchWep(GameData* _GD, bool forward)

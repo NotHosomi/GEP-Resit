@@ -40,6 +40,7 @@ private:
 	static constexpr float WEP5_SPEED = 300; // airstrike
 	static constexpr float PI = 3.14159265; // can't find D3DX_PI for some reason
 
+	string getWeaponName(int wep_id);
 	void switchWep(GameData* _GD, bool forward);
 	void chargeWeapon(GameData* _GD);
 	void fire(GameData* _GD);
