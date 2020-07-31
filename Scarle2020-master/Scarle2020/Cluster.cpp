@@ -23,10 +23,13 @@ void Cluster::explode(GameData* _GD)
 
 	GameObject2D* explosion = new Explosion(_GD->p_Device, m_pos, exp_radius, exp_damage);
 	_GD->creation_list.emplace_back(explosion);
+
+	// Lots of magic numbers here
 	for (int i = 0; i < CLUSTER_NUM_CHILDREN; ++i)
 	{
+		// TODO: Clean up all these magic numbers
 		Vector2 launch_dir = Vector2(0, -200);
-		launch_dir.x = (i - 2) * 10 + dist(re) / 3;
+		launch_dir.x = (i - 2) * 20 + dist(re) / 3;
 		launch_dir.y += dist(re);
 		GameObject2D* child = new ClusterChild(_GD->p_Device, m_pos, launch_dir);
 		_GD->creation_list.emplace_back(child);
