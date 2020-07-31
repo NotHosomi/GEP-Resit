@@ -7,4 +7,6 @@ Dynamite::Dynamite(ID3D11Device* _GD, Vector2 position, Vector2 velocity) :
 	exp_radius = DYNAMITE_EXP_RADIUS;
 	exp_damage = DYNAMITE_EXP_DMG;
 	fuse = DYNAMITE_FUSE;
+	// Darken the base grenade
+	m_colour = Color(0.3, 0.3, 0.3); // Why does this not do anything??
 }

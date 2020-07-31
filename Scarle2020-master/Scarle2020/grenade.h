@@ -6,6 +6,8 @@
 class Grenade : public Projectile
 {
 public:
+	// Default params for regular grenade spawning
+	// Can be overridden for derived classes i.e. dynamite
 	Grenade(ID3D11Device* _GD, Vector2 position, Vector2 velocity, float weight = GREN_WEIGHT, float elasticity = GREN_ELASTICITY);
 
 	void Tick(GameData* _GD) override;

@@ -166,8 +166,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AirStrikeFlare.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="Cluster.h" />
+    <ClInclude Include="ClusterChild.h" />
     <ClInclude Include="CMOGO.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DrawData.h" />
@@ -217,8 +220,11 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AirStrikeFlare.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="Cluster.cpp" />
+    <ClCompile Include="ClusterChild.cpp" />
     <ClCompile Include="CMOGO.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Dynamite.cpp" />

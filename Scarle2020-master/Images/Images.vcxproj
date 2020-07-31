@@ -173,6 +173,9 @@
   <ItemGroup>
     <ImageContentTask Include="tile.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="projectile.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
