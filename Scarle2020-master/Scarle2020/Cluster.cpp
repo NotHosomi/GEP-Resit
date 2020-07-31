@@ -4,6 +4,7 @@
 #include "Explosion.h"
 #include "Rocket.h"
 #include "ClusterChild.h"
+#include <random>
 
 Cluster::Cluster(ID3D11Device* _GD, Vector2 position, Vector2 velocity) :
 	Grenade(_GD, position, velocity)
@@ -17,12 +18,16 @@ Cluster::Cluster(ID3D11Device* _GD, Vector2 position, Vector2 velocity) :
 
 void Cluster::explode(GameData* _GD)
 {
+	std::default_random_engine re{ std::random_device{}() };
+	std::uniform_int_distribution<int> dist{ -25, 25 };
+
 	GameObject2D* explosion = new Explosion(_GD->p_Device, m_pos, exp_radius, exp_damage);
 	_GD->creation_list.emplace_back(explosion);
 	for (int i = 0; i < CLUSTER_NUM_CHILDREN; ++i)
 	{
-		Vector2 launch_dir = Vector2(0, 100);
-		launch_dir.x = (i-2) * 10;
+		Vector2 launch_dir = Vector2(0, -200);
+		launch_dir.x = (i - 2) * 10 + dist(re) / 3;
+		launch_dir.y += dist(re);
 		GameObject2D* child = new ClusterChild(_GD->p_Device, m_pos, launch_dir);
 		_GD->creation_list.emplace_back(child);
 	}
