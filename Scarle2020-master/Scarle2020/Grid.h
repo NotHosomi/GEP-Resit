@@ -38,7 +38,7 @@ private:
 	static constexpr float GRID_QUARTIC_B_MAX = 7.5;
 	static constexpr float GRID_QUARTIC_C_MIN = -7;
 	static constexpr float GRID_QUARTIC_C_MAX = -6;
-	static constexpr float GRID_QUARTIC_D_MIN = --8;
+	static constexpr float GRID_QUARTIC_D_MIN = -8;
 	static constexpr float GRID_QUARTIC_D_MAX = -0.5;
 	static constexpr float GRID_QUARTIC_E_MIN = 24;
 	static constexpr float GRID_QUARTIC_E_MAX = 26;
