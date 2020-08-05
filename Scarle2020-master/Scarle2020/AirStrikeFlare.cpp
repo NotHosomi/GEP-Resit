@@ -21,10 +21,7 @@ void AirStrikeFlare::Tick(GameData* _GD)
 		return;
 	}
 
-	if (PhysCmp.isStill())
-	{
-		strike_started = true;
-	}
+	strike_started = abs(PhysCmp.getVel().x) < 0.05;
 
 	OOBCheck(_GD);
 }
